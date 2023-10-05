@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base=/TestGitAndPages/ ",
+    "build": "vite build --base=/damage-calc/ ",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -28,12 +28,14 @@ export default {
       nobleValue: {},
       totalSkillValue: {},
       userInputValue: {},
+      ATKValue: 0,
       fouValue: 1000,
       CEAtk: 0,
       isShowModal: [false, false, false, false],
       servantInit: {
         "No.": "1",
         Name: "DATA LOST",
+        Rare:"5",
         Class: "盾",
         Attri: "地",
         Grow: "平均",
@@ -69,11 +71,8 @@ export default {
       list.push(item);
       this.nobleValue = sumObjectValue(list);
     },
-    updatedFouValue(item) {
-      this.fouValue = item;
-    },
-    updatedCEAtk(item) {
-      this.CEAtk = item;
+    updatedATKValue(item){
+      this.ATKValue = item;
     },
     updateUserInput(item) {
       this.userInputValue = item;
@@ -103,8 +102,7 @@ export default {
           :attacker="selectedServant[0]"
           :skillvalue="totalSkillValue"
           :noblevalue="nobleValue"
-          :fouValue="fouValue"
-          :CEAtk="CEAtk"
+          :ATKValue="ATKValue"
         />
       </v-sheet>
 
@@ -127,9 +125,8 @@ export default {
           </v-row>
         </v-container>
         <attacker
-          :attcker="selectedServant[0]"
-          @CEAtk="updatedCEAtk($event)"
-          @fouValue="updatedFouValue($event)"
+          :attacker="selectedServant[0]"
+          @ATK="updatedATKValue($event)"
         />
         <nobleContainer
           :items="selectedServant[0]['No.']"

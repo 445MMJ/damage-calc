@@ -15,11 +15,7 @@ export default {
       type: Object,
       required: true,
     },
-    fouValue: {
-      type: Number,
-      required: true,
-    },
-    CEAtk: {
+    ATKValue: {
       type: Number,
       required: true,
     },
@@ -89,16 +85,6 @@ export default {
       slider: 1,
     };
   },
-  computed: {
-    calcATK() {
-      let result = 0;
-      result =
-        Number(this.attacker["max_A"]) +
-        Number(this.fouValue) +
-        Number(this.CEAtk);
-      return result;
-    },
-  },
   methods: {
     calcCardDamage(cardtype, index) {
       //下処理
@@ -114,7 +100,7 @@ export default {
       }
       result =
         //A項
-        this.calcATK *
+        this.ATKValue *
           0.23 *
           ((this.cardModifierATKList[cardtype][index] / 100) *
             Math.min(5, 1 + this.skillvalue[buffCardType] / 100) +
@@ -133,7 +119,7 @@ export default {
         //E項
         Number(this.isBusterChain) *
           this.BusterChainList[cardtype] *
-          this.calcATK *
+          this.ATKValue *
           0.2;
 
       result = Math.floor(Number(result));
@@ -157,7 +143,7 @@ export default {
       }
       result =
         //A項
-        ((((this.calcATK * this.noblevalue["宝具攻撃"]) / 100) *
+        ((((this.ATKValue * this.noblevalue["宝具攻撃"]) / 100) *
           this.cardModifierATKList[cardtype][1]) /
           100) *
         Math.min(5, 1 + this.skillvalue[buffCardType] / 100) *
@@ -181,7 +167,7 @@ export default {
         );
       //E項は無し
       result = Math.floor(Number(result));
-      return result;  
+      return result;
     },
   },
 };
@@ -264,7 +250,7 @@ export default {
     <v-window-item value="2">
       <v-container>
         <v-row>
-          <v-col>
+          <v-col cols="6" sm="3">
             <v-select
               label="クラス相性"
               v-model="classAffinityModifier"
@@ -274,7 +260,7 @@ export default {
               hide-details="auto"
             ></v-select
           ></v-col>
-          <v-col>
+          <v-col cols="6" sm="3">
             <v-select
               label="天地人相性"
               v-model="attributeAffinityModifier"
@@ -284,37 +270,43 @@ export default {
               hide-details="auto"
             ></v-select
           ></v-col>
-          <v-col>
+          <v-col cols="4" sm="2">
             <v-checkbox
-              label="クリティカル"
               v-model="isCritical"
               false-value="0"
               true-value="1"
               color="primary"
               hide-details="auto"
             >
-            </v-checkbox
-          ></v-col>
-          <v-col>
+              <template v-slot:label
+                ><span class="text-no-wrap">クリティカル</span></template
+              >
+            </v-checkbox></v-col
+          >
+          <v-col cols="4" sm="2">
             <v-checkbox
-              label="1st Buster"
               v-model="firstCard"
               false-value="None"
               true-value="Buster"
               color="primary"
               hide-details="auto"
             >
+              <template v-slot:label
+                ><span class="text-no-wrap">1st Buster</span></template
+              >
             </v-checkbox>
           </v-col>
-          <v-col>
+          <v-col cols="4" sm="2">
             <v-checkbox
-              label="Bチェイン"
               v-model="isBusterChain"
               false-value="0"
               true-value="1"
               color="primary"
               hide-details="auto"
             >
+              <template v-slot:label
+                ><span class="text-no-wrap">Bチェイン</span></template
+              >
             </v-checkbox>
           </v-col>
         </v-row>
@@ -350,15 +342,11 @@ export default {
           サーヴァント<br />
           {{ attacker }} <br />
           ATK<br />
-          {{ calcATK }} <br />
+          {{ ATKValue }} <br />
           バフ情報<br />
           {{ skillvalue }} <br />
           宝具性能<br />
           {{ noblevalue }}<br />
-          礼装情報<br />
-          {{ CEAtk }}<br />
-          フォウ情報<br />
-          {{ fouValue }}<br />
           オベロン<br />
           {{ isOberon }}<br />
         </v-row>

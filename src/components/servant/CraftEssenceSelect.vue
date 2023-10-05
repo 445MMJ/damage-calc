@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row align="center">
-      <v-col cols="6" sm="3">
+      <v-col cols="6" sm="3" >
         <v-select
           label="種別"
           v-model="selectedStatus"
@@ -9,6 +9,7 @@
           variant="outlined"
           density="compact"
           hide-details="true"
+
         ></v-select
       ></v-col>
       <v-col cols="6" sm="3">
@@ -25,7 +26,6 @@
         <v-text-field
           v-model="ATK"
           update:modelValue="handleATKInput"
-          clearable
           label="礼装ATK"
           type="number"
           hide-details="true"
@@ -35,7 +35,6 @@
         <v-text-field
           v-model="textLevelInput"
           update:modelValue="handleLevelInput"
-          clearable
           label="礼装レベル"
           type="number"
           hide-details="true"

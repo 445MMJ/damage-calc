@@ -1,29 +1,8 @@
 # Test
+https://445mmj.github.io/system-calc/  
+電卓みたいにボタン押すだけで計算できます  
+計算式、データはFate/Grand Order@wiki(https://w.atwiki.jp/f_go/) より  
 
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+##β公開中
+一部スキル、宝具に非対応
+耐性ダウン、防御ダウン効果に非対応

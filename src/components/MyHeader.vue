@@ -1,39 +1,9 @@
-<template>
-  <v-sheet>
-    <v-app-bar color="primary">
-      <v-toolbar-title
-        ><v-icon icon="mdi-sword-cross"></v-icon> ダメージ計算</v-toolbar-title
-      >
-
-      <v-btn
-        v-for="item in items"
-        :href="item.value"
-        @click=""
-        variant="text"
-        class="d-none d-sm-flex"
-        >{{ item.title }}</v-btn
-      >
-      <v-app-bar-nav-icon
-        variant="text"
-        @click.stop="drawer = !drawer"
-        class="d-flex d-sm-none"
-      ></v-app-bar-nav-icon>
-    </v-app-bar>
-
-    <v-navigation-drawer :width="170" v-model="drawer" location="top" temporary>
-      <v-list>
-        <v-list-item v-for="item in items" :key="item.title" @click="">
-          <v-btn :href="item.value" @click="" variant="text">{{
-            item.title
-          }}</v-btn>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-  </v-sheet>
-</template>
-
 <script>
+import themeswitch from "./ThemeSwitch.vue";
 export default {
+  components: {
+    themeswitch,
+  },
   data() {
     return {
       drawer: false,
@@ -65,3 +35,38 @@ export default {
   },
 };
 </script>
+
+<template>
+  <v-sheet>
+    <v-app-bar color="primary">
+      <v-toolbar-title
+        ><v-icon icon="mdi-sword-cross"></v-icon> ダメージ計算</v-toolbar-title
+      >
+      <themeswitch />
+
+      <v-btn
+        v-for="item in items"
+        :href="item.value"
+        @click=""
+        variant="text"
+        class="d-none d-sm-flex"
+        >{{ item.title }}</v-btn
+      >
+      <v-app-bar-nav-icon
+        variant="text"
+        @click.stop="drawer = !drawer"
+        class="d-flex d-sm-none"
+      ></v-app-bar-nav-icon>
+    </v-app-bar>
+
+    <v-navigation-drawer :width="170" v-model="drawer" location="top" temporary>
+      <v-list>
+        <v-list-item v-for="item in items" :key="item.title" @click="">
+          <v-btn :href="item.value" @click="" variant="text">{{
+            item.title
+          }}</v-btn>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+  </v-sheet>
+</template>

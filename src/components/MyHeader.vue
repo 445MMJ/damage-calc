@@ -42,8 +42,10 @@ export default {
       <v-toolbar-title
         ><v-icon icon="mdi-sword-cross"></v-icon> ダメージ計算</v-toolbar-title
       >
-      <themeswitch />
 
+      <template v-slot:append>
+         
+      <themeswitch />
       <v-btn
         v-for="item in items"
         :href="item.value"
@@ -57,10 +59,13 @@ export default {
         @click.stop="drawer = !drawer"
         class="d-flex d-sm-none"
       ></v-app-bar-nav-icon>
+        
+      </template>
     </v-app-bar>
 
-    <v-navigation-drawer :width="170" v-model="drawer" location="top" temporary>
-      <v-list>
+    <v-navigation-drawer :width="210" v-model="drawer" location="top" temporary>
+      
+      <v-list>  
         <v-list-item v-for="item in items" :key="item.title" @click="">
           <v-btn :href="item.value" @click="" variant="text">{{
             item.title

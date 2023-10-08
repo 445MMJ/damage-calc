@@ -1,18 +1,3 @@
-<template>
-  <div>
-    <div v-for="(value, key) in parameters" :key="key" class="input-group">
-      <v-text-field
-        v-model="parameters[key]"
-        :label="key"
-        @input="handleInput(key)"
-        clearable
-        type="number"
-        hide-details="true"
-      ></v-text-field>
-    </div>
-  </div>
-</template>
-
 <script>
 export default {
   data() {
@@ -42,3 +27,18 @@ export default {
   },
 };
 </script>
+
+<template>
+  <div>
+    <div v-for="(value, key) in parameters" :key="key" class="input-group">
+      <v-text-field
+        v-model="parameters[key]"
+        :label="key"
+        @input="handleInput(key)"
+        clearable
+        type="number"
+        hide-details="true"
+      ></v-text-field>
+    </div>
+  </div>
+</template>

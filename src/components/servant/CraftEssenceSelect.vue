@@ -1,49 +1,3 @@
-<template>
-  <v-container>
-    <v-row align="center">
-      <v-col cols="6" sm="3" >
-        <v-select
-          label="種別"
-          v-model="selectedStatus"
-          :items="statusList"
-          variant="outlined"
-          density="compact"
-          hide-details="true"
-
-        ></v-select
-      ></v-col>
-      <v-col cols="6" sm="3">
-        <v-select
-          label="礼装レベル"
-          v-model="selectedLevel"
-          :items="levelList"
-          variant="outlined"
-          density="compact"
-          hide-details="true"
-        ></v-select
-      ></v-col>
-      <v-col cols="6" sm="3">
-        <v-text-field
-          v-model="ATK"
-          update:modelValue="handleATKInput"
-          label="礼装ATK"
-          type="number"
-          hide-details="true"
-        ></v-text-field
-      ></v-col>
-      <v-col cols="6" sm="3">
-        <v-text-field
-          v-model="textLevelInput"
-          update:modelValue="handleLevelInput"
-          label="礼装レベル"
-          type="number"
-          hide-details="true"
-        ></v-text-field
-      ></v-col>
-    </v-row>
-  </v-container>
-</template>
-
 <script>
 //レベルについてはリストの内容→テキストボックスの内容とコピーしていき
 //ATKについてはレベルのテキストボックス*ステータスの成長係数(リストから選んでる)をATKのテキストボックスに庫ピー
@@ -102,3 +56,49 @@ export default {
   },
 };
 </script>
+
+<template>
+  <v-container>
+    <v-row align="center">
+      <v-col cols="6" sm="3" >
+        <v-select
+          label="種別"
+          v-model="selectedStatus"
+          :items="statusList"
+          variant="outlined"
+          density="compact"
+          hide-details="true"
+
+        ></v-select
+      ></v-col>
+      <v-col cols="6" sm="3">
+        <v-select
+          label="礼装レベル"
+          v-model="selectedLevel"
+          :items="levelList"
+          variant="outlined"
+          density="compact"
+          hide-details="true"
+        ></v-select
+      ></v-col>
+      <v-col cols="6" sm="3">
+        <v-text-field
+          v-model="ATK"
+          update:modelValue="handleATKInput"
+          label="礼装ATK"
+          type="number"
+          hide-details="true"
+        ></v-text-field
+      ></v-col>
+      <v-col cols="6" sm="3">
+        <v-text-field
+          v-model="textLevelInput"
+          update:modelValue="handleLevelInput"
+          label="礼装レベル"
+          type="number"
+          hide-details="true"
+        ></v-text-field
+      ></v-col>
+    </v-row>
+  </v-container>
+</template>

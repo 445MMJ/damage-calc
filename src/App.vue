@@ -1,4 +1,3 @@
-<!-- コンポーネントの定義 -->
 <script>
 import myHeader from "./components/MyHeader.vue";
 import calc from "./components/calc/Calc.vue";
@@ -92,7 +91,7 @@ export default {
 };
 </script>
 
-<!-- テンプレートの定義 -->
+
 <template>
   <v-app>
     <myHeader />

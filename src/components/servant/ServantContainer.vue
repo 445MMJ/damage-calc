@@ -1,4 +1,3 @@
-<!-- コンポーネントの定義 -->
 <script>
 import { servantList } from "../../data/servantList.js";
 import searchButton from "./SearchButton.vue";
@@ -77,7 +76,7 @@ export default {
 };
 </script>
 
-<!-- テンプレートの定義 -->
+
 <template>
   <v-sheet :elevation="10" border="true" class="pa-2 ma-6">
     <span>天地人</span>

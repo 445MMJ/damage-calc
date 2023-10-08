@@ -2,14 +2,14 @@
 <script>
 import { servantList } from "../../data/servantList.js";
 import searchButton from "./SearchButton.vue";
-import supportList from "./SupportList.vue";
+import servantSelect from "./ServantSelect.vue";
 
 export default {
   emits: ["selectedServant"],
 
   components: {
     searchButton,
-    supportList,
+    servantSelect,
   },
   data() {
     return {
@@ -43,29 +43,7 @@ export default {
       selectedAttri: "", //天地人
       selectedClass: "", //クラス
       selectedNoble: "", //NP種別
-      selectedServant: {
-        Rare: 3,
-        Cost: 7,
-        Name: "荊軻",
-        Class: "殺",
-        Attri: "人",
-        Grow: "凹型",
-        min_H: 1492,
-        min_A: 1338,
-        max_H: 8293,
-        max_A: 7207,
-        Noble: "単体Ｑ",
-        "保有スキル 1": "抑制/A",
-        "保有スキル 2": "十歩殺一人/B+",
-        "保有スキル 3": "傍若無人/A",
-        "クラススキル 1": "気配遮断/B",
-        "クラススキル 2": "--",
-        "クラススキル 3": "--",
-        "クラススキル 4": "--",
-        "クラススキル 5": "--",
-        "クラススキル 6": "--",
-        "クラススキル 7": "--",
-      },
+      selectedServant: null
     };
   },
   methods: {
@@ -81,11 +59,6 @@ export default {
     updateSelectedServant(option) {
       this.selectedServant = option;
       this.$emit("selectedServant", option);
-      //初期化
-      this.selectedAttri = "";
-      this.selectedClass = "";
-      this.selectedNoble = "";
-      this.selectedServant = {};
     },
   },
   computed: {
@@ -123,7 +96,7 @@ export default {
       @selected-items="updateSelectedSearch($event, 'Noble')"
     />
     候補
-    <supportList
+    <servantSelect
       :list="filteredServantList"
       @selectedServant="updateSelectedServant($event)"
     />

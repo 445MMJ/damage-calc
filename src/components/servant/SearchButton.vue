@@ -10,7 +10,14 @@ export default {
   data() {
     return {
       selectedItems: [],
+      List: [],
     };
+  },
+  mounted() {
+    //この処理をすると軽くなる
+    //v-forでprppsのitemsを使うと重くなるが、一旦Listに入れると軽くなる
+    //なんで？どっちもリアクティブなのに
+    this.List = this.items;
   },
   watch: {
     selectedItems() {
@@ -23,7 +30,7 @@ export default {
 <template>
   <div>
     <v-chip-group selected-class="text-primary" column v-model="selectedItems">
-      <v-chip v-for="item in items" :key="item" :value="item" filter>
+      <v-chip v-for="item in this.List" :key="item" :value="item" filter>
         {{ item }}
       </v-chip>
     </v-chip-group>

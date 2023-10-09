@@ -202,7 +202,7 @@ export default {
 
 <style scoped>
 span {
-  color: black;
+  color: rgba(var(--v-theme-text),1)!important;
   font-weight: 700;
 }
 </style>

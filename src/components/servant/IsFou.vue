@@ -38,3 +38,10 @@ export default {
     >
   </v-checkbox>
 </template>
+
+<style scoped>
+span {
+  color: rgba(var(--v-theme-text),1)!important;
+  font-weight: 600;
+}
+</style>

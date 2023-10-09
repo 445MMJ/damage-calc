@@ -34,7 +34,7 @@ export default {
       servantInit: {
         "No.": "1",
         Name: "DATA LOST",
-        Rare:"5",
+        Rare: "5",
         Class: "盾",
         Attri: "地",
         Grow: "平均",
@@ -49,10 +49,16 @@ export default {
         "保有スキル 3": "プレースホルダー",
       },
       tab: null,
+      isShowSkillDetail: [false, false, false, false, false],
     };
   },
   created() {
     this.selectedServant[0] = { ...this.servantInit };
+    var arr = localStorage.getItem("isShowSkillDetail");
+    var arr2 = JSON.parse(arr);
+    if (arr2 != null) {
+      this.isShowSkillDetail = arr2;
+    }
   },
   methods: {
     // servantコンテナから選ばれた鯖を受け取る
@@ -70,7 +76,7 @@ export default {
       list.push(item);
       this.nobleValue = sumObjectValue(list);
     },
-    updatedATKValue(item){
+    updatedATKValue(item) {
       this.ATKValue = item;
     },
     updateUserInput(item) {
@@ -87,16 +93,39 @@ export default {
     deleteServant(index) {
       this.selectedServant[index] = { ...this.servantInit };
     },
+    saveLocalStrage() {
+      localStorage.setItem("isAdvanced", isAdvanced);
+    },
+    invertSkillDetail(item) {
+      this.isShowSkillDetail[item] = !this.isShowSkillDetail[item];
+      localStorage.setItem(
+        "isShowSkillDetail",
+        JSON.stringify(this.isShowSkillDetail)
+      );
+    },
+    showSkillDetail() {
+      this.isShowSkillDetail = [true, true, true, true, true];
+      localStorage.setItem(
+        "isShowSkillDetail",
+        JSON.stringify(this.isShowSkillDetail)
+      );
+    },
+    hideSkillDetail() {
+      this.isShowSkillDetail = [false, false, false, false, false];
+      localStorage.setItem(
+        "isShowSkillDetail",
+        JSON.stringify(this.isShowSkillDetail)
+      );
+    },
   },
 };
 </script>
 
-
 <template>
   <v-app>
     <myHeader />
-    <v-main>
-      <v-sheet :elevation="10" border="true" class="pa-2 ma-6">
+    <v-main class="bg">
+      <v-sheet :elevation="10" border="true" class="ma-6">
         <calc
           :attacker="selectedServant[0]"
           :skillvalue="totalSkillValue"
@@ -105,42 +134,65 @@ export default {
         />
       </v-sheet>
 
-      <v-sheet :elevation="10" border="true" class="pa-2 ma-6">
-        <v-container class="">
-          <v-row class="justify-start">
+      <v-sheet :elevation="10" border="true" class="ma-6">
+        <v-container
+          fluid
+          class="bg-primary pa-2"
+          @click="invertSkillDetail(0)"
+        >
+          <v-row no-gutters class="justify-start">
             <v-col
               cols="12"
-              sm="4"
+              md="4"
               class="d-inline-block text-truncate"
               align-self="center"
               >アタッカー:{{ selectedServant[0]["Name"] }}</v-col
             >
-            <v-col sm="1" class="mx-1"
-              ><v-btn @click="showModal(0)">変更</v-btn></v-col
+            <v-col md="1" class="mx-1"
+              ><v-btn class="bg-primary-darken-1" @click.stop="showModal(0)"
+                >変更</v-btn
+              ></v-col
             >
-            <v-col sm="1" class="mx-1">
-              <v-btn @click="deleteServant(0)">削除</v-btn></v-col
-            >
+            <v-col md="1" class="mx-1">
+              <v-btn class="bg-primary-darken-1" @click.stop="deleteServant(0)"
+                >削除</v-btn
+              ></v-col
+            ><v-spacer></v-spacer
+            ><v-col md="1" class="mx-1"
+              ><v-icon
+                size="x-large"
+                :icon="
+                  this.isShowSkillDetail[0] ? 'mdi-pencil' : 'mdi-menu-down'
+                "
+              ></v-icon
+            ></v-col>
           </v-row>
         </v-container>
-        <attacker
-          :attacker="selectedServant[0]"
-          @ATK="updatedATKValue($event)"
-        />
+        <v-expand-transition>
+          <attacker
+            v-show="isShowSkillDetail[0]"
+            :attacker="selectedServant[0]"
+            @ATK="updatedATKValue($event)"
+        /></v-expand-transition>
         <nobleContainer
           :items="selectedServant[0]['No.']"
           @skillValue="updatedNobleValue($event)"
-        />
-        <skillsContainer
-          :items="selectedServant[0]"
-          @skillValue="updatedSkillValue($event, 0)"
-          @skillValueSelf="updatedSkillValue($event, 6)"
-        />
+        /><v-expand-transition>
+          <skillsContainer
+            v-show="isShowSkillDetail[0]"
+            :items="selectedServant[0]"
+            @skillValue="updatedSkillValue($event, 0)"
+            @skillValueSelf="updatedSkillValue($event, 6)"
+        /></v-expand-transition>
       </v-sheet>
 
-      <v-sheet :elevation="10" border class="pa-2 ma-6">
-        <v-container class="">
-          <v-row class="justify-start">
+      <v-sheet :elevation="10" border class="ma-6">
+        <v-container
+          fluid
+          class="bg-primary pa-2"
+          @click="invertSkillDetail(1)"
+        >
+          <v-row no-gutters class="justify-start">
             <v-col
               cols="12"
               md="4"
@@ -149,24 +201,42 @@ export default {
               >サポ1:{{ selectedServant[1]["Name"] }}</v-col
             >
             <v-col md="1" class="mx-1"
-              ><v-btn @click="showModal(1)">変更</v-btn></v-col
+              ><v-btn class="bg-primary-darken-1" @click.stop="showModal(1)"
+                >変更</v-btn
+              ></v-col
             >
             <v-col md="1" class="mx-1">
-              <v-btn @click="deleteServant(1)">削除</v-btn></v-col
-            >
+              <v-btn class="bg-primary-darken-1" @click.stop="deleteServant(1)"
+                >削除</v-btn
+              ></v-col
+            ><v-spacer></v-spacer
+            ><v-col md="1" class="mx-1"
+              ><v-icon
+                size="x-large"
+                :icon="
+                  this.isShowSkillDetail[1] ? 'mdi-pencil' : 'mdi-menu-down'
+                "
+              ></v-icon
+            ></v-col>
           </v-row>
         </v-container>
-
-        <skillsContainer
-          :items="selectedServant[1]"
-          @skillValue="updatedSkillValue($event, 1)"
-          @skillValueOther="updatedSkillValue($event, 7)"
-        />
+        <v-expand-transition>
+          <skillsContainer
+            v-show="isShowSkillDetail[1]"
+            :items="selectedServant[1]"
+            @skillValue="updatedSkillValue($event, 1)"
+            @skillValueOther="updatedSkillValue($event, 7)"
+          />
+        </v-expand-transition>
       </v-sheet>
 
-      <v-sheet :elevation="10" border class="pa-2 ma-6">
-        <v-container class="">
-          <v-row class="justify-start">
+      <v-sheet :elevation="10" border class="ma-6">
+        <v-container
+          fluid
+          class="bg-primary pa-2"
+          @click="invertSkillDetail(2)"
+        >
+          <v-row no-gutters class="justify-start">
             <v-col
               cols="12"
               md="4"
@@ -175,24 +245,42 @@ export default {
               >サポ2:{{ selectedServant[2]["Name"] }}</v-col
             >
             <v-col md="1" class="mx-1"
-              ><v-btn @click="showModal(2)">変更</v-btn></v-col
+              ><v-btn class="bg-primary-darken-1" @click.stop="showModal(2)"
+                >変更</v-btn
+              ></v-col
             >
             <v-col md="1" class="mx-1">
-              <v-btn @click="deleteServant(2)">削除</v-btn></v-col
-            >
+              <v-btn class="bg-primary-darken-1" @click.stop="deleteServant(2)"
+                >削除</v-btn
+              ></v-col
+            ><v-spacer></v-spacer
+            ><v-col md="1" class="mx-1"
+              ><v-icon
+                size="x-large"
+                :icon="
+                  this.isShowSkillDetail[2] ? 'mdi-pencil' : 'mdi-menu-down'
+                "
+              ></v-icon
+            ></v-col>
           </v-row>
         </v-container>
-
-        <skillsContainer
-          :items="selectedServant[2]"
-          @skillValue="updatedSkillValue($event, 2)"
-          @skillValueOther="updatedSkillValue($event, 8)"
-        />
+        <v-expand-transition>
+          <skillsContainer
+            v-show="isShowSkillDetail[2]"
+            :items="selectedServant[2]"
+            @skillValue="updatedSkillValue($event, 2)"
+            @skillValueOther="updatedSkillValue($event, 8)"
+          />
+        </v-expand-transition>
       </v-sheet>
 
-      <v-sheet :elevation="10" border class="pa-2 ma-6">
-        <v-container class="">
-          <v-row class="justify-start">
+      <v-sheet :elevation="10" border class="ma-6">
+        <v-container
+          fluid
+          class="bg-primary pa-2"
+          @click="invertSkillDetail(3)"
+        >
+          <v-row no-gutters class="justify-start">
             <v-col
               cols="12"
               md="4"
@@ -201,25 +289,96 @@ export default {
               >サポ3:{{ selectedServant[3]["Name"] }}</v-col
             >
             <v-col md="1" class="mx-1"
-              ><v-btn @click="showModal(3)">変更</v-btn></v-col
+              ><v-btn class="bg-primary-darken-1" @click.stop="showModal(3)"
+                >変更</v-btn
+              ></v-col
             >
             <v-col md="1" class="mx-1">
-              <v-btn @click="deleteServant(3)">削除</v-btn></v-col
-            >
+              <v-btn class="bg-primary-darken-1" @click.stop="deleteServant(3)"
+                >削除</v-btn
+              ></v-col
+            ><v-spacer></v-spacer
+            ><v-col md="1" class="mx-1"
+              ><v-icon
+                size="x-large"
+                :icon="
+                  this.isShowSkillDetail[3] ? 'mdi-pencil' : 'mdi-menu-down'
+                "
+              ></v-icon
+            ></v-col>
           </v-row>
         </v-container>
-
-        <skillsContainer
-          :items="selectedServant[3]"
-          @skillValue="updatedSkillValue($event, 3)"
-          @skillValueOther="updatedSkillValue($event, 9)"
-        />
+        <v-expand-transition>
+          <skillsContainer
+            v-show="isShowSkillDetail[3]"
+            :items="selectedServant[3]"
+            @skillValue="updatedSkillValue($event, 3)"
+            @skillValueOther="updatedSkillValue($event, 9)"
+          />
+        </v-expand-transition>
       </v-sheet>
 
-      <v-sheet :elevation="10" border="true" class="pa-2 ma-6">
-        <userInput @updateUserInput="updateUserInput($event)" />
+      <v-sheet :elevation="10" border class="ma-6">
+        <v-container
+          fluid
+          class="bg-primary pa-2"
+          @click="invertSkillDetail(4)"
+        >
+          <v-row no-gutters class="justify-start">
+            <v-col
+              cols="12"
+              md="4"
+              class="d-inline-block text-truncate"
+              align-self="center"
+              >手動バフ入力</v-col
+            ><v-col md="1" class="mx-1"></v-col
+            ><v-col md="1" class="mx-1">
+              <v-btn class="bg-primary-darken-1" @click.stop="deleteServant(3)"
+                >削除</v-btn
+              ></v-col
+            ><v-spacer></v-spacer
+            ><v-col md="1" class="mx-1"
+              ><v-icon
+                size="x-large"
+                :icon="
+                  this.isShowSkillDetail[4] ? 'mdi-pencil' : 'mdi-menu-down'
+                "
+              ></v-icon></v-col></v-row
+        ></v-container>
+        <v-expand-transition>
+          <userInput
+            v-show="isShowSkillDetail[4]"
+            @updateUserInput="updateUserInput($event)"
+          />
+        </v-expand-transition>
       </v-sheet>
 
+      <v-sheet :elevation="10" border class="ma-6">
+        <v-container fluid class="pa-2">
+          <v-row no-gutters class="justify-start">
+            <v-col
+              cols="12"
+              md="4"
+              class="d-inline-block text-truncate"
+              align-self="center"
+              >スキル欄開けたり閉めたり</v-col
+            ><v-col md="1" class="mx-1">
+              <v-btn class="bg-primary-darken-1" @click.stop="showSkillDetail()"
+                >全開</v-btn
+              ></v-col
+            ><v-col md="1" class="mx-1">
+              <v-btn class="bg-primary-darken-1" @click.stop="hideSkillDetail()"
+                >全閉</v-btn
+              ></v-col
+            ><v-col md="1" class="mx-1">
+              <v-btn class="bg-primary-darken-1" @click.stop="showSkillDetail()"
+                >ボタン</v-btn
+              ></v-col
+            ><v-spacer></v-spacer></v-row
+        ></v-container>
+      </v-sheet>
+
+      <!-- モーダルウィンドウ -->
       <v-dialog v-model="isShowModal[0]" width="600">
         <servantContainer
           @selectedServant="updataselectedServant($event, 0)"
@@ -248,4 +407,10 @@ export default {
   </v-app>
 </template>
 
-<style></style>
+<style>
+.bg {
+  background-image: url("bg.gif");
+  background-repeat: repeat;
+  /* 他の背景スタイルを設定する場合はここに追加します */
+}
+</style>

@@ -174,7 +174,7 @@ export default {
 </script>
 
 <template>
-  <v-tabs v-model="tab">
+  <v-tabs v-model="tab" bg-color="primary" show-arrows>
     <v-tab value="1">宝具ダメージ</v-tab>
     <v-tab value="2">カードダメージ</v-tab>
     <v-tab value="3">撃破率</v-tab>

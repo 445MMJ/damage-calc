@@ -7,7 +7,10 @@ const theme = useTheme();
 
 const changeTheme = () => {
   theme.global.name.value = darkTheme.value ? "dark" : "light";
+  localStorage.setItem('isDark', darkTheme.value)
 };
+darkTheme.value = (localStorage.getItem('isDark') == 'true') ? true : false;
+theme.global.name.value = darkTheme.value ? "dark" : "light";
 </script>
 
 <template>

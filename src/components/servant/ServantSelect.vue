@@ -40,7 +40,6 @@ export default {
     load() {
       this.isIntersecting = !this.isIntersecting;
       if (!this.isIntersecting) return;
-      console.log("load");
       let visibleListLength = this.visibleList.length;
       let localListLength = this.localList.length;
       //やろうとしたこと先呼んでくるじゃん

@@ -27,7 +27,24 @@ const vuetify = createVuetify({
   },
   theme: {
     defaultThemethemes: 'light',
+    themes: {
+      light: {
+        colors: {
+          primary: '#235b94',
+          "primary-darken-1": '#1f5185',
+          text: '#000000',
+        },
+      },
+      dark: {
+        colors: {
+          primary: '#235b94',
+          "primary-darken-1": '#1f5185',
+          text: '#ffffff',
+        },
+      },
+    }
   },
+  options: { customProperties: true}
 })
 
 createApp(App).use(vuetify).mount('#app')

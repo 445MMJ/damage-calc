@@ -42,7 +42,7 @@ export default {
       selectedAttri: "", //天地人
       selectedClass: "", //クラス
       selectedNoble: "", //NP種別
-      selectedServant: null
+      selectedServant: null,
     };
   },
   methods: {
@@ -62,20 +62,19 @@ export default {
   },
   computed: {
     filteredServantList() {
+      let selector1 = this.selectedAttri === null ? "" : this.selectedAttri;
+      let selector2 = this.selectedClass === null ? "" : this.selectedClass;
+      let selector3 = this.selectedNoble === null ? "" : this.selectedNoble;
       return this.servantList.filter((obj) => {
-        const condition1 =
-          !this.selectedAttri || obj["Attri"] === this.selectedAttri;
-        const condition2 =
-          !this.selectedClass || obj["Class"] === this.selectedClass;
-        const condition3 =
-          !this.selectedNoble || obj["Noble"] === this.selectedNoble;
+        const condition1 = !selector1 || obj["Attri"] === selector1;
+        const condition2 = !selector2 || obj["Class"] === selector2;
+        const condition3 = !selector3 || obj["Noble"] === selector3;
         return condition1 && condition2 && condition3;
       });
     },
   },
 };
 </script>
-
 
 <template>
   <v-sheet :elevation="10" border="true" class="pa-2 ma-6">
@@ -101,5 +100,3 @@ export default {
     />
   </v-sheet>
 </template>
-
-

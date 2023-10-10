@@ -23,6 +23,7 @@ export default {
   },
   data() {
     return {
+      cards: ["Buster", "Arts", "Quick"],
       tab: 1,
       classModifier: 1,
       classAffinityModifier: 1,
@@ -354,11 +355,8 @@ export default {
   <v-tabs v-model="tab" bg-color="primary" show-arrows>
     <v-tab value="1">宝具計算</v-tab>
     <v-tab value="2">カードダメージ</v-tab>
-    <v-tab value="3">NP獲得量</v-tab>
-    <v-tab value="4">スター獲得量</v-tab>
-    <v-tab value="5">コマンドカード計算</v-tab>
+    <v-tab value="3">NP/スター獲得量</v-tab>
     <v-tab value="99">内部データ</v-tab>
-    <v-tab value="999">撃破率</v-tab>
   </v-tabs>
 
   <v-window v-model="tab">
@@ -495,25 +493,28 @@ export default {
             </v-checkbox>
           </v-col>
         </v-row>
-        <v-row
-          ><v-col>Card</v-col><v-col>1st</v-col><v-col>2nd</v-col
-          ><v-col>3rd</v-col></v-row
-        >
-        <v-row
-          ><v-col>Buster</v-col> <v-col>{{ calcCardDamage("Buster", 1) }}</v-col
-          ><v-col>{{ calcCardDamage("Buster", 2) }}</v-col
-          ><v-col>{{ calcCardDamage("Buster", 3) }}</v-col></v-row
-        >
-        <v-row>
-          <v-col>Arts</v-col> <v-col>{{ calcCardDamage("Arts", 1) }}</v-col
-          ><v-col>{{ calcCardDamage("Arts", 2) }}</v-col
-          ><v-col>{{ calcCardDamage("Arts", 3) }}</v-col></v-row
-        >
-        <v-row>
-          <v-col>Quick</v-col> <v-col>{{ calcCardDamage("Quick", 1) }}</v-col
-          ><v-col>{{ calcCardDamage("Quick", 2) }}</v-col
-          ><v-col>{{ calcCardDamage("Quick", 3) }}</v-col></v-row
-        >
+        <v-table>
+          <thead>
+            <tr>
+              <th class="text-left">Card</th>
+              <th class="text-left">1st</th>
+              <th class="text-left">2nd</th>
+              <th class="text-left">3rd</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in cards">
+              <td>{{ item }}</td>
+              <td>{{ calcCardDamage(item, 1) }}</td>
+              <td>
+                {{ calcCardDamage(item, 2) }}
+              </td>
+              <td>
+                {{ calcCardDamage(item, 3) }}
+              </td>
+            </tr>
+          </tbody>
+        </v-table>
       </v-container>
     </v-window-item>
 
@@ -522,7 +523,18 @@ export default {
         <v-row>
           <v-col cols="6" sm="3">
             <v-select
-              label="敵クラスNP補正 DTDR"
+              label="敵スター補正"
+              v-model="DSR"
+              :items="DSRList"
+              variant="outlined"
+              density="compact"
+              hide-details="auto"
+            ></v-select
+          ></v-col>
+
+          <v-col cols="6" sm="3">
+            <v-select
+              label="敵NP補正"
               v-model="DTDR"
               :items="DTDRList"
               variant="outlined"
@@ -530,7 +542,17 @@ export default {
               hide-details="auto"
             ></v-select
           ></v-col>
-          <v-col cols="4" sm="2">
+          <v-col cols="5" sm="2">
+            <v-select
+              label="1stCard"
+              v-model="firstCard"
+              :items="firstCardList"
+              variant="outlined"
+              density="compact"
+              hide-details="auto"
+            ></v-select
+          ></v-col>
+          <v-col cols="3" sm="2">
             <v-checkbox
               v-model="isCritical"
               false-value="0"
@@ -543,19 +565,7 @@ export default {
               >
             </v-checkbox></v-col
           >
-          <v-col cols="4" sm="2">
-            <v-checkbox
-              v-model="firstCard"
-              false-value="None"
-              true-value="Arts"
-              color="primary"
-              hide-details="auto"
-            >
-              <template v-slot:label
-                ><span class="text-no-wrap">1st Arts</span></template
-              >
-            </v-checkbox> </v-col
-          ><v-col cols="4" sm="2">
+          <v-col cols="3" sm="2">
             <v-checkbox
               v-model="isSpecialEnemy"
               false-value="0"
@@ -569,88 +579,45 @@ export default {
             </v-checkbox></v-col
           >
         </v-row>
-        <v-row
-          ><v-col>Card</v-col><v-col>1st</v-col><v-col>2nd</v-col
-          ><v-col>3rd</v-col></v-row
-        >
-        <v-row
-          ><v-col>Buster</v-col> <v-col>{{ calcCardNPGain("Buster", 1) }}</v-col
-          ><v-col>{{ calcCardNPGain("Buster", 2) }}</v-col
-          ><v-col>{{ calcCardNPGain("Buster", 3) }}</v-col></v-row
-        >
-        <v-row>
-          <v-col>Arts</v-col> <v-col>{{ calcCardNPGain("Arts", 1) }}</v-col
-          ><v-col>{{ calcCardNPGain("Arts", 2) }}</v-col
-          ><v-col>{{ calcCardNPGain("Arts", 3) }}</v-col></v-row
-        >
-        <v-row>
-          <v-col>Quick</v-col> <v-col>{{ calcCardNPGain("Quick", 1) }}</v-col
-          ><v-col>{{ calcCardNPGain("Quick", 2) }}</v-col
-          ><v-col>{{ calcCardNPGain("Quick", 3) }}</v-col></v-row
-        >
-      </v-container>
-    </v-window-item>
-
-    <v-window-item value="4">
-      <v-container>
-        <v-row>
-          <v-col cols="6" sm="3">
-            <v-select
-              label="敵クラスNP補正 DTDR"
-              v-model="DTDR"
-              :items="DTDRList"
-              variant="outlined"
-              density="compact"
-              hide-details="auto"
-            ></v-select
-          ></v-col>
-          <v-col cols="4" sm="2">
-            <v-checkbox
-              v-model="isCritical"
-              false-value="0"
-              true-value="1"
-              color="primary"
-              hide-details="auto"
-            >
-              <template v-slot:label
-                ><span class="text-no-wrap">クリティカル</span></template
-              >
-            </v-checkbox></v-col
-          >
-          <v-col cols="4" sm="2">
-            <v-checkbox
-              v-model="firstCard"
-              false-value="None"
-              true-value="Quick"
-              color="primary"
-              hide-details="auto"
-            >
-              <template v-slot:label
-                ><span class="text-no-wrap">1st Quick</span></template
-              >
-            </v-checkbox>
-          </v-col>
-        </v-row>
-        <v-row
-          ><v-col>Card</v-col><v-col>1st</v-col><v-col>2nd</v-col
-          ><v-col>3rd</v-col></v-row
-        >
-        <v-row
-          ><v-col>Buster</v-col>
-          <v-col>{{ calcCardStarGain("Buster", 1) }}</v-col
-          ><v-col>{{ calcCardStarGain("Buster", 2) }}</v-col
-          ><v-col>{{ calcCardStarGain("Buster", 3) }}</v-col></v-row
-        >
-        <v-row>
-          <v-col>Arts</v-col> <v-col>{{ calcCardStarGain("Arts", 1) }}</v-col
-          ><v-col>{{ calcCardStarGain("Arts", 2) }}</v-col
-          ><v-col>{{ calcCardStarGain("Arts", 3) }}</v-col></v-row
-        >
-        <v-row>
-          <v-col>Quick</v-col> <v-col>{{ calcCardStarGain("Quick", 1) }}</v-col
-          ><v-col>{{ calcCardStarGain("Quick", 2) }}</v-col
-          ><v-col>{{ calcCardStarGain("Quick", 3) }}</v-col></v-row
-        >
+        <v-table>
+          <thead>
+            <tr>
+              <th class="text-left">Card</th>
+              <th></th>
+              <th class="text-left">1st</th>
+              <th class="text-left">2nd</th>
+              <th class="text-left">3rd</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>オーバーキル</td>
+              <td></td>
+              <td>Hit</td>
+              <td>Hit</td>
+              <td>Hit</td>
+            </tr>
+            <tr v-for="item in cards">
+              <td>{{ item }}</td>
+              <td>NP獲得量<br />スター獲得量</td>
+              <td>
+                {{ calcCardNPGain(item, 1) }}<br />{{
+                  calcCardStarGain(item, 1)
+                }}
+              </td>
+              <td>
+                {{ calcCardNPGain(item, 2) }}<br />{{
+                  calcCardStarGain(item, 2)
+                }}
+              </td>
+              <td>
+                {{ calcCardNPGain(item, 3) }}<br />{{
+                  calcCardStarGain(item, 3)
+                }}
+              </td>
+            </tr>
+          </tbody>
+        </v-table>
       </v-container>
     </v-window-item>
 
@@ -677,9 +644,48 @@ export default {
               hide-details="auto"
             ></v-select
           ></v-col>
+          <v-col cols="4" sm="2">
+            <v-checkbox
+              v-model="isCritical"
+              false-value="0"
+              true-value="1"
+              color="primary"
+              hide-details="auto"
+            >
+              <template v-slot:label
+                ><span class="text-no-wrap">クリティカル</span></template
+              >
+            </v-checkbox></v-col
+          >
+          <v-col cols="4" sm="2">
+            <v-checkbox
+              v-model="firstCard"
+              false-value="None"
+              true-value="Buster"
+              color="primary"
+              hide-details="auto"
+            >
+              <template v-slot:label
+                ><span class="text-no-wrap">1st Buster</span></template
+              >
+            </v-checkbox>
+          </v-col>
+          <v-col cols="4" sm="2">
+            <v-checkbox
+              v-model="isBusterChain"
+              false-value="0"
+              true-value="1"
+              color="primary"
+              hide-details="auto"
+            >
+              <template v-slot:label
+                ><span class="text-no-wrap">Bチェイン</span></template
+              >
+            </v-checkbox>
+          </v-col>
           <v-col cols="6" sm="3">
             <v-select
-              label="敵クラススター補正 DSR"
+              label="敵スター補正"
               v-model="DSR"
               :items="DSRList"
               variant="outlined"
@@ -690,7 +696,7 @@ export default {
 
           <v-col cols="6" sm="3">
             <v-select
-              label="敵クラスNP補正 DTDR"
+              label="敵NP補正"
               v-model="DTDR"
               :items="DTDRList"
               variant="outlined"
@@ -710,32 +716,6 @@ export default {
           ></v-col>
           <v-col cols="4" sm="2">
             <v-checkbox
-              v-model="isCritical"
-              false-value="0"
-              true-value="1"
-              color="primary"
-              hide-details="auto"
-            >
-              <template v-slot:label
-                ><span class="text-no-wrap">クリティカル</span></template
-              >
-            </v-checkbox></v-col
-          >
-          <v-col cols="4" sm="2">
-            <v-checkbox
-              v-model="isBusterChain"
-              false-value="0"
-              true-value="1"
-              color="primary"
-              hide-details="auto"
-            >
-              <template v-slot:label
-                ><span class="text-no-wrap">Bチェイン</span></template
-              >
-            </v-checkbox>
-          </v-col>
-          <v-col cols="4" sm="2">
-            <v-checkbox
               v-model="isSpecialEnemy"
               false-value="0"
               true-value="1"
@@ -748,27 +728,45 @@ export default {
             </v-checkbox></v-col
           >
         </v-row>
-        <v-row
-          ><v-col>Card</v-col><v-col>1st</v-col><v-col>2nd</v-col
-          ><v-col>3rd</v-col></v-row
-        >
-        <v-row
-          ><v-col>Buster</v-col> <v-col>{{ calcCardDamage("Buster", 1) }}<br>
-            {{ calcCardNPGain("Buster", 1) }}<br>
-            {{ calcCardStarGain("Buster", 1) }}</v-col
-          ><v-col>{{ calcCardDamage("Buster", 2) }}</v-col
-          ><v-col>{{ calcCardDamage("Buster", 3) }}</v-col></v-row
-        >
-        <v-row>
-          <v-col>Arts</v-col> <v-col>{{ calcCardDamage("Arts", 1) }}</v-col
-          ><v-col>{{ calcCardDamage("Arts", 2) }}</v-col
-          ><v-col>{{ calcCardDamage("Arts", 3) }}</v-col></v-row
-        >
-        <v-row>
-          <v-col>Quick</v-col> <v-col>{{ calcCardDamage("Quick", 1) }}</v-col
-          ><v-col>{{ calcCardDamage("Quick", 2) }}</v-col
-          ><v-col>{{ calcCardDamage("Quick", 3) }}</v-col></v-row
-        >
+        <v-table>
+          <thead>
+            <tr>
+              <th class="text-left">Card</th>
+              <th></th>
+              <th class="text-left">1st</th>
+              <th class="text-left">2nd</th>
+              <th class="text-left">3rd</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>オーバーキル</td>
+              <td></td>
+              <td>Hit</td>
+              <td>Hit</td>
+              <td>Hit</td>
+            </tr>
+            <tr v-for="item in cards">
+              <td>{{ item }}</td>
+              <td>NP獲得量<br />スター獲得量</td>
+              <td>
+                {{ calcCardNPGain(item, 1) }}<br />{{
+                  calcCardStarGain(item, 1)
+                }}
+              </td>
+              <td>
+                {{ calcCardNPGain(item, 2) }}<br />{{
+                  calcCardStarGain(item, 2)
+                }}
+              </td>
+              <td>
+                {{ calcCardNPGain(item, 3) }}<br />{{
+                  calcCardStarGain(item, 3)
+                }}
+              </td>
+            </tr>
+          </tbody>
+        </v-table>
       </v-container>
     </v-window-item>
 

@@ -38,7 +38,7 @@ export default {
       ATKValue: 0,
       fouValue: 1000,
       CEAtk: 0,
-      isShowModal: [false, false, false, false],
+      isShowModal: [false, false, false, false, false],
       servantInit: {
         "No.": "1",
         Name: "DATA LOST",
@@ -57,7 +57,7 @@ export default {
         "保有スキル 3": "プレースホルダー",
       },
       tab: null,
-      isShowSkillDetail: [false, false, false, false, false],
+      isShowSkillDetail: [true, true, false, false, false],
     };
   },
   created() {
@@ -192,9 +192,9 @@ export default {
             @skillValue="updatedSkillValue($event, 0)"
             @skillValueSelf="updatedSkillValue($event, 6)"
         /></v-expand-transition>
-        <v-expand-transition>
+        <v-expand-transition>   
           <classSkillsContainer
-            v-show="isShowSkillDetail[0]"
+            v-show=false
             :items="selectedServant[0]"
             @skillValue="updatedSkillValue($event, 12)"
             @skillValueSelf="updatedSkillValue($event, 13)"

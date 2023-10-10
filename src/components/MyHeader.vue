@@ -73,14 +73,13 @@ export default {
   >
     <template v-slot:prepend>
       <v-app-bar-nav-icon
-      variant="text"
-      @click.stop="drawer = !drawer"
-    ></v-app-bar-nav-icon>
-    <v-icon icon="mdi-sword-cross"></v-icon>
+        variant="text"
+        @click.stop="drawer = !drawer"
+      ></v-app-bar-nav-icon>
+      <v-icon icon="mdi-sword-cross"></v-icon>
     </template>
     <v-toolbar-title>ダメージ計算</v-toolbar-title>
     <v-spacer></v-spacer>
-
   </v-app-bar>
 
   <v-navigation-drawer
@@ -97,11 +96,9 @@ export default {
         :href="item.value"
         @click.stop="drawer = !drawer"
       >
-        <v-list-item-content>
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item-content>
+        <v-list-item-title>{{ item.title }}</v-list-item-title>
       </v-list-item>
-      <v-list-item><themeswitch /> </v-list-item>
+      <v-list-item><themeswitch /></v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>

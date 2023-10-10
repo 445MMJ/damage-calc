@@ -72,7 +72,7 @@ export default {
 
 <!-- テンプレートの定義 -->
 <template>
-  <v-container class="">
+  <v-container>
     <v-row>
       <v-col v-for="index in 10" :key="index">
         <component

@@ -8,7 +8,7 @@ export default {
     return {
       drawer: false,
       group: null,
-      items: [
+      olditems: [
         {
           title: "システム計算機",
           value: "https://445mmj.github.io/system-calc/",
@@ -26,6 +26,32 @@ export default {
           value: "https://github.com/445MMJ/damage-calc",
         },
       ],
+      items: [
+        {
+          title: "計算結果",
+          value: "#calc",
+        },
+        {
+          title: "アタッカー",
+          value: "#servant0",
+        },
+        {
+          title: "サポーター1",
+          value: "#servant1",
+        },
+        {
+          title: "サポーター2",
+          value: "#servant2",
+        },
+        {
+          title: "サポーター3",
+          value: "#servant3",
+        },
+        {
+          title: "手動入力",
+          value: "#self",
+        },
+      ],
     };
   },
   methods: {
@@ -37,41 +63,45 @@ export default {
 </script>
 
 <template>
-  <v-sheet>
-    <v-app-bar color="primary">
-      <v-toolbar-title
-        ><v-icon icon="mdi-sword-cross"></v-icon> ダメージ計算</v-toolbar-title
-      >
+  <!-- <v-system-bar color="deep-purple darken-3"></v-system-bar> -->
 
-      <template v-slot:append>
-         
-      <themeswitch />
-      <v-btn
-        v-for="item in items"
-        :href="item.value"
-        @click=""
-        variant="text"
-        class="d-none d-sm-flex"
-        >{{ item.title }}</v-btn
-      >
+  <v-app-bar
+    scroll-behavior="collapse"
+    scroll-threshold="100"
+    color="primary"
+    dense
+  >
+    <template v-slot:prepend>
       <v-app-bar-nav-icon
-        variant="text"
-        @click.stop="drawer = !drawer"
-        class="d-flex d-sm-none"
-      ></v-app-bar-nav-icon>
-        
-      </template>
-    </v-app-bar>
+      variant="text"
+      @click.stop="drawer = !drawer"
+    ></v-app-bar-nav-icon>
+    <v-icon icon="mdi-sword-cross"></v-icon>
+    </template>
+    <v-toolbar-title>ダメージ計算</v-toolbar-title>
+    <v-spacer></v-spacer>
 
-    <v-navigation-drawer :width="210" v-model="drawer" location="top" temporary>
-      
-      <v-list>  
-        <v-list-item v-for="item in items" :key="item.title" @click="">
-          <v-btn :href="item.value" @click="" variant="text">{{
-            item.title
-          }}</v-btn>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-  </v-sheet>
+  </v-app-bar>
+
+  <v-navigation-drawer
+    v-model="drawer"
+    location="left"
+    temporary
+    rounded
+    width="180"
+  >
+    <v-list>
+      <v-list-item
+        v-for="item in items"
+        :key="item.title"
+        :href="item.value"
+        @click.stop="drawer = !drawer"
+      >
+        <v-list-item-content>
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item><themeswitch /> </v-list-item>
+    </v-list>
+  </v-navigation-drawer>
 </template>

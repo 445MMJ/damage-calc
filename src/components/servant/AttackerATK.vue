@@ -2,7 +2,7 @@
 //レベルはprop OR リストの内容
 //レベルとpropsでcalcStat.jsでATKを返してもらい、ATKのテキストボックスにコピー
 //最終的にATKのテキストボックスの更新で値をemit
-import { additionalServantList } from "../../data/additionalServantList.js";
+import { additionalServantATKMap } from "../../data/additionalServantATKMap.js";
 export default {
   props: {
     attacker: {
@@ -13,7 +13,6 @@ export default {
   emits: ["isATKChange"],
   data() {
     return {
-      additionalServantList: additionalServantList.additionalServantList,
       additionalAttacker: {},
       rareList: [65, 60, 65, 70, 80, 90],
       levelList: [
@@ -57,16 +56,10 @@ export default {
     },
   },
   methods: {
-    Update(newVal) { 
+    Update(newVal) {
       let index = Number(newVal["Rare"]);
       this.selectedLevel = this.rareList[index];
-      let foundObject = null;
-      for (const obj of this.additionalServantList) {
-        if (obj["No."] === Number(newVal["No."])) {
-          foundObject = obj;
-          break; // ループを抜けます
-        }
-      }
+      let foundObject = additionalServantATKMap.get(Number(newVal["No."]))
       this.additionalAttacker = { ...foundObject };
       this.ATK = this.additionalAttacker["AtkGrowth"][this.selectedLevel - 1];
     },
@@ -75,22 +68,22 @@ export default {
 </script>
 
 <template>
-      <v-col cols="6" sm="3">
-        <v-select
-          label="鯖レベル"
-          v-model="selectedLevel"
-          :items="levelList"
-          variant="outlined"
-          density="compact"
-          hide-details="true"
-        ></v-select
-      ></v-col>
-      <v-col cols="6" sm="3" class="text-no-wrap">
-        <v-text-field
-          v-model="ATK"
-          label="鯖ATK"
-          type="number"
-          hide-details="true"
-        ></v-text-field
-      ></v-col>
+  <v-col cols="6" sm="3">
+    <v-select
+      label="鯖レベル"
+      v-model="selectedLevel"
+      :items="levelList"
+      variant="outlined"
+      density="compact"
+      hide-details="true"
+    ></v-select
+  ></v-col>
+  <v-col cols="6" sm="3" class="text-no-wrap">
+    <v-text-field
+      v-model="ATK"
+      label="鯖ATK"
+      type="number"
+      hide-details="true"
+    ></v-text-field
+  ></v-col>
 </template>

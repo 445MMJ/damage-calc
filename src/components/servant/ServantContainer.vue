@@ -71,7 +71,7 @@ export default {
         const condition3 = !selector3 || obj["Noble"] === selector3;
         return condition1 && condition2 && condition3;
       });
-    },
+    },  
   },
 };
 </script>

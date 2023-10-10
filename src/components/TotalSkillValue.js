@@ -11,6 +11,7 @@ export function sumObjectValue(objectArray) {
         "Artsカード性能": 0,
         "宝具威力": 0,
         "NP獲得量": 0,
+        "スター発生率" : 0,
         "クリティカル威力": 0,
         "〔状態〕威力": 0,
         "通常威力": 0,

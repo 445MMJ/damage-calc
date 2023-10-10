@@ -4,6 +4,7 @@ import calc from "./components/calc/Calc.vue";
 import servantContainer from "./components/servant/ServantContainer.vue";
 import attacker from "./components/servant/Attacker.vue";
 import skillsContainer from "./components/skill/SkillsContainer.vue";
+import classSkillsContainer from "./components/classSkill/ClassskillsContainer.vue";
 import nobleContainer from "./components/noble/NobleContainer.vue";
 import userInput from "./components/UserInput.vue";
 
@@ -14,6 +15,7 @@ export default {
     myHeader,
     servantContainer,
     skillsContainer,
+    classSkillsContainer,
     nobleContainer,
     calc,
     attacker,
@@ -22,8 +24,14 @@ export default {
   data() {
     return {
       selectedServant: [0, 1, 2, 3, 4, 5],
-      //0-3skillValue,6-9skillValue(Other),12手動入力
-      activeSkillValue: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      //skillValueは味方単体/全体
+      //Selfは自分自身
+      //Otherは自分以外の味方単体/全体
+      //0-5 atk/sup のskillValue
+      //6-11 atk/sup のskillValue(Self/Other)
+      //12-13 classSkillのvale,self
+      //14手動入力
+      activeSkillValue: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16],
       nobleValue: {},
       totalSkillValue: {},
       userInputValue: {},
@@ -81,7 +89,7 @@ export default {
     },
     updateUserInput(item) {
       this.userInputValue = item;
-      this.activeSkillValue[12] = item;
+      this.activeSkillValue[14] = item;
       this.totalSkillValue = sumObjectValue(this.activeSkillValue);
     },
     showModal(buttonIndex) {
@@ -125,7 +133,7 @@ export default {
   <v-app>
     <myHeader />
     <v-main class="bg">
-      <v-sheet :elevation="10" border="true" class="ma-6">
+      <v-sheet :elevation="10" border="true" class="ma-6" id="calc">
         <calc
           :attacker="selectedServant[0]"
           :skillvalue="totalSkillValue"
@@ -134,7 +142,7 @@ export default {
         />
       </v-sheet>
 
-      <v-sheet :elevation="10" border="true" class="ma-6">
+      <v-sheet :elevation="10" border="true" class="ma-6" id="servant0">
         <v-container
           fluid
           class="bg-primary pa-2"
@@ -184,9 +192,16 @@ export default {
             @skillValue="updatedSkillValue($event, 0)"
             @skillValueSelf="updatedSkillValue($event, 6)"
         /></v-expand-transition>
+        <v-expand-transition>
+          <classSkillsContainer
+            v-show="isShowSkillDetail[0]"
+            :items="selectedServant[0]"
+            @skillValue="updatedSkillValue($event, 12)"
+            @skillValueSelf="updatedSkillValue($event, 13)"
+        /></v-expand-transition>
       </v-sheet>
 
-      <v-sheet :elevation="10" border class="ma-6">
+      <v-sheet :elevation="10" border class="ma-6" id="servant1">
         <v-container
           fluid
           class="bg-primary pa-2"
@@ -230,7 +245,7 @@ export default {
         </v-expand-transition>
       </v-sheet>
 
-      <v-sheet :elevation="10" border class="ma-6">
+      <v-sheet :elevation="10" border class="ma-6" id="servant2">
         <v-container
           fluid
           class="bg-primary pa-2"
@@ -274,7 +289,7 @@ export default {
         </v-expand-transition>
       </v-sheet>
 
-      <v-sheet :elevation="10" border class="ma-6">
+      <v-sheet :elevation="10" border class="ma-6" id="servant3">
         <v-container
           fluid
           class="bg-primary pa-2"
@@ -318,7 +333,7 @@ export default {
         </v-expand-transition>
       </v-sheet>
 
-      <v-sheet :elevation="10" border class="ma-6">
+      <v-sheet :elevation="10" border class="ma-6" id="self">
         <v-container
           fluid
           class="bg-primary pa-2"

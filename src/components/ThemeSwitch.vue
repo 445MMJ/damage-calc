@@ -21,6 +21,6 @@ theme.global.name.value = darkTheme.value ? "dark" : "light";
     :prepend-icon="darkTheme ? 'mdi-weather-night' : 'mdi-weather-sunny'"
     hide-details
     inset
-    class="mr-auto"
+    class="px-3"
   />
 </template>

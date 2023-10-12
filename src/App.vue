@@ -132,6 +132,7 @@ export default {
 <template>
   <v-app>
     <myHeader />
+    
     <v-main class="bg">
       <v-sheet :elevation="10" border="true" class="ma-6" id="calc">
         <calc
@@ -141,7 +142,6 @@ export default {
           :ATKValue="ATKValue"
         />
       </v-sheet>
-
       <v-sheet :elevation="10" border="true" class="ma-6" id="servant0">
         <v-container
           fluid

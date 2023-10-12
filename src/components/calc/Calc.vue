@@ -353,6 +353,7 @@ export default {
 
 <template>
   <v-tabs v-model="tab" bg-color="primary" show-arrows>
+    <v-tab value="777" disabled>     </v-tab>
     <v-tab value="1">宝具計算</v-tab>
     <v-tab value="2">カードダメージ</v-tab>
     <v-tab value="3">NP/スター獲得量</v-tab>

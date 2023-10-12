@@ -1,12 +1,11 @@
 <script>
 import { classSkillList } from "../../data/classSkillList.js";
-import { filterSkillList } from "../FilterSkillValue";
+import { sumSkillValue } from "../script/sumSkillValue.js";
 export default {
   props: ["name"],
   emits: ["skillValue", "skillValueSelf", "skillValueOther"],
   data() {
     return {
-      classSkillList: classSkillList.classSkillList,
       init: {
         攻撃力: 0,
         Busterカード性能: 0,
@@ -42,45 +41,29 @@ export default {
   },
   computed: {
     filteredList() {
-      return this.classSkillList.filter((obj) => obj.SkillName === this.name);
+      return classSkillList.classSkillList.filter((obj) => obj.SkillName === this.name);
     },
   },
   methods: {
     bufftype() {
-      let filteredList = [];
-      //単体/全体効果の場合
-      //名前が一致なものを抽出
       this.skillValue = { ...this.init };
-      filteredList = this.classSkillList.filter(
-        (obj) => obj.SkillName === this.name
-      );
-      //その中から効果範囲(Target)が味方単体か味方全体のものを抽出
-      filteredList = filteredList.filter(
-        (obj) => obj.Target === "味方単体" || obj.Target === "味方全体"
-      );
-      filterSkillList(filteredList, "Value0", this.skillValue);
-      //自己効果の場合
-      //名前が一致なものを抽出
       this.skillValueSelf = { ...this.init };
-      filteredList = this.classSkillList.filter(
-        (obj) => obj.SkillName === this.name
-      );
-      //その中から効果範囲(Target)が自身を対象にするものを抽出
-      filteredList = filteredList.filter((obj) => obj.Target === "自身");
-      filterSkillList(filteredList, "Value0", this.skillValueSelf);
-
-      //自身を除く味方全体効果の場合
-      //名前が一致なものを抽出
       this.skillValueOther = { ...this.init };
-      filteredList = this.classSkillList.filter(
-        (obj) => obj.SkillName === this.name
+      this.skillValue = sumSkillValue(
+        this.filteredList,
+       "Value0",
+        "defualt"
       );
-      //その中から効果範囲(Target)が自身を対象にするものを抽出
-      filteredList = filteredList.filter(
-        (obj) => obj.Target === "自身を除く味方全体"
+      this.skillValueSelf = sumSkillValue(
+        this.filteredList,
+        "Value0",
+        "self"
       );
-      filterSkillList(filteredList, "Value0", this.skillValueOther);
-      //チェック状態であれば、そのまま送信。非チェック状態であれば初期値に戻して送信
+      this.skillValueOther = sumSkillValue(
+        this.filteredList,
+        "Value0",
+        "other"
+      );
       if (this.isChecked) {
         this.$emit("skillValue", this.skillValue);
         this.$emit("skillValueSelf", this.skillValueSelf);
@@ -119,7 +102,7 @@ export default {
       </li>
     </ul>
   </div>
-</template> 
+</template>
 
 <style scoped>
 span {

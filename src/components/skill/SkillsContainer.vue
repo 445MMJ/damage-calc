@@ -15,7 +15,6 @@ export default {
   },
   data() {
     return {
-      skillList: skillList.skillList,
       skillNames: [0, 1, 2, 3],
       skillValue: [0, 1, 2, 3],
       totalSkillValue: {},
@@ -69,7 +68,7 @@ export default {
         293550, 74149, 74450, 366550, 475650, 230800, 808551, 777650, 777650,
         58450, 818552, 818552, 2097350, 2172550, 65900, 2021550, 2153650,
       ];
-      let foundSkill = this.skillList.find(
+      let foundSkill = skillList.skillList.find(
         (obj) => obj.SkillName === skillName
       );
       if (foundSkill === undefined) {

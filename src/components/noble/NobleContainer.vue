@@ -1,6 +1,7 @@
 <script>
 import { nobleList } from "../../data/nobleList.js";
-import { filterSkillList } from "../FilterSkillValue";
+import { filterSkillList } from "../script/FilterSkillValue";
+import { sumSkillValue } from "../script/sumSkillValue.js";
 import nobleSelect from "./NobleSelect.vue";
 
 export default {
@@ -9,9 +10,8 @@ export default {
   components: {
     nobleSelect,
   },
-  data() {  
+  data() {
     return {
-      nobleList: nobleList.nobleList,
       servantIndex: null,
       nobleData: null,
       nobleLevel: "Value0",
@@ -42,28 +42,13 @@ export default {
   watch: {
     items(newValue) {
       this.servantIndex = "s" + newValue;
-      let objectList = this.nobleList.filter(
+      const objectList = nobleList.nobleList.filter(
         (obj) => obj.Owners === this.servantIndex
       );
       // 宝具強化等で1つの鯖が複数の宝具データを持つので。EntityIDが最大のオブジェクトを取得する
       // 本当に複数宝具を持っているやつのことは知らない。エッジケースは考えない。
-      function getObjectMaxId(objects) {
-        if (objects.length === 0) {
-          return null;
-        }
-        let maxIdObject = objects[0];
-        for (let i = 1; i < objects.length; i++) {
-          if (objects[i].EntityID > maxIdObject.EntityID) {
-            maxIdObject = objects[i];
-          }
-        }
-
-        return maxIdObject.EntityID;
-      }
-      let maxid = getObjectMaxId(objectList);
-      this.nobleData = this.nobleList.filter(
-        (obj) => obj.Owners === this.servantIndex && obj.EntityID === maxid
-      );
+      const maxId = Math.max(...objectList.map((obj) => obj.EntityID));
+      this.nobleData = objectList.filter((obj) => obj.EntityID == maxId);
       this.nobleName = this.nobleData[0].SkillName;
       this.bufftype();
     },
@@ -78,20 +63,11 @@ export default {
       this.bufftype();
     },
     bufftype() {
-      //初期化
-      let result = { ...this.init };
-      //フィルターでGrow:Lvのものだけを取得
-      let filteredList = this.nobleData.filter((obj) => obj.Grow === "Lv");
-      filterSkillList(filteredList, this.nobleLevel, result);
-      //フィルターでGrow:OCのものだけを取得
-      filteredList = this.nobleData.filter((obj) => obj.Grow === "OC");
-      filterSkillList(filteredList, this.nobleOC, result);
-      //フィルターでGrow:LvでもOCでもないものだけを取得
-      filteredList = this.nobleData.filter(
-        (obj) => obj.Grow !== "Lv" && obj.Grow !== "OC"
-      );
-      filterSkillList(filteredList, "Value3", result);
-      this.skillValue = { ...result };
+      const result1 = sumSkillValue(this.nobleData, this.nobleLevel, "NobleLv");
+      const result2 = sumSkillValue(this.nobleData, this.nobleOC, "NobleOC");
+      const result3 = sumSkillValue(this.nobleData, "Value3", "NobleOther");
+      console.log(result1,result2,result3);
+      this.skillValue = { ...result1 };
       this.$emit("skillValue", this.skillValue);
     },
   },

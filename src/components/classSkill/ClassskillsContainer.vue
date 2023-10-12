@@ -1,6 +1,4 @@
 <script>
-import { skillList } from "../../data/skillList.js";
-import { classSkillList } from "../../data/classSkillList.js";
 import { sumObjectValue } from "../../components/TotalSkillValue.js";
 import classSkillCard from "./ClassSkillCard.vue";
 
@@ -12,8 +10,6 @@ export default {
   },
   data() {
     return {
-      skillList: skillList.skillList,
-      classSkillList: classSkillList.classSkillList,
       skillNames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       skillValue: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       totalSkillValue: {},

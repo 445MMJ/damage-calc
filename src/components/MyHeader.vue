@@ -67,7 +67,7 @@ export default {
 
   <v-app-bar
     scroll-behavior="collapse"
-    scroll-threshold="100"
+    scroll-threshold="50"
     color="primary"
     dense
   >

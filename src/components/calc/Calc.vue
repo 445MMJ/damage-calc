@@ -111,6 +111,15 @@ export default {
         Buster: 1,
         Quick: 0,
       },
+      enemyNumber: 3,
+      enemyNumberList: [
+        { id: 1, title: "1体", value: 1 },
+        { id: 2, title: "2体", value: 2 },
+        { id: 3, title: "3体", value: 3 },
+        { id: 4, title: "4体", value: 4 },
+        { id: 5, title: "5体", value: 5 },
+        { id: 6, title: "6体", value: 6 },
+      ],
       isBusterChain: 0,
       slider: 1,
       additionalData: 0,
@@ -353,10 +362,11 @@ export default {
 
 <template>
   <v-tabs v-model="tab" bg-color="primary" show-arrows>
-    <v-tab value="777" disabled>     </v-tab>
-    <v-tab value="100">宝具計算</v-tab>
+    <v-tab value="777" disabled> </v-tab>
+    <v-tab value="100">宝具ダメージ</v-tab>
+    <v-tab value="101">宝具NP/スター</v-tab>
     <v-tab value="200">カードダメージ</v-tab>
-    <v-tab value="300">NP/スター獲得量</v-tab>
+    <v-tab value="201">カードNP/スター</v-tab>
     <v-tab value="999">内部データ</v-tab>
   </v-tabs>
 
@@ -408,10 +418,6 @@ export default {
           </v-col>
         </v-row>
         <v-row class="text-h3">ダメージ:{{ calcNobleDamage() }}</v-row>
-        <v-row class="text-h3">NP獲得:{{ calcNobleNPGain() }}%</v-row>
-        <v-row class="text-h3"
-          >★:{{ calcNobleStarGain() }}</v-row
-        >
 
         <v-row>
           <v-slider
@@ -428,6 +434,61 @@ export default {
           <v-col> <v-btn @click="() => (slider = 1)"> 平均 </v-btn></v-col>
           <v-col> <v-btn @click="() => (slider = 1.099)"> 最大 </v-btn></v-col>
         </v-row>
+      </v-container>
+    </v-window-item>
+
+    <v-window-item value="101">
+      <v-container>
+        <v-row>
+          <v-col cols="6" sm="3">
+            <v-select
+              label="敵スター補正"
+              v-model="DSR"
+              :items="DSRList"
+              variant="outlined"
+              density="compact"
+              hide-details="auto"
+            ></v-select
+          ></v-col>
+
+          <v-col cols="6" sm="3">
+            <v-select
+              label="敵NP補正"
+              v-model="DTDR"
+              :items="DTDRList"
+              variant="outlined"
+              density="compact"
+              hide-details="auto"
+            ></v-select
+          ></v-col>
+          <v-col cols="6" sm="3">
+            <v-select
+              label="エネミー数"
+              v-model="enemyNumber"
+              :items="enemyNumberList"
+              variant="outlined"
+              density="compact"
+              hide-details="auto"
+            ></v-select
+          ></v-col>
+          <v-col cols="3" sm="2">
+            <v-checkbox
+              v-model="isSpecialEnemy"
+              false-value="0"
+              true-value="1"
+              color="primary"
+              hide-details="auto"
+            >
+              <template v-slot:label
+                ><span class="text-no-wrap">特殊エネミー</span></template
+              >
+            </v-checkbox></v-col
+          >
+        </v-row>
+        
+        <v-row class="text-h3">NP獲得:{{ calcNobleNPGain() }}%</v-row>
+        <v-row class="text-h3">★:{{ calcNobleStarGain() }}</v-row>
+
       </v-container>
     </v-window-item>
 
@@ -519,7 +580,7 @@ export default {
       </v-container>
     </v-window-item>
 
-    <v-window-item value="300">
+    <v-window-item value="201">
       <v-container>
         <v-row>
           <v-col cols="6" sm="3">

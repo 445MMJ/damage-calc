@@ -102,3 +102,11 @@ export default {
     </v-list>
   </v-navigation-drawer>
 </template>
+
+
+<style scoped>
+.v-toolbar--collapse {
+  width: 32px;
+  
+}
+</style>

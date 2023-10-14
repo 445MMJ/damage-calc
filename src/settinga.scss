@@ -1,0 +1,6 @@
+// settings.scss
+//なぜかapp-bar-collapsed-max-widthは動かないが、他のsass変数は動く
+$app-bar-collapsed-max-width: 10px !important;
+@use 'vuetify/settings' with (
+  $app-bar-collapsed-max-width: $app-bar-collapsed-max-width,
+);

@@ -24,7 +24,6 @@ export default {
   data() {
     return {
       cards: ["Buster", "Arts", "Quick"],
-      tab: 1,
       classModifier: 1,
       classAffinityModifier: 1,
       classAffinityModifierList: [
@@ -116,6 +115,7 @@ export default {
       slider: 1,
       additionalData: 0,
       overHitCount: 0,
+      tab: 100,
     };
   },
   mounted: function () {
@@ -354,14 +354,14 @@ export default {
 <template>
   <v-tabs v-model="tab" bg-color="primary" show-arrows>
     <v-tab value="777" disabled>     </v-tab>
-    <v-tab value="1">宝具計算</v-tab>
-    <v-tab value="2">カードダメージ</v-tab>
-    <v-tab value="3">NP/スター獲得量</v-tab>
-    <v-tab value="99">内部データ</v-tab>
+    <v-tab value="100">宝具計算</v-tab>
+    <v-tab value="200">カードダメージ</v-tab>
+    <v-tab value="300">NP/スター獲得量</v-tab>
+    <v-tab value="999">内部データ</v-tab>
   </v-tabs>
 
   <v-window v-model="tab">
-    <v-window-item value="1">
+    <v-window-item value="100">
       <v-container>
         <v-row>
           <v-col cols="6" sm="3">
@@ -408,9 +408,9 @@ export default {
           </v-col>
         </v-row>
         <v-row class="text-h3">ダメージ:{{ calcNobleDamage() }}</v-row>
-        <v-row class="text-h3">NP獲得/エネミー:{{ calcNobleNPGain() }}</v-row>
+        <v-row class="text-h3">NP獲得:{{ calcNobleNPGain() }}%</v-row>
         <v-row class="text-h3"
-          >スター獲得/エネミー:{{ calcNobleStarGain() }}</v-row
+          >★:{{ calcNobleStarGain() }}</v-row
         >
 
         <v-row>
@@ -431,7 +431,7 @@ export default {
       </v-container>
     </v-window-item>
 
-    <v-window-item value="2">
+    <v-window-item value="200">
       <v-container>
         <v-row>
           <v-col cols="6" sm="3">
@@ -519,7 +519,7 @@ export default {
       </v-container>
     </v-window-item>
 
-    <v-window-item value="3">
+    <v-window-item value="300">
       <v-container>
         <v-row>
           <v-col cols="6" sm="3">
@@ -622,7 +622,7 @@ export default {
       </v-container>
     </v-window-item>
 
-    <v-window-item value="5">
+    <v-window-item value="88">
       <v-container>
         <v-row>
           <v-col cols="6" sm="3">
@@ -771,11 +771,11 @@ export default {
       </v-container>
     </v-window-item>
 
-    <v-window-item value="999">
+    <v-window-item value="77">
       <v-container><v-row> 撃破率 作りたい </v-row> </v-container>
     </v-window-item>
 
-    <v-window-item value="99">
+    <v-window-item value="999">
       <v-container>
         <v-row>
           サーヴァント<br />

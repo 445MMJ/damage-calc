@@ -122,7 +122,7 @@ export default {
       isBusterChain: 0,
       slider: 1,
       additionalData: 0,
-      overHitCount: 0,
+      overHitCount: [0, 0, 0, 0],
       tab: 100,
     };
   },
@@ -229,6 +229,12 @@ export default {
       } else if (cardtype == "Quick") {
         buffCardType = "Quickカード性能";
       }
+      let overHit = 0;
+      if (this.overHitCount[index] > this.additionalData[cardtype]) {
+        overHit = this.additionalData[cardtype];
+      } else {
+        overHit = this.overHitCount[index];
+      }
       result =
         this.additionalData["N/A "] *
         ((this.cardModifierNPList[cardtype][index] / 100) *
@@ -237,7 +243,7 @@ export default {
         this.DTDR *
         Math.min(5, 1 + this.skillvalue["NP獲得量"] / 100) *
         Math.max(1, 2 * this.isCritical) *
-        (this.additionalData[cardtype] + this.overHitCount * 0.5);
+        (this.additionalData[cardtype] + overHit * 0.5);
       result = result * 100;
       result = Math.round(result);
       result = result / 100;
@@ -258,6 +264,12 @@ export default {
         buffCardType = "Quickカード性能";
         cardtype = "Quick";
       }
+      let overHit = 0;
+      if (this.overHitCount[0] > this.additionalData["NP "]) {
+        overHit = this.additionalData["NP "];
+      } else {
+        overHit = this.overHitCount[0];
+      }
       result =
         this.additionalData["N/A "] *
         (this.cardModifierNPList[cardtype][1] / 100) *
@@ -274,7 +286,7 @@ export default {
             this.skillvalue["NP獲得量"] / 100 +
             this.noblevalue["NP獲得量"] / 100
         ) *
-        (this.additionalData["NP "] + this.overHitCount * 0.5) *
+        (this.additionalData["NP "] + overHit * 0.5) *
         this.enemyNumber;
       result = result * 100;
       result = Math.round(result);
@@ -292,6 +304,13 @@ export default {
       } else if (cardtype == "Quick") {
         buffCardType = "Quickカード性能";
       }
+      let overHit = 0;
+      if (this.overHitCount[index] > this.additionalData[cardtype]) {
+        overHit = this.additionalData[cardtype];
+      } else {
+        overHit = this.overHitCount[index];
+      }
+      const nomalHit = this.additionalData[cardtype] - overHit;
       result =
         this.additionalData["SR"] / 100 +
         (this.cardModifierStarList[cardtype][index] / 100) *
@@ -301,14 +320,18 @@ export default {
         Math.min(5, this.skillvalue["スター発生率"] / 100) +
         Math.max(0, 0.2 * this.isCritical);
       result = result * 100; //※パーセンテージにしてから切り捨てを行う
-      result = Math.round(result);
+      result = Math.min(300, Math.round(result));
+      const result_over = Math.min(300, result + 30);
       let Star = [
-        Math.floor(result / 100) *
-          this.enemyNumber *
-          Number(this.additionalData[cardtype]),
-        result % 100,
-        this.enemyNumber * Number(this.additionalData[cardtype]),
-        result * Number(this.additionalData[cardtype]) * this.enemyNumber,
+        Math.floor(result / 100) * this.enemyNumber * nomalHit +
+          Math.floor(result_over / 100) * this.enemyNumber * overHit,//確定数
+        result % 100,//確率数ノーマル
+        this.enemyNumber * nomalHit,//確率試行数ノーマル
+        result_over % 100,//確率数オバキル
+        this.enemyNumber * overHit,//確率試行数オバキル
+        (result * this.enemyNumber * nomalHit +
+          result_over * this.enemyNumber * overHit) /
+          100,//期待値
       ];
       return Star;
     },
@@ -327,8 +350,15 @@ export default {
         buffCardType = "Quickカード性能";
         cardtype = "Quick";
       }
+      let overHit = 0;
+      if (this.overHitCount[0] > this.additionalData["NP "]) {
+        overHit = this.additionalData["NP "];
+      } else {
+        overHit = this.overHitCount[0];
+      }
+      const nomalHit = this.additionalData["NP "] - overHit;
       result =
-        this.additionalData["SR"]/100 +
+        this.additionalData["SR"] / 100 +
         (this.cardModifierStarList[cardtype][1] / 100) *
           Math.min(
             5,
@@ -339,18 +369,22 @@ export default {
         this.DSR +
         Math.min(
           5,
-            this.skillvalue["スター発生率"] / 100 +
+          this.skillvalue["スター発生率"] / 100 +
             this.noblevalue["スター発生率"] / 100
         );
       result = result * 100; //※パーセンテージにしてから切り捨てを行う
-      result = Math.round(result);
+      result = Math.min(300, Math.round(result));
+      const result_over = Math.min(300, result + 30);
       let Star = [
-        Math.floor(result / 100) *
-          this.enemyNumber *
-          Number(this.additionalData["NP "]),//確定数
-        result % 100,//確率数
-        this.enemyNumber * Number(this.additionalData["NP "]),//確率試行数
-        result * Number(this.additionalData["NP "]) * this.enemyNumber,//期待値
+        Math.floor(result / 100) * this.enemyNumber * nomalHit +
+          Math.floor(result_over / 100) * this.enemyNumber * overHit, //確定数
+        result % 100, //確率数ノーマル
+        this.enemyNumber * nomalHit, //確率試行数ノーマル
+        result_over % 100, //確率数オバキル
+        this.enemyNumber * overHit, //確率試行数オバキル
+        (result * this.enemyNumber * nomalHit +
+          result_over * this.enemyNumber * overHit) /
+          100, //期待値
       ];
       return Star;
     },
@@ -505,7 +539,7 @@ export default {
                 </v-checkbox>
               </template>
               <span
-                >敵NP補正が高い一部のエネ三ー（スケルトン、竜牙兵、ゾンビ、海賊ゾンビ、ゴースト系、七人御佐姫、スケアクロウ）</span
+                >敵NP補正が高い一部のエネミー（スケルトン、竜牙兵、ゾンビ、海賊ゾンビ、ゴースト系、七人御佐姫、スケアクロウ）</span
               >
             </v-tooltip>
           </v-col>
@@ -683,7 +717,7 @@ export default {
                 </v-checkbox>
               </template>
               <span
-                >敵NP補正が高い一部のエネ三ー（スケルトン、竜牙兵、ゾンビ、海賊ゾンビ、ゴースト系、七人御佐姫、スケアクロウ）</span
+                >敵NP補正が高い一部のエネミー（スケルトン、竜牙兵、ゾンビ、海賊ゾンビ、ゴースト系、七人御佐姫、スケアクロウ）</span
               >
             </v-tooltip></v-col
           >
@@ -704,33 +738,27 @@ export default {
                 ><v-divider class="border-opacity-50"></v-divider>
                 <v-icon :color="item" icon="mdi-star-four-points"></v-icon>
               </td>
-              <td>
+              <td class="textwrap">
                 {{ calcCardNPGain(item, 1) }}%
                 <v-divider class="border-opacity-50"></v-divider>
                 {{ calcCardStarGain(item, 1)[0] }}個＆
                 {{ calcCardStarGain(item, 1)[1] }}%
                 {{ calcCardStarGain(item, 1)[2] }}回
               </td>
-              <td>
+              <td class="textwrap">
                 {{ calcCardNPGain(item, 2) }}%
                 <v-divider class="border-opacity-50"></v-divider>
                 {{ calcCardStarGain(item, 2)[0] }}個＆
                 {{ calcCardStarGain(item, 2)[1] }}%
                 {{ calcCardStarGain(item, 2)[2] }}回
               </td>
-              <td>
+              <td class="textwrap">
                 {{ calcCardNPGain(item, 3) }}%
                 <v-divider class="border-opacity-50"></v-divider>
                 {{ calcCardStarGain(item, 3)[0] }}個＆
                 {{ calcCardStarGain(item, 3)[1] }}%
                 {{ calcCardStarGain(item, 3)[2] }}回
               </td>
-            </tr>
-            <tr>
-              <td>OK</td>
-              <td>Hit</td>
-              <td>Hit</td>
-              <td>Hit</td>
             </tr>
           </tbody>
         </v-table>
@@ -764,5 +792,9 @@ export default {
 <style scoped>
 .damage {
   text-shadow: 1px 1px 0px #1f5185;
+}
+.textwrap {
+  overflow-wrap: break-word;
+  word-break: keep-all;
 }
 </style>

@@ -63,7 +63,6 @@ export default {
     },
     bufftype() {
       const result1 = sumSkillValue(this.nobleData, this.nobleLevel, "Noble" , this.nobleOC);
-      console.log(result1);
       this.skillValue = { ...result1 };
       this.$emit("skillValue", this.skillValue);
     },

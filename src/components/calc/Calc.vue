@@ -40,23 +40,22 @@ export default {
       ],
       DTDR: 1,
       DTDRList: [
-        { id: 1, title: "他全部", value: 1 },
-        { id: 1, title: "狂", value: 0.8 },
-        { id: 2, title: "殺", value: 0.9 },
-        { id: 3, title: "騎", value: 1.1 },
-        { id: 3, title: "月術", value: 1.2 },
-        { id: 3, title: "騎", value: 0.9 },
+        { id: 1, title: "剣弓槍など", value: 1 },
+        { id: 2, title: "騎", value: 1.1 },
+        { id: 3, title: "術月", value: 1.3 },
+        { id: 4, title: "殺", value: 0.9 },
+        { id: 5, title: "狂", value: 0.8 },
       ],
       // DTDRが特別に1.2倍の*14 スケルトン、竜牙兵、ゾンビ、海賊ゾンビ、ゴースト系、七人御佐姫、スケアクロウ のこと
       isSpecialEnemy: 0, // 0 or 1
       DSR: 0,
       DSRList: [
-        { id: 1, title: "他全部", value: 1 },
-        { id: 1, title: "狂", value: 0.8 },
-        { id: 2, title: "殺", value: 0.9 },
-        { id: 3, title: "騎", value: 1.1 },
-        { id: 3, title: "月術", value: 1.2 },
-        { id: 3, title: "騎", value: 0.9 },
+        { id: 1, title: "基本", value: 0 },
+        { id: 1, title: "殺讐詐", value: -0.1 },
+        { id: 2, title: "槍", value: -0.05 },
+        { id: 3, title: "弓分", value: 0.05 },
+        { id: 3, title: "騎", value: 0.1 },
+        { id: 3, title: "降", value: 0.2 },
       ],
       isOberon: 0, // 0 or 1
       isNobleSpecial: 0, // 0 or 1
@@ -275,7 +274,8 @@ export default {
             this.skillvalue["NP獲得量"] / 100 +
             this.noblevalue["NP獲得量"] / 100
         ) *
-        (this.additionalData["NP "] + this.overHitCount * 0.5);
+        (this.additionalData["NP "] + this.overHitCount * 0.5) *
+        this.enemyNumber;
       result = result * 100;
       result = Math.round(result);
       result = result / 1000;
@@ -302,8 +302,14 @@ export default {
         Math.max(0, 0.2 * this.isCritical);
       result = result * 100; //※パーセンテージにしてから切り捨てを行う
       result = Math.round(result);
-      let Star =
-        "確定" + Math.floor(result / 100) + "個 確率" + (result % 100) + "%";
+      let Star = [
+        Math.floor(result / 100) *
+          this.enemyNumber *
+          Number(this.additionalData[cardtype]),
+        result % 100,
+        this.enemyNumber * Number(this.additionalData[cardtype]),
+        result * Number(this.additionalData[cardtype]) * this.enemyNumber,
+      ];
       return Star;
     },
     calcNobleStarGain() {
@@ -322,27 +328,30 @@ export default {
         cardtype = "Quick";
       }
       result =
-        this.additionalData["SR"] *
-        (this.cardModifierNPList[cardtype][1] / 100) *
+        this.additionalData["SR"]/100 +
+        (this.cardModifierStarList[cardtype][1] / 100) *
+          Math.min(
+            5,
+            1 +
+              this.skillvalue[buffCardType] / 100 +
+              this.noblevalue[buffCardType] / 100
+          ) +
+        this.DSR +
         Math.min(
           5,
-          1 +
-            this.skillvalue[buffCardType] / 100 +
-            this.noblevalue[buffCardType] / 100
-        ) *
-        this.DTDR *
-        Math.min(
-          5,
-          1 +
             this.skillvalue["スター発生率"] / 100 +
             this.noblevalue["スター発生率"] / 100
-        ) *
-        (this.additionalData["NP "] + this.overHitCount * 0.5);
+        );
       result = result * 100; //※パーセンテージにしてから切り捨てを行う
       result = Math.round(result);
-      result = result / 100;
-      let Star =
-        "確定" + Math.floor(result / 100) + "個 確率" + (result % 100) + "%";
+      let Star = [
+        Math.floor(result / 100) *
+          this.enemyNumber *
+          Number(this.additionalData["NP "]),//確定数
+        result % 100,//確率数
+        this.enemyNumber * Number(this.additionalData["NP "]),//確率試行数
+        result * Number(this.additionalData["NP "]) * this.enemyNumber,//期待値
+      ];
       return Star;
     },
     fetchAdditionalData() {
@@ -354,7 +363,10 @@ export default {
       this.additionalData["Buster"] = Number(this.additionalData["Buster"]);
       this.additionalData["Arts"] = Number(this.additionalData["Arts"]);
       this.additionalData["Quick"] = Number(this.additionalData["Quick"]);
-      this.additionalData["Noble"] = Number(this.additionalData["Noble"]);
+      this.additionalData["NP "] = Number(this.additionalData["NP "]);
+    },
+    getInitialLetter(item) {
+      return item.slice(0, 1);
     },
   },
 };
@@ -417,22 +429,25 @@ export default {
             </v-checkbox>
           </v-col>
         </v-row>
-        <v-row class="text-h3">ダメージ:{{ calcNobleDamage() }}</v-row>
-
-        <v-row>
-          <v-slider
-            v-model="slider"
-            thumb-label="always"
-            track-color="grey"
-            min="0.9"
-            max="1.099"
-            :step="0.001"
-          ></v-slider>
+        <v-row justify="center" class="text-h6 align-center">
+          <v-col class="pr-0"> <v-icon icon="mdi-fast-forward"></v-icon></v-col>
+          <v-col class="pl-0 text-no-wrap">平均</v-col>
+          <v-col align-self="center" class="text-h3 damage">{{
+            calcNobleDamage().toLocaleString()
+          }}</v-col
+          ><v-col></v-col><v-col></v-col>
         </v-row>
         <v-row
-          ><v-col> <v-btn @click="() => (slider = 0.9)"> 最小 </v-btn></v-col>
-          <v-col> <v-btn @click="() => (slider = 1)"> 平均 </v-btn></v-col>
-          <v-col> <v-btn @click="() => (slider = 1.099)"> 最大 </v-btn></v-col>
+          ><v-divider :thickness="2" class="border-opacity-100"></v-divider>
+        </v-row>
+        <v-row class="text-h6" justify="center"
+          ><v-col cols="4"
+            >最小
+            {{ Math.round(calcNobleDamage() * 0.9).toLocaleString() }}</v-col
+          ><v-col cols="4"
+            >最大
+            {{ Math.round(calcNobleDamage() * 1.099).toLocaleString() }}</v-col
+          >
         </v-row>
       </v-container>
     </v-window-item>
@@ -471,24 +486,46 @@ export default {
               hide-details="auto"
             ></v-select
           ></v-col>
-          <v-col cols="3" sm="2">
-            <v-checkbox
-              v-model="isSpecialEnemy"
-              false-value="0"
-              true-value="1"
-              color="primary"
-              hide-details="auto"
-            >
-              <template v-slot:label
-                ><span class="text-no-wrap">特殊エネミー</span></template
+          <v-col cols="3" sm="2"
+            ><v-tooltip location="top">
+              <template #activator="{ props }">
+                <v-checkbox
+                  v-bind="props"
+                  v-model="isSpecialEnemy"
+                  false-value="0"
+                  true-value="1"
+                  color="primary"
+                  hide-details="auto"
+                >
+                  <template v-slot:label
+                    ><span v-bind="props" class="text-no-wrap"
+                      >特殊エネミー</span
+                    ></template
+                  >
+                </v-checkbox>
+              </template>
+              <span
+                >敵NP補正が高い一部のエネ三ー（スケルトン、竜牙兵、ゾンビ、海賊ゾンビ、ゴースト系、七人御佐姫、スケアクロウ）</span
               >
-            </v-checkbox></v-col
-          >
+            </v-tooltip>
+          </v-col>
         </v-row>
-        
-        <v-row class="text-h3">NP獲得:{{ calcNobleNPGain() }}%</v-row>
-        <v-row class="text-h3">★:{{ calcNobleStarGain() }}</v-row>
 
+        <v-row justify="center" class="text-h6 align-center">
+          <v-spacer></v-spacer>
+          <v-col class="pr-0">
+            <v-icon icon="mdi-battery-charging"></v-icon
+          ></v-col>
+          <v-col class="pl-0 text-no-wrap">{{ calcNobleNPGain() }}%</v-col>
+          <v-col class="pr-0">
+            <v-icon icon="mdi-star-four-points"></v-icon
+          ></v-col>
+          <v-col class="pl-0 text-no-wrap"
+            >{{ calcNobleStarGain()[0] }}個 ＆ {{ calcNobleStarGain()[1] }}%
+            {{ calcNobleStarGain()[2] }}回
+          </v-col>
+          <v-spacer></v-spacer>
+        </v-row>
       </v-container>
     </v-window-item>
 
@@ -555,13 +592,13 @@ export default {
             </v-checkbox>
           </v-col>
         </v-row>
-        <v-table>
+        <v-table class="text-center">
           <thead>
             <tr>
-              <th class="text-left">Card</th>
-              <th class="text-left">1st</th>
-              <th class="text-left">2nd</th>
-              <th class="text-left">3rd</th>
+              <th class="text-center">Card</th>
+              <th class="text-center">1st</th>
+              <th class="text-center">2nd</th>
+              <th class="text-center">3rd</th>
             </tr>
           </thead>
           <tbody>
@@ -628,231 +665,104 @@ export default {
             </v-checkbox></v-col
           >
           <v-col cols="3" sm="2">
-            <v-checkbox
-              v-model="isSpecialEnemy"
-              false-value="0"
-              true-value="1"
-              color="primary"
-              hide-details="auto"
-            >
-              <template v-slot:label
-                ><span class="text-no-wrap">特殊エネミー</span></template
+            <v-tooltip location="top">
+              <template #activator="{ props }">
+                <v-checkbox
+                  v-bind="props"
+                  v-model="isSpecialEnemy"
+                  false-value="0"
+                  true-value="1"
+                  color="primary"
+                  hide-details="auto"
+                >
+                  <template v-slot:label
+                    ><span v-bind="props" class="text-no-wrap"
+                      >特殊エネミー</span
+                    ></template
+                  >
+                </v-checkbox>
+              </template>
+              <span
+                >敵NP補正が高い一部のエネ三ー（スケルトン、竜牙兵、ゾンビ、海賊ゾンビ、ゴースト系、七人御佐姫、スケアクロウ）</span
               >
-            </v-checkbox></v-col
+            </v-tooltip></v-col
           >
         </v-row>
-        <v-table>
+        <v-table class="text-center">
           <thead>
             <tr>
-              <th class="text-left">Card</th>
-              <th></th>
-              <th class="text-left">1st</th>
-              <th class="text-left">2nd</th>
-              <th class="text-left">3rd</th>
+              <th class="text-center">Card</th>
+              <th class="text-center">1st</th>
+              <th class="text-center">2nd</th>
+              <th class="text-center">3rd</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>オーバーキル</td>
-              <td></td>
-              <td>Hit</td>
-              <td>Hit</td>
-              <td>Hit</td>
-            </tr>
+          <tbody class="justify-center">
             <tr v-for="item in cards">
-              <td>{{ item }}</td>
-              <td>NP獲得量<br />スター獲得量</td>
               <td>
-                {{ calcCardNPGain(item, 1) }}<br />{{
-                  calcCardStarGain(item, 1)
-                }}
+                <v-icon :color="item" icon="mdi-battery-charging"></v-icon
+                ><v-divider class="border-opacity-50"></v-divider>
+                <v-icon :color="item" icon="mdi-star-four-points"></v-icon>
               </td>
               <td>
-                {{ calcCardNPGain(item, 2) }}<br />{{
-                  calcCardStarGain(item, 2)
-                }}
+                {{ calcCardNPGain(item, 1) }}%
+                <v-divider class="border-opacity-50"></v-divider>
+                {{ calcCardStarGain(item, 1)[0] }}個＆
+                {{ calcCardStarGain(item, 1)[1] }}%
+                {{ calcCardStarGain(item, 1)[2] }}回
               </td>
               <td>
-                {{ calcCardNPGain(item, 3) }}<br />{{
-                  calcCardStarGain(item, 3)
-                }}
+                {{ calcCardNPGain(item, 2) }}%
+                <v-divider class="border-opacity-50"></v-divider>
+                {{ calcCardStarGain(item, 2)[0] }}個＆
+                {{ calcCardStarGain(item, 2)[1] }}%
+                {{ calcCardStarGain(item, 2)[2] }}回
               </td>
+              <td>
+                {{ calcCardNPGain(item, 3) }}%
+                <v-divider class="border-opacity-50"></v-divider>
+                {{ calcCardStarGain(item, 3)[0] }}個＆
+                {{ calcCardStarGain(item, 3)[1] }}%
+                {{ calcCardStarGain(item, 3)[2] }}回
+              </td>
+            </tr>
+            <tr>
+              <td>OK</td>
+              <td>Hit</td>
+              <td>Hit</td>
+              <td>Hit</td>
             </tr>
           </tbody>
         </v-table>
       </v-container>
-    </v-window-item>
-
-    <v-window-item value="88">
-      <v-container>
-        <v-row>
-          <v-col cols="6" sm="3">
-            <v-select
-              label="クラス相性"
-              v-model="classAffinityModifier"
-              :items="classAffinityModifierList"
-              variant="outlined"
-              density="compact"
-              hide-details="auto"
-            ></v-select
-          ></v-col>
-          <v-col cols="6" sm="3">
-            <v-select
-              label="天地人相性"
-              v-model="attributeAffinityModifier"
-              :items="attributeAffinityModifierList"
-              variant="outlined"
-              density="compact"
-              hide-details="auto"
-            ></v-select
-          ></v-col>
-          <v-col cols="4" sm="2">
-            <v-checkbox
-              v-model="isCritical"
-              false-value="0"
-              true-value="1"
-              color="primary"
-              hide-details="auto"
-            >
-              <template v-slot:label
-                ><span class="text-no-wrap">クリティカル</span></template
-              >
-            </v-checkbox></v-col
-          >
-          <v-col cols="4" sm="2">
-            <v-checkbox
-              v-model="firstCard"
-              false-value="None"
-              true-value="Buster"
-              color="primary"
-              hide-details="auto"
-            >
-              <template v-slot:label
-                ><span class="text-no-wrap">1st Buster</span></template
-              >
-            </v-checkbox>
-          </v-col>
-          <v-col cols="4" sm="2">
-            <v-checkbox
-              v-model="isBusterChain"
-              false-value="0"
-              true-value="1"
-              color="primary"
-              hide-details="auto"
-            >
-              <template v-slot:label
-                ><span class="text-no-wrap">Bチェイン</span></template
-              >
-            </v-checkbox>
-          </v-col>
-          <v-col cols="6" sm="3">
-            <v-select
-              label="敵スター補正"
-              v-model="DSR"
-              :items="DSRList"
-              variant="outlined"
-              density="compact"
-              hide-details="auto"
-            ></v-select
-          ></v-col>
-
-          <v-col cols="6" sm="3">
-            <v-select
-              label="敵NP補正"
-              v-model="DTDR"
-              :items="DTDRList"
-              variant="outlined"
-              density="compact"
-              hide-details="auto"
-            ></v-select
-          ></v-col>
-          <v-col cols="6" sm="3">
-            <v-select
-              label="1stCard"
-              v-model="firstCard"
-              :items="firstCardList"
-              variant="outlined"
-              density="compact"
-              hide-details="auto"
-            ></v-select
-          ></v-col>
-          <v-col cols="4" sm="2">
-            <v-checkbox
-              v-model="isSpecialEnemy"
-              false-value="0"
-              true-value="1"
-              color="primary"
-              hide-details="auto"
-            >
-              <template v-slot:label
-                ><span class="text-no-wrap">特殊エネミー</span></template
-              >
-            </v-checkbox></v-col
-          >
-        </v-row>
-        <v-table>
-          <thead>
-            <tr>
-              <th class="text-left">Card</th>
-              <th></th>
-              <th class="text-left">1st</th>
-              <th class="text-left">2nd</th>
-              <th class="text-left">3rd</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>オーバーキル</td>
-              <td></td>
-              <td>Hit</td>
-              <td>Hit</td>
-              <td>Hit</td>
-            </tr>
-            <tr v-for="item in cards">
-              <td>{{ item }}</td>
-              <td>NP獲得量<br />スター獲得量</td>
-              <td>
-                {{ calcCardNPGain(item, 1) }}<br />{{
-                  calcCardStarGain(item, 1)
-                }}
-              </td>
-              <td>
-                {{ calcCardNPGain(item, 2) }}<br />{{
-                  calcCardStarGain(item, 2)
-                }}
-              </td>
-              <td>
-                {{ calcCardNPGain(item, 3) }}<br />{{
-                  calcCardStarGain(item, 3)
-                }}
-              </td>
-            </tr>
-          </tbody>
-        </v-table>
-      </v-container>
-    </v-window-item>
-
-    <v-window-item value="77">
-      <v-container><v-row> 撃破率 作りたい </v-row> </v-container>
     </v-window-item>
 
     <v-window-item value="999">
       <v-container>
         <v-row>
-          サーヴァント<br />
-          {{ attacker }} <br />
-          ATK<br />
-          {{ ATKValue }} <br />
-          バフ情報<br />
-          {{ skillvalue }} <br />
-          宝具性能<br />
-          {{ noblevalue }}<br />
-          オベロン<br />
-          {{ isOberon }}<br />
-          追加鯖データ<br />
+          サーヴァント
+          {{ attacker }}
+          <v-divider></v-divider>
+          追加鯖データ
           {{ additionalData }}
+          <v-divider></v-divider>
+          ATK
+          {{ ATKValue }}
+          <v-divider></v-divider>
+          バフ情報
+          {{ skillvalue }}
+          <v-divider></v-divider>
+          宝具性能
+          {{ noblevalue }}
+          <v-divider></v-divider>
         </v-row>
       </v-container>
     </v-window-item>
   </v-window>
 </template>
+
+<style scoped>
+.damage {
+  text-shadow: 1px 1px 0px #1f5185;
+}
+</style>

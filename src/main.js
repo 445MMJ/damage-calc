@@ -33,6 +33,9 @@ const vuetify = createVuetify({
           primary: '#235b94',
           "primary-darken-1": '#1f5185',
           text: '#000000',
+          Buster: '#ff0000',
+          Arts: '#0067c0',
+          Quick: '#4db56a',
         },
       },
       dark: {
@@ -40,6 +43,9 @@ const vuetify = createVuetify({
           primary: '#235b94',
           "primary-darken-1": '#1f5185',
           text: '#ffffff',
+          Buster: '#ff0000',
+          Arts: '#0067c0',
+          Quick: '#4db56a',
         },
       },
     }

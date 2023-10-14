@@ -1,5 +1,5 @@
 //各種スキルデータ、宝具データを扱うコンポーネントで使われる
-export function sumSkillValue(list, level, range) {
+export function sumSkillValue(list, level, range, OC) {
   let filteredList = [];
   let result = {};
   filteredList = list
@@ -45,14 +45,23 @@ export function sumSkillValue(list, level, range) {
       filteredList = filteredList.filter((obj) => obj.Target === "自身");
       filteredList = filteredList.filter((obj) => obj.preText === "-");
       break;
-    case "NobleLv":
-      filteredList = filteredList.filter((obj) => obj.Grow === "Lv");
-    case "NobleOC":
-      filteredList = filteredList.filter((obj) => obj.Grow === "OC");
-    case "NobleOther":
-      filteredList = filteredList.filter(
+    case "Noble":
+      let result1 = {}
+      let result2 = {}
+      let result3 = {}
+      let list1, list2, list3 = []
+      list1 = filteredList.filter((obj) => obj.Grow === 'Lv');
+      filterSkillList(list1, level, result1);
+      list2 = filteredList.filter((obj) => obj.Grow === 'OC');
+      filterSkillList(list2, OC, result2);
+      list3 = filteredList.filter(
         (obj) => obj.Grow !== "Lv" && obj.Grow !== "OC"
       );
+      filterSkillList(list3, "Value3", result3);
+      result = sumObject(result, result1)
+      result = sumObject(result, result2)
+      result = sumObject(result, result3)
+      return result
     default:
       filteredList = filteredList.filter(
         (obj) => obj.Target === "味方単体" || obj.Target === "味方全体"
@@ -157,4 +166,22 @@ function extractNumbers(str) {
     return matches.map((match) => parseFloat(match));
   }
   return [];
+}
+
+//オブジェクト同士の足し算をする
+function sumObject(obj1, obj2) {
+  let result = {};
+  for (const key in obj1) {
+    if (obj2[key] === undefined) {
+      result[key] = obj1[key];
+    } else {
+      result[key] = obj1[key] + obj2[key];
+    }
+  }
+  for (const key in obj2) {
+    if (obj1[key] === undefined) {
+      result[key] = obj2[key];
+    }
+  }
+  return result;
 }

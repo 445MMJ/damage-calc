@@ -1,6 +1,5 @@
 <script>
 import { nobleList } from "../../data/nobleList.js";
-import { filterSkillList } from "../script/FilterSkillValue";
 import { sumSkillValue } from "../script/sumSkillValue.js";
 import nobleSelect from "./NobleSelect.vue";
 
@@ -63,10 +62,8 @@ export default {
       this.bufftype();
     },
     bufftype() {
-      const result1 = sumSkillValue(this.nobleData, this.nobleLevel, "NobleLv");
-      const result2 = sumSkillValue(this.nobleData, this.nobleOC, "NobleOC");
-      const result3 = sumSkillValue(this.nobleData, "Value3", "NobleOther");
-      console.log(result1,result2,result3);
+      const result1 = sumSkillValue(this.nobleData, this.nobleLevel, "Noble" , this.nobleOC);
+      console.log(result1);
       this.skillValue = { ...result1 };
       this.$emit("skillValue", this.skillValue);
     },

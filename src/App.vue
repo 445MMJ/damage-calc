@@ -1,7 +1,8 @@
 <script>
+import { defineAsyncComponent } from "vue";
 import myHeader from "./components/MyHeader.vue";
-import calc from "./components/calc/Calc.vue";
-import servantContainer from "./components/servant/ServantContainer.vue";
+//import calc from "./components/calc/Calc.vue";
+//import servantContainer from "./components/servant/ServantContainer.vue";
 import attacker from "./components/servant/Attacker.vue";
 import skillsContainer from "./components/skill/SkillsContainer.vue";
 import classSkillsContainer from "./components/classSkill/ClassskillsContainer.vue";
@@ -13,13 +14,19 @@ import { sumObjectValue } from "./components/TotalSkillValue.js";
 export default {
   components: {
     myHeader,
-    servantContainer,
+    //servantContainer,
     skillsContainer,
     classSkillsContainer,
     nobleContainer,
-    calc,
+    //calc,
     attacker,
     userInput,
+    calc: defineAsyncComponent(() =>
+      import("./components/calc/Calc.vue")
+    ),
+    servantContainer: defineAsyncComponent(() =>
+      import("./components/servant/ServantContainer.vue")
+    ),
   },
   data() {
     return {

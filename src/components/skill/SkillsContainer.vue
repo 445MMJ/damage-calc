@@ -5,6 +5,7 @@ import skillCard from "./SkillCard.vue";
 import skillCardPreText from "./SkillCardPreText.vue";
 import skillCardTarget2 from "./SkillCardTarget2.vue";
 import skillCardUnique1 from "./SkillCardUnique1.vue";
+import skillCardUnique2 from "./SkillCardUnique2.vue";
 
 export default {
   props: ["items"],
@@ -14,6 +15,7 @@ export default {
     skillCardPreText,
     skillCardTarget2,
     skillCardUnique1,
+    skillCardUnique2,
   },
   data() {
     return {
@@ -72,8 +74,9 @@ export default {
         58450, 818552, 818552, 2097350, 2172550, 65900, 2021550, 2153650,
       ];
       //四枝の浅瀬 A,被虐体質 A+,局中法度 EX
-      const skillCardunique1 = [759550,355551,344650]
-      
+      const skillCardUnique1 = [759550,355551,344650]
+      //大河の巨獣 B
+      const skillCardUnique2 = [2082450]
       let foundSkill = skillList.skillList.find(
         (obj) => obj.SkillName === skillName
       );
@@ -86,8 +89,11 @@ export default {
       if (skillCardTarget2List.includes(Number(foundSkill.EntityID))) {
         return "skillCardTarget2";
       }
-      if (skillCardunique1.includes(Number(foundSkill.EntityID))) {
+      if (skillCardUnique1.includes(Number(foundSkill.EntityID))) {
         return "skillCardUnique1";
+      }
+      if (skillCardUnique2.includes(Number(foundSkill.EntityID))) {
+        return "skillCardUnique2";
       }
       return "skillCard";
     },

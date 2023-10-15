@@ -58,6 +58,7 @@ export default {
       },
       tab: null,
       isShowSkillDetail: [true, true, false, false, false],
+      isManiac: false,
     };
   },
   created() {
@@ -132,7 +133,7 @@ export default {
 <template>
   <v-app>
     <myHeader />
-    
+
     <v-main class="bg">
       <v-sheet :elevation="10" border="true" class="ma-6" id="calc">
         <calc
@@ -140,6 +141,7 @@ export default {
           :skillvalue="totalSkillValue"
           :noblevalue="nobleValue"
           :ATKValue="ATKValue"
+          :isManiac="isManiac"
         />
       </v-sheet>
       <v-sheet :elevation="10" border="true" class="ma-6" id="servant0">
@@ -192,9 +194,9 @@ export default {
             @skillValue="updatedSkillValue($event, 0)"
             @skillValueSelf="updatedSkillValue($event, 6)"
         /></v-expand-transition>
-        <v-expand-transition>   
+        <v-expand-transition>
           <classSkillsContainer
-            v-show=false
+            v-show="false"
             :items="selectedServant[0]"
             @skillValue="updatedSkillValue($event, 12)"
             @skillValueSelf="updatedSkillValue($event, 13)"
@@ -386,9 +388,11 @@ export default {
                 >全閉</v-btn
               ></v-col
             ><v-col md="1" class="mx-1">
-              <v-btn class="bg-primary-darken-1" @click.stop="showSkillDetail()"
-                >ボタン</v-btn
-              ></v-col
+              <v-switch
+                color="primary"
+                v-model="isManiac"
+                label="オタク向け"
+              ></v-switch></v-col
             ><v-spacer></v-spacer></v-row
         ></v-container>
       </v-sheet>

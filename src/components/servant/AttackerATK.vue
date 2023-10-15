@@ -52,6 +52,7 @@ export default {
       //newValがnullの場合のケアとNumberに変換して送る
       let AtkValue = newVal !== null ? newVal : 0;
       AtkValue = Number(AtkValue);
+      AtkValue = Math.floor(AtkValue);
       this.$emit("isATKChange", AtkValue);
     },
   },

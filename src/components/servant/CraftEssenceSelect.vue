@@ -29,6 +29,12 @@ export default {
     handleSelectedLevelChange() {
       this.textLevelInput = this.selectedLevel;
     },
+    handleATKInput() {
+      this.ATK = Math.floor(this.ATK);
+    },
+    handleLevelInput() {
+      this.textLevelInput =  Math.floor(this.textLevelInput);
+    },
     setATK(value) {
       this.ATK = value;
     },
@@ -39,19 +45,21 @@ export default {
     },
     ATK: function (newVal) {
       //直接入力するとATKに入れられる
-      //newValがnullの場合のケアとNumberに変換して送る
+      //newValがnullの場合、小数点以下がある場合のケアとNumberに変換して送る
       let ceAtkValue = newVal !== null ? newVal : 0;
       ceAtkValue = Number(ceAtkValue);
+      ceAtkValue = Math.floor(ceAtkValue);
       this.$emit("CEAtk", ceAtkValue);
     },
     calcATK: function (newVal) {
       //算出した場合methodでATKを変更して、上の処理をトリガーして送る
       this.setATK(newVal);
     },
+    
   },
   computed: {
     calcATK() {
-      return this.textLevelInput * this.selectedStatus;
+      return Math.floor(this.textLevelInput) * Math.floor(this.selectedStatus);
     },
   },
 };

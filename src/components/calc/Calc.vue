@@ -20,6 +20,10 @@ export default {
       type: Number,
       required: true,
     },
+    isManiac: {
+      type: Boolean,
+      required: true,
+    },
   },
   data() {
     return {
@@ -120,7 +124,7 @@ export default {
         { id: 6, title: "6体", value: 6 },
       ],
       isBusterChain: 0,
-      slider: 1,
+      slider: 1, //仮置き、乱数扱い
       additionalData: 0,
       overHitCount: [0, 0, 0, 0],
       tab: 100,
@@ -230,6 +234,10 @@ export default {
         buffCardType = "Quickカード性能";
       }
       let overHit = 0;
+      this.overHitCount[index] = Math.floor(this.overHitCount[index]);
+      if (this.overHitCount[index] < 0) {
+        this.overHitCount[index] = 0;
+      }
       if (this.overHitCount[index] > this.additionalData[cardtype]) {
         overHit = this.additionalData[cardtype];
       } else {
@@ -265,6 +273,10 @@ export default {
         cardtype = "Quick";
       }
       let overHit = 0;
+      this.overHitCount[0] = Math.floor(this.overHitCount[0]);
+      if (this.overHitCount[0] < 0) {
+        this.overHitCount[0] = 0;
+      }
       if (this.overHitCount[0] > this.additionalData["NP "]) {
         overHit = this.additionalData["NP "];
       } else {
@@ -305,6 +317,10 @@ export default {
         buffCardType = "Quickカード性能";
       }
       let overHit = 0;
+      this.overHitCount[index] = Math.floor(this.overHitCount[index]);
+      if (this.overHitCount[index] < 0) {
+        this.overHitCount[index] = 0;
+      }
       if (this.overHitCount[index] > this.additionalData[cardtype]) {
         overHit = this.additionalData[cardtype];
       } else {
@@ -323,15 +339,19 @@ export default {
       result = Math.min(300, Math.round(result));
       const result_over = Math.min(300, result + 30);
       let Star = [
-        Math.floor(result / 100) * this.enemyNumber * nomalHit +
-          Math.floor(result_over / 100) * this.enemyNumber * overHit,//確定数
-        result % 100,//確率数ノーマル
-        this.enemyNumber * nomalHit,//確率試行数ノーマル
-        result_over % 100,//確率数オバキル
-        this.enemyNumber * overHit,//確率試行数オバキル
-        (result * this.enemyNumber * nomalHit +
-          result_over * this.enemyNumber * overHit) /
-          100,//期待値
+        Math.floor(result / 100) * nomalHit +
+          Math.floor(result_over / 100) * overHit, //確定数
+        result % 100, //確率数ノーマル
+        nomalHit, //確率試行数ノーマル
+        result_over % 100, //確率数オバキル
+        overHit, //確率試行数オバキル
+        Math.round(
+          (Math.floor(result / 100) * nomalHit +
+            Math.floor(result_over / 100) * overHit +
+            ((result % 100) / 100) * nomalHit +
+            ((result_over % 100) / 100) * overHit) *
+            100
+        ) / 100, //期待値
       ];
       return Star;
     },
@@ -351,6 +371,10 @@ export default {
         cardtype = "Quick";
       }
       let overHit = 0;
+      this.overHitCount[0] = Math.floor(this.overHitCount[0]);
+      if (this.overHitCount[0] < 0) {
+        this.overHitCount[0] = 0;
+      }
       if (this.overHitCount[0] > this.additionalData["NP "]) {
         overHit = this.additionalData["NP "];
       } else {
@@ -382,9 +406,13 @@ export default {
         this.enemyNumber * nomalHit, //確率試行数ノーマル
         result_over % 100, //確率数オバキル
         this.enemyNumber * overHit, //確率試行数オバキル
-        (result * this.enemyNumber * nomalHit +
-          result_over * this.enemyNumber * overHit) /
-          100, //期待値
+        Math.round(
+          (Math.floor(result / 100) * nomalHit +
+            Math.floor(result_over / 100) * this.enemyNumber * overHit +
+            ((result % 100) / 100) * this.enemyNumber * nomalHit +
+            ((result_over % 100) / 100) * this.enemyNumber * overHit) *
+            100
+        ) / 100, //期待値
       ];
       return Star;
     },
@@ -554,10 +582,24 @@ export default {
           <v-col class="pr-0">
             <v-icon icon="mdi-star-four-points"></v-icon
           ></v-col>
-          <v-col class="pl-0 text-no-wrap"
-            >{{ calcNobleStarGain()[0] }}個 ＆ {{ calcNobleStarGain()[1] }}%
-            {{ calcNobleStarGain()[2] }}回
+          <v-col v-if="!isManiac" class="pl-0 text-no-wrap"
+            >{{ calcNobleStarGain()[5] }}個
           </v-col>
+          <v-col cols="11" sm="3" v-if="isManiac" class="pl-0 text-no-wrap"
+            ><v-icon icon="mdi-star-four-points"></v-icon
+          >{{ calcNobleStarGain()[0] }}個 ＆ {{ calcNobleStarGain()[1] }}%
+            {{ calcNobleStarGain()[2] }}回 ＆ {{ calcNobleStarGain()[3] }}%
+            {{ calcNobleStarGain()[4] }}回
+          </v-col>
+          <v-col cols="3" sm="2" v-if="isManiac"
+            ><v-text-field
+              v-model="overHitCount[0]"
+              type="number"
+              label="OverKill Hit数"
+              hide-details="true"
+              density="compact"
+            ></v-text-field
+          ></v-col>
           <v-spacer></v-spacer>
         </v-row>
       </v-container>
@@ -738,26 +780,77 @@ export default {
                 ><v-divider class="border-opacity-50"></v-divider>
                 <v-icon :color="item" icon="mdi-star-four-points"></v-icon>
               </td>
-              <td class="textwrap">
+              <td v-if="!isManiac" class="textwrap">
+                {{ calcCardNPGain(item, 1) }}%
+                <v-divider class="border-opacity-50"></v-divider>
+                {{ calcCardStarGain(item, 1)[5] }}個
+              </td>
+              <td v-if="!isManiac" class="textwrap">
+                {{ calcCardNPGain(item, 2) }}%
+                <v-divider class="border-opacity-50"></v-divider>
+                {{ calcCardStarGain(item, 2)[5] }}個
+              </td>
+              <td v-if="!isManiac" class="textwrap">
+                {{ calcCardNPGain(item, 3) }}%
+                <v-divider class="border-opacity-50"></v-divider>
+                {{ calcCardStarGain(item, 3)[5] }}個
+              </td>
+              <td v-if="isManiac" class="textwrap">
                 {{ calcCardNPGain(item, 1) }}%
                 <v-divider class="border-opacity-50"></v-divider>
                 {{ calcCardStarGain(item, 1)[0] }}個＆
                 {{ calcCardStarGain(item, 1)[1] }}%
-                {{ calcCardStarGain(item, 1)[2] }}回
+                {{ calcCardStarGain(item, 1)[2] }}回＆
+                {{ calcCardStarGain(item, 1)[3] }}%
+                {{ calcCardStarGain(item, 1)[4] }}回
               </td>
-              <td class="textwrap">
+              <td v-if="isManiac" class="textwrap">
                 {{ calcCardNPGain(item, 2) }}%
                 <v-divider class="border-opacity-50"></v-divider>
                 {{ calcCardStarGain(item, 2)[0] }}個＆
                 {{ calcCardStarGain(item, 2)[1] }}%
-                {{ calcCardStarGain(item, 2)[2] }}回
+                {{ calcCardStarGain(item, 2)[2] }}回＆
+                {{ calcCardStarGain(item, 2)[3] }}%
+                {{ calcCardStarGain(item, 2)[4] }}回
               </td>
-              <td class="textwrap">
+              <td v-if="isManiac" class="textwrap">
                 {{ calcCardNPGain(item, 3) }}%
                 <v-divider class="border-opacity-50"></v-divider>
                 {{ calcCardStarGain(item, 3)[0] }}個＆
                 {{ calcCardStarGain(item, 3)[1] }}%
-                {{ calcCardStarGain(item, 3)[2] }}回
+                {{ calcCardStarGain(item, 3)[2] }}回＆
+                {{ calcCardStarGain(item, 3)[3] }}%
+                {{ calcCardStarGain(item, 3)[4] }}回
+              </td>
+            </tr>
+            <tr v-if="isManiac">
+              <td></td>
+              <td>
+                <v-text-field
+                  v-model="overHitCount[1]"
+                  type="number"
+                  label="OverKill Hit数"
+                  hide-details="true"
+                  density="compact"
+                ></v-text-field>
+              </td>
+              <td>
+                <v-text-field
+                  v-model="overHitCount[2]"
+                  type="number"
+                  label="OverKill Hit数"
+                  hide-details="true"
+                  density="compact"
+                ></v-text-field>
+              </td>
+              <td>
+                <v-text-field
+                  v-model="overHitCount[3]"
+                  type="number"
+                  label="OverKill Hit数"
+                  hide-details="true"
+                  density="compact"
+                ></v-text-field>
               </td>
             </tr>
           </tbody>

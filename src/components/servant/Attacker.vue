@@ -53,10 +53,10 @@ export default {
     <v-row justify="start" align="center">
         <AttackerATK :attacker="attacker" @isATKChange="handleATKChange" />
       <v-col cols="2" sm="1" class="ma-1 text-no-wrap">+ {{ fouValue }}</v-col>
-      <v-col cols="2" sm="2" class="ma-1 text-no-wrap"
+      <v-col cols="4" sm="2" class="ma-1 text-no-wrap"
         ><isFou labelText="銀フォウ" @isFouChange="handleFouChange"
       /></v-col>
-      <v-col cols="2" sm="2" class="ma-1 text-no-wrap"
+      <v-col cols="4" sm="2" class="ma-1 text-no-wrap"
         ><isFou labelText="金フォウ" @isFouChange="handleFouChange"
       /></v-col>
       <v-col></v-col>

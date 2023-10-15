@@ -6,6 +6,7 @@ import skillCardPreText from "./SkillCardPreText.vue";
 import skillCardTarget2 from "./SkillCardTarget2.vue";
 import skillCardUnique1 from "./SkillCardUnique1.vue";
 import skillCardUnique2 from "./SkillCardUnique2.vue";
+import skillCardUnique3 from "./SkillCardUnique3.vue";
 
 export default {
   props: ["items"],
@@ -16,6 +17,7 @@ export default {
     skillCardTarget2,
     skillCardUnique1,
     skillCardUnique2,
+    skillCardUnique3,
   },
   data() {
     return {
@@ -77,6 +79,8 @@ export default {
       const skillCardUnique1 = [759550,355551,344650]
       //大河の巨獣 B
       const skillCardUnique2 = [2082450]
+      //(死滅願望 A強化前だから使わないかも),四夜の終末 EX,是非もなし A-
+      const skillCardUnique3 = [199550,458650,619549]
       let foundSkill = skillList.skillList.find(
         (obj) => obj.SkillName === skillName
       );
@@ -94,6 +98,9 @@ export default {
       }
       if (skillCardUnique2.includes(Number(foundSkill.EntityID))) {
         return "skillCardUnique2";
+      }
+      if (skillCardUnique3.includes(Number(foundSkill.EntityID))) {
+        return "skillCardUnique3";
       }
       return "skillCard";
     },

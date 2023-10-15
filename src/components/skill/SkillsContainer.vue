@@ -90,7 +90,7 @@ export default {
 <template>
   <v-container class="">
     <v-row>
-      <v-col
+      <v-col cols="12" sm="4"
         ><component
           :is="skillCardType[1]"
           :name="skillNames[1]"
@@ -98,7 +98,7 @@ export default {
           @skillValueSelf="updateSkillValueSelf($event, 0)"
           @skillValueOther="updateSkillValueOther($event, 0)"
       /></v-col>
-      <v-col>
+      <v-col cols="12" sm="4">
         <component
           :is="skillCardType[2]"
           :name="skillNames[2]"
@@ -106,7 +106,7 @@ export default {
           @skillValueSelf="updateSkillValueSelf($event, 1)"
           @skillValueOther="updateSkillValueOther($event, 1)"
       /></v-col>
-      <v-col
+      <v-col cols="12" sm="4"
         ><component
           :is="skillCardType[3]"
           :name="skillNames[3]"

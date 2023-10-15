@@ -4,6 +4,7 @@ import { sumObjectValue } from "../../components/TotalSkillValue.js";
 import skillCard from "./SkillCard.vue";
 import skillCardPreText from "./SkillCardPreText.vue";
 import skillCardTarget2 from "./SkillCardTarget2.vue";
+import skillCardUnique1 from "./SkillCardUnique1.vue";
 
 export default {
   props: ["items"],
@@ -12,6 +13,7 @@ export default {
     skillCard,
     skillCardPreText,
     skillCardTarget2,
+    skillCardUnique1,
   },
   data() {
     return {
@@ -64,11 +66,14 @@ export default {
         739450, 894550, 15551, 2088450, 913551, 760466, 734650, 760550, 2173650,
       ];
       //Target2に条件が入っているスキルEntityIDリスト
-      const skillCarTarget2List = [
+      const skillCardTarget2List = [
         2167650, 335550, 506450, 779551, 125350, 295550, 2048350, 2048350,
         293550, 74149, 74450, 366550, 475650, 230800, 808551, 777650, 777650,
         58450, 818552, 818552, 2097350, 2172550, 65900, 2021550, 2153650,
       ];
+      //四枝の浅瀬 A,被虐体質 A+,局中法度 EX
+      const skillCardunique1 = [759550,355551,344650]
+      
       let foundSkill = skillList.skillList.find(
         (obj) => obj.SkillName === skillName
       );
@@ -78,8 +83,11 @@ export default {
       if (skillCardPreTextList.includes(Number(foundSkill.EntityID))) {
         return "skillCardPreText";
       }
-      if (skillCarTarget2List.includes(Number(foundSkill.EntityID))) {
+      if (skillCardTarget2List.includes(Number(foundSkill.EntityID))) {
         return "skillCardTarget2";
+      }
+      if (skillCardunique1.includes(Number(foundSkill.EntityID))) {
+        return "skillCardUnique1";
       }
       return "skillCard";
     },

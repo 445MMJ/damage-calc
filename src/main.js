@@ -11,7 +11,7 @@ import * as directives from 'vuetify/directives'
 import colors from 'vuetify/lib/util/colors.mjs';
 
 //mdi
-import { aliases, mdi } from 'vuetify/iconsets/mdi'
+import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 import '@mdi/font/css/materialdesignicons.css'
 
 const vuetify = createVuetify({
@@ -20,9 +20,9 @@ const vuetify = createVuetify({
   //mdi
   icons: {
     defaultSet: 'mdi',
-    aliases,
     sets: {
       mdi,
+      aliases,
     },
   },
   theme: {

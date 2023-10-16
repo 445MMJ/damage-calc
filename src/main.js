@@ -20,9 +20,9 @@ const vuetify = createVuetify({
   //mdi
   icons: {
     defaultSet: 'mdi',
+    aliases,
     sets: {
       mdi,
-      aliases,
     },
   },
   theme: {
@@ -50,7 +50,7 @@ const vuetify = createVuetify({
       },
     }
   },
-  options: { customProperties: true}
+  options: { customProperties: true }
 })
 
 createApp(App).use(vuetify).mount('#app')

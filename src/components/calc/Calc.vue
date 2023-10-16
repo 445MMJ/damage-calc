@@ -1,7 +1,7 @@
 <script>
 import { totalSpecialValue } from "../TotalSpecialValue.js";
 import { additionalServantMap } from "../../data/additionalServantMap.js";
-import { mdiFastForward,mdiBatteryCharging,mdiStarFourPoints } from '@mdi/js';
+import { mdiFastForward, mdiBatteryCharging, mdiStarFourPoints } from "@mdi/js";
 export default {
   components: {},
   props: {
@@ -496,7 +496,7 @@ export default {
           </v-col>
         </v-row>
         <v-row justify="center" class="text-h6 align-center">
-          <v-col class="pr-0"> <v-icon :icon=mdiFastForward></v-icon></v-col>
+          <v-col class="pr-0"> <v-icon :icon="mdiFastForward"></v-icon></v-col>
           <v-col class="pl-0 text-no-wrap">平均</v-col>
           <v-col align-self="center" class="text-h3 damage">{{
             calcNobleDamage().toLocaleString()
@@ -577,25 +577,38 @@ export default {
           </v-col>
         </v-row>
 
-        <v-row justify="center" class="text-h6 align-center">
+        <v-row v-if="!isManiac" justify="center" class="text-h6 align-center">
           <v-spacer></v-spacer>
           <v-col class="pr-0">
-            <v-icon :icon=mdiBatteryCharging></v-icon
+            <v-icon :icon="mdiBatteryCharging"></v-icon
           ></v-col>
           <v-col class="pl-0 text-no-wrap">{{ calcNobleNPGain() }}%</v-col>
           <v-col class="pr-0">
-            <v-icon :icon=mdiStarFourPoints></v-icon
+            <v-icon :icon="mdiStarFourPoints"></v-icon
           ></v-col>
-          <v-col v-if="!isManiac" class="pl-0 text-no-wrap"
+          <v-col class="pl-0 text-no-wrap"
             >{{ calcNobleStarGain()[5] }}個
           </v-col>
-          <v-col cols="11" sm="3" v-if="isManiac" class="pl-0 text-no-wrap"
-            ><v-icon :icon=mdiStarFourPoints></v-icon
-          >{{ calcNobleStarGain()[0] }}個 ＆ {{ calcNobleStarGain()[1] }}%
+          <v-spacer></v-spacer>
+        </v-row>
+
+        <v-row v-if="isManiac" justify="center" class="text-h6 align-center">
+          <v-spacer></v-spacer>
+          <v-col cols="2" sm="1" class="pr-0">
+            <v-icon :icon="mdiBatteryCharging"></v-icon
+          ></v-col>
+          <v-col cols="10" sm="1" class="pl-0 text-no-wrap"
+            >{{ calcNobleNPGain() }}%</v-col
+          >
+          <v-col cols="2" sm="1" class="pr-0">
+            <v-icon :icon="mdiStarFourPoints"></v-icon
+          ></v-col>
+          <v-col cols="10" sm="6" class="pl-0 text-no-wrap"
+            >{{ calcNobleStarGain()[0] }}個 ＆ {{ calcNobleStarGain()[1] }}%
             {{ calcNobleStarGain()[2] }}回 ＆ {{ calcNobleStarGain()[3] }}%
             {{ calcNobleStarGain()[4] }}回
           </v-col>
-          <v-col cols="3" sm="2" v-if="isManiac"
+          <v-col cols="6" sm="3"
             ><v-text-field
               v-model="overHitCount[0]"
               type="number"
@@ -780,9 +793,9 @@ export default {
           <tbody class="justify-center">
             <tr v-for="item in cards">
               <td>
-                <v-icon :color="item" :icon=mdiBatteryCharging></v-icon
+                <v-icon :color="item" :icon="mdiBatteryCharging"></v-icon
                 ><v-divider class="border-opacity-50"></v-divider>
-                <v-icon :color="item" :icon=mdiStarFourPoints></v-icon>
+                <v-icon :color="item" :icon="mdiStarFourPoints"></v-icon>
               </td>
               <td v-if="!isManiac" class="textwrap">
                 {{ calcCardNPGain(item, 1) }}%

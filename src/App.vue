@@ -9,6 +9,7 @@ const classSkillsContainer = defineAsyncComponent(() => import("./components/cla
 const nobleContainer = defineAsyncComponent(() => import("./components/noble/NobleContainer.vue"));
 const userInput = defineAsyncComponent(() => import("./components/UserInput.vue"));
 import { sumObjectValue } from "./components/TotalSkillValue.js";
+import { mdiPencil, mdiMenuDown } from "@mdi/js";
 
 export default {
   components: {
@@ -23,6 +24,8 @@ export default {
   },
   data() {
     return {
+      mdiPencil,
+      mdiMenuDown,
       selectedServant: [0, 1, 2, 3, 4, 5],
       //skillValueは味方単体/全体
       //Selfは自分自身
@@ -172,7 +175,7 @@ export default {
               ><v-icon
                 size="x-large"
                 :icon="
-                  this.isShowSkillDetail[0] ? 'mdi-pencil' : 'mdi-menu-down'
+                  this.isShowSkillDetail[0] ? mdiPencil : mdiMenuDown
                 "
               ></v-icon
             ></v-col>
@@ -231,7 +234,7 @@ export default {
               ><v-icon
                 size="x-large"
                 :icon="
-                  this.isShowSkillDetail[1] ? 'mdi-pencil' : 'mdi-menu-down'
+                  this.isShowSkillDetail[1] ? mdiPencil : mdiMenuDown
                 "
               ></v-icon
             ></v-col>
@@ -275,7 +278,7 @@ export default {
               ><v-icon
                 size="x-large"
                 :icon="
-                  this.isShowSkillDetail[2] ? 'mdi-pencil' : 'mdi-menu-down'
+                  this.isShowSkillDetail[2] ? mdiPencil : mdiMenuDown
                 "
               ></v-icon
             ></v-col>
@@ -319,7 +322,7 @@ export default {
               ><v-icon
                 size="x-large"
                 :icon="
-                  this.isShowSkillDetail[3] ? 'mdi-pencil' : 'mdi-menu-down'
+                  this.isShowSkillDetail[3] ? mdiPencil : mdiMenuDown
                 "
               ></v-icon
             ></v-col>
@@ -358,7 +361,7 @@ export default {
               ><v-icon
                 size="x-large"
                 :icon="
-                  this.isShowSkillDetail[4] ? 'mdi-pencil' : 'mdi-menu-down'
+                  this.isShowSkillDetail[4] ? mdiPencil : mdiMenuDown
                 "
               ></v-icon></v-col></v-row
         ></v-container>

@@ -1,7 +1,8 @@
 <script>
+import { defineAsyncComponent } from "vue";
 import { servantList } from "../../data/servantList.js";
-const servantButton = defineAsyncComponent(() => import("./ServantButton.vue"));
-const servantSearch = defineAsyncComponent(() => import("./ServantSearch.vue"));
+const searchButton = defineAsyncComponent(() => import("./SearchButton.vue"));
+const servantSelect = defineAsyncComponent(() => import("./ServantSelect.vue"));
 
 export default {
   emits: ["selectedServant"],

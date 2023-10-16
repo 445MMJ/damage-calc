@@ -32,7 +32,7 @@ export default {
       skillValueSelf: {},
       skillValueOther: {},
       isChecked: true, // チェックボックスの状態を保持
-      isShow: false, // 表示/非表示の状態を保持
+      isShow: true, // 表示/非表示の状態を保持
     };
   },
   mounted() {

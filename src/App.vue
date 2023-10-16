@@ -62,7 +62,7 @@ export default {
         "保有スキル 3": "プレースホルダー",
       },
       tab: null,
-      isShowSkillDetail: [true, true, false, false, false],
+      isShowSkillDetail: [true, false, false, false, false],
       isManiac: false,
     };
   },

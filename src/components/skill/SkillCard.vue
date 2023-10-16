@@ -126,6 +126,7 @@ export default {
         }}{{ item[this.skillLevel] }}
       </li>
     </ul>
+    {{ skillValue }}
   </div>
 </template>
 

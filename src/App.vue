@@ -94,6 +94,7 @@ export default {
       this.ATKValue = item;
     },
     updateUserInput(item) {
+      console.log(item)
       this.userInputValue = item;
       this.activeSkillValue[14] = item;
       this.totalSkillValue = sumObjectValue(this.activeSkillValue);

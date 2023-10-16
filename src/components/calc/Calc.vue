@@ -146,26 +146,44 @@ export default {
     calcCardDamage(cardtype, index) {
       //下処理
       let result = 0;
-      let buffCardType = "";
+      let buffCardType = ""; //カード性能
+      let ResistCardType = ""; //カード耐性
       let specialValue = totalSpecialValue(this.skillvalue);
       if (cardtype == "Buster") {
         buffCardType = "Busterカード性能";
+        ResistCardType = "Busterカード耐性";
       } else if (cardtype == "Arts") {
         buffCardType = "Artsカード性能";
+        ResistCardType = "Artsカード耐性";
       } else if (cardtype == "Quick") {
         buffCardType = "Quickカード性能";
+        ResistCardType = "Quickカード耐性";
       }
       result =
         //A項
         this.ATKValue *
           0.23 *
           ((this.cardModifierATKList[cardtype][index] / 100) *
-            Math.min(5, 1 + this.skillvalue[buffCardType] / 100) +
+            Math.max(
+              0,
+              1 +
+                Math.min(4, this.skillvalue[buffCardType] / 100) +
+                Math.min(4, this.skillvalue[ResistCardType] / 100)
+            ) +
             this.firstBounsATKList[this.firstCard][index]) *
           this.classAffinityModifier *
           this.attributeAffinityModifier *
           //B項
-          (1 + this.skillvalue["攻撃力"] / 100) *
+          Math.max(
+            0,
+            1 +
+              Math.min(4, this.skillvalue["攻撃力"] / 100) +
+              Math.min(
+                4,
+                this.skillvalue["防御力"] / 100 +
+                  this.skillvalue["敵特防"] / 100
+              )
+          ) *
           Math.max(1, 2 * this.isCritical) *
           //C項
           (1 + specialValue / 100) *
@@ -187,15 +205,19 @@ export default {
       let result = 0;
       let cardtype = "";
       let buffCardType = "";
+      let ResistCardType = "";
       let specialValue = totalSpecialValue(this.skillvalue);
       if (this.attacker["Noble"].includes("Ｂ")) {
         buffCardType = "Busterカード性能";
+        ResistCardType = "Busterカード耐性";
         cardtype = "Buster";
       } else if (this.attacker["Noble"].includes("Ａ")) {
         buffCardType = "Artsカード性能";
+        ResistCardType = "Artsカード耐性";
         cardtype = "Arts";
       } else if (this.attacker["Noble"].includes("Ｑ")) {
         buffCardType = "Quickカード性能";
+        ResistCardType = "Quickカード耐性";
         cardtype = "Quick";
       }
       result =
@@ -203,15 +225,38 @@ export default {
         ((((this.ATKValue * this.noblevalue["宝具攻撃"]) / 100) *
           this.cardModifierATKList[cardtype][1]) /
           100) *
-        Math.min(5, 1 + this.skillvalue[buffCardType] / 100) *
-        Math.min(5, 1 + this.noblevalue[buffCardType] / 100) *
+        Math.max(
+          0,
+          1 +
+            Math.min(
+              4,
+              this.skillvalue[buffCardType] / 100 +
+                this.noblevalue[buffCardType] / 100
+            ) +
+            Math.min(
+              4,
+              this.skillvalue[ResistCardType] / 100 +
+                this.noblevalue[ResistCardType] / 100
+            )
+        ) *
         this.classAffinityModifier *
         this.attributeAffinityModifier *
         this.slider * //仮置きの乱数
         //B項
-        (1 +
-          this.skillvalue["攻撃力"] / 100 +
-          this.noblevalue["攻撃力"] / 100) *
+        Math.max(
+          0,
+          1 +
+            Math.min(
+              4,
+              this.skillvalue["攻撃力"] / 100 + this.noblevalue["攻撃力"] / 100
+            ) +
+            Math.min(
+              4,
+              this.skillvalue["防御力"] / 100 +
+                this.noblevalue["防御力"] / 100 +
+                this.skillvalue["敵特防"] / 100
+            )
+        ) *
         //C項
         (1 + specialValue / 100) *
         (1 +
@@ -230,12 +275,16 @@ export default {
       //下処理
       let result = 0;
       let buffCardType = "";
+      let ResistCardType = "";
       if (cardtype == "Buster") {
         buffCardType = "Busterカード性能";
+        ResistCardType = "Busterカード耐性";
       } else if (cardtype == "Arts") {
         buffCardType = "Artsカード性能";
+        ResistCardType = "Artsカード耐性";
       } else if (cardtype == "Quick") {
         buffCardType = "Quickカード性能";
+        ResistCardType = "Quickカード耐性";
       }
       let overHit = 0;
       this.overHitCount[index] = Math.floor(this.overHitCount[index]);
@@ -250,7 +299,8 @@ export default {
       result =
         this.additionalData["N/A "] *
         ((this.cardModifierNPList[cardtype][index] / 100) *
-          Math.min(5, 1 + this.skillvalue[buffCardType] / 100) +
+          (Math.min(5, 1 + this.skillvalue[buffCardType] / 100) +
+            this.skillvalue[ResistCardType] / 100) +
           this.firstBounsNPList[this.firstCard][index] / 100) *
         this.DTDR *
         Math.min(5, 1 + this.skillvalue["NP獲得量"] / 100) *
@@ -266,14 +316,18 @@ export default {
       let result = 0;
       let cardtype = "";
       let buffCardType = "";
+      let ResistCardType = "";
       if (this.attacker["Noble"].includes("Ｂ")) {
         buffCardType = "Busterカード性能";
+        ResistCardType = "Busterカード耐性";
         cardtype = "Buster";
       } else if (this.attacker["Noble"].includes("Ａ")) {
         buffCardType = "Artsカード性能";
+        ResistCardType = "Artsカード耐性";
         cardtype = "Arts";
       } else if (this.attacker["Noble"].includes("Ｑ")) {
         buffCardType = "Quickカード性能";
+        ResistCardType = "Quickカード耐性";
         cardtype = "Quick";
       }
       let overHit = 0;
@@ -289,12 +343,14 @@ export default {
       result =
         this.additionalData["N/A "] *
         (this.cardModifierNPList[cardtype][1] / 100) *
-        Math.min(
+        (Math.min(
           5,
           1 +
             this.skillvalue[buffCardType] / 100 +
             this.noblevalue[buffCardType] / 100
-        ) *
+        ) +
+          this.skillvalue[ResistCardType] / 100 +
+          this.noblevalue[ResistCardType] / 100) *
         this.DTDR *
         Math.min(
           5,
@@ -313,12 +369,16 @@ export default {
       //下処理
       let result = 0;
       let buffCardType = "";
+      let ResistCardType = "";
       if (cardtype == "Buster") {
         buffCardType = "Busterカード性能";
+        ResistCardType = "Busterカード耐性";
       } else if (cardtype == "Arts") {
         buffCardType = "Artsカード性能";
+        ResistCardType = "Artsカード耐性";
       } else if (cardtype == "Quick") {
         buffCardType = "Quickカード性能";
+        ResistCardType = "Quickカード耐性";
       }
       let overHit = 0;
       this.overHitCount[index] = Math.floor(this.overHitCount[index]);
@@ -334,7 +394,8 @@ export default {
       result =
         this.additionalData["SR"] / 100 +
         (this.cardModifierStarList[cardtype][index] / 100) *
-          Math.min(5, 1 + this.skillvalue[buffCardType] / 100) +
+          (Math.min(5, 1 + this.skillvalue[buffCardType] / 100) +
+            this.skillvalue[ResistCardType] / 100) +
         this.firstBounsStarList[this.firstCard][index] / 100 +
         this.DSR +
         Math.min(5, this.skillvalue["スター発生率"] / 100) +
@@ -364,14 +425,18 @@ export default {
       let result = 0;
       let cardtype = "";
       let buffCardType = "";
+      let ResistCardType = "";
       if (this.attacker["Noble"].includes("Ｂ")) {
         buffCardType = "Busterカード性能";
+        ResistCardType = "Busterカード耐性";
         cardtype = "Buster";
       } else if (this.attacker["Noble"].includes("Ａ")) {
         buffCardType = "Artsカード性能";
+        ResistCardType = "Artsカード耐性";
         cardtype = "Arts";
       } else if (this.attacker["Noble"].includes("Ｑ")) {
         buffCardType = "Quickカード性能";
+        ResistCardType = "Quickカード耐性";
         cardtype = "Quick";
       }
       let overHit = 0;
@@ -388,12 +453,14 @@ export default {
       result =
         this.additionalData["SR"] / 100 +
         (this.cardModifierStarList[cardtype][1] / 100) *
-          Math.min(
+          (Math.min(
             5,
             1 +
               this.skillvalue[buffCardType] / 100 +
               this.noblevalue[buffCardType] / 100
           ) +
+            this.skillvalue[ResistCardType] / 100 +
+            this.noblevalue[ResistCardType] / 100) +
         this.DSR +
         Math.min(
           5,

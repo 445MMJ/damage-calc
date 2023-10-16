@@ -46,7 +46,7 @@ export function sumObjectValue(objectArray) {
         "Busterカード耐性": 0,
         "Quickカード耐性": 0,
         "Artsカード耐性": 0,
-        "敵防御力": 0,
+        "防御力": 0,
         "敵特防": 0,
         "敵特殊耐性": 0,
     }

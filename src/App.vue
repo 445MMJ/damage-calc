@@ -1,6 +1,7 @@
 <script>
 import { defineAsyncComponent } from "vue";
 import myHeader from "./components/MyHeader.vue";
+import MyFooter from "./components/MyFooter.vue";
 const calc = defineAsyncComponent(() => import("./components/calc/Calc.vue"));
 const servantContainer = defineAsyncComponent(() => import("./components/servant/ServantContainer.vue"));
 const attacker = defineAsyncComponent(() => import("./components/servant/Attacker.vue"));
@@ -14,6 +15,7 @@ import { mdiPencil, mdiMenuDown } from "@mdi/js";
 export default {
   components: {
     myHeader,
+    MyFooter,
     servantContainer,
     skillsContainer,
     classSkillsContainer,
@@ -426,6 +428,7 @@ export default {
         />
       </v-dialog>
     </v-main>
+    <MyFooter />
   </v-app>
 </template>
 

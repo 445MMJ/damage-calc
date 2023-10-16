@@ -1,32 +1,25 @@
 <script>
 import { defineAsyncComponent } from "vue";
 import myHeader from "./components/MyHeader.vue";
-//import calc from "./components/calc/Calc.vue";
-//import servantContainer from "./components/servant/ServantContainer.vue";
-import attacker from "./components/servant/Attacker.vue";
-import skillsContainer from "./components/skill/SkillsContainer.vue";
-import classSkillsContainer from "./components/classSkill/ClassskillsContainer.vue";
-import nobleContainer from "./components/noble/NobleContainer.vue";
-import userInput from "./components/UserInput.vue";
-
+const calc = defineAsyncComponent(() => import("./components/calc/Calc.vue"));
+const servantContainer = defineAsyncComponent(() => import("./components/servant/ServantContainer.vue"));
+const attacker = defineAsyncComponent(() => import("./components/servant/Attacker.vue"));
+const skillsContainer = defineAsyncComponent(() => import("./components/skill/SkillsContainer.vue"));
+const classSkillsContainer = defineAsyncComponent(() => import("./components/classSkill/ClassskillsContainer.vue"));
+const nobleContainer = defineAsyncComponent(() => import("./components/noble/NobleContainer.vue"));
+const userInput = defineAsyncComponent(() => import("./components/UserInput.vue"));
 import { sumObjectValue } from "./components/TotalSkillValue.js";
 
 export default {
   components: {
     myHeader,
-    //servantContainer,
+    servantContainer,
     skillsContainer,
     classSkillsContainer,
     nobleContainer,
-    //calc,
+    calc,
     attacker,
     userInput,
-    calc: defineAsyncComponent(() =>
-      import("./components/calc/Calc.vue")
-    ),
-    servantContainer: defineAsyncComponent(() =>
-      import("./components/servant/ServantContainer.vue")
-    ),
   },
   data() {
     return {

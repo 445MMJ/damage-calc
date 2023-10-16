@@ -137,7 +137,7 @@ function filterSkillList(list, level, result) {
     if (obj.MainText === "Busterカード耐性" && (obj.Target === "敵単体" || obj.Target === "敵全体")) { if (result["Busterカード耐性"] === undefined) { result["Busterカード耐性"] = 0; } result["Busterカード耐性"] = + parseFloat(extractNumbers(str)[0]); }
     if (obj.MainText === "Quickカード耐性" && (obj.Target === "敵単体" || obj.Target === "敵全体")) { if (result["Quickカード耐性"] === undefined) { result["Quickカード耐性"] = 0; } result["Quickカード耐性"] = + parseFloat(extractNumbers(str)[0]); }
     if (obj.MainText === "Artsカード耐性" && (obj.Target === "敵単体" || obj.Target === "敵全体")) { if (result["Artsカード耐性"] === undefined) { result["Artsカード耐性"] = 0; } result["Artsカード耐性"] = + parseFloat(extractNumbers(str)[0]); }
-    if (obj.MainText === "防御力" && (obj.Target === "敵単体" || obj.Target === "敵全体")) { if (result["防御力"] === undefined) { result["防御力"] = 0; } result["防御力"] = + parseFloat(extractNumbers(str)[0]); console.log("ほげ")}
+    if (obj.MainText === "防御力" && (obj.Target === "敵単体" || obj.Target === "敵全体")) { if (result["防御力"] === undefined) { result["防御力"] = 0; } result["防御力"] = + parseFloat(extractNumbers(str)[0])}
     if (obj.MainText === "敵特防") { if (result["敵特防"] === undefined) { result["敵特防"] = 0; } result["敵特防"] = + parseFloat(extractNumbers(str)[0]); }
     if (obj.MainText === "敵特殊耐性") { if (result["敵特殊耐性"] === undefined) { result["敵特殊耐性"] = 0; } result["敵特殊耐性"] = + parseFloat(extractNumbers(str)[0]); }
 

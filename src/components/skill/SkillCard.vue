@@ -100,7 +100,7 @@ export default {
 </script>
 
 <template>
-  <div v-if="isShow">
+  <div>
     <v-checkbox
       input-value="true"
       v-model="isChecked"

@@ -6,6 +6,10 @@ import vuetify from 'vite-plugin-vuetify'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    // Disables the preload.
+    modulePreload: false,
+  },
   base: 'damage-calc', //追加
   plugins: [
     vue(),

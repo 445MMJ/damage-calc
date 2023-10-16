@@ -1,7 +1,8 @@
 <script>
+import { defineAsyncComponent } from "vue";
 import { servantList } from "../../data/servantList.js";
-import searchButton from "./SearchButton.vue";
-import servantSelect from "./ServantSelect.vue";
+const searchButton = defineAsyncComponent(() => import("./SearchButton.vue"));
+const servantSelect = defineAsyncComponent(() => import("./ServantSelect.vue"));
 
 export default {
   emits: ["selectedServant"],
@@ -71,7 +72,7 @@ export default {
         const condition3 = !selector3 || obj["Noble"] === selector3;
         return condition1 && condition2 && condition3;
       });
-    },  
+    },
   },
 };
 </script>

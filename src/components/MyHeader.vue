@@ -1,11 +1,13 @@
 <script>
 import themeswitch from "./ThemeSwitch.vue";
+import { mdiSwordCross } from '@mdi/js';
 export default {
   components: {
     themeswitch,
   },
   data() {
     return {
+      mdiSwordCross,
       drawer: false,
       group: null,
       olditems: [
@@ -76,7 +78,7 @@ export default {
         variant="text"
         @click.stop="drawer = !drawer"
       ></v-app-bar-nav-icon>
-      <v-icon icon="mdi-sword-cross"></v-icon>
+      <v-icon :icon="mdiSwordCross"></v-icon>
     </template>
     <v-toolbar-title>ダメージ計算</v-toolbar-title>
     <v-spacer></v-spacer>

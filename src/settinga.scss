@@ -4,6 +4,7 @@ $app-bar-collapsed-max-width: 10px !important;
 $body-font-family:'Noto Sans JP', serif !important;
 
 @use 'vuetify/settings' with (
+  $color-pack: false,
   $app-bar-collapsed-max-width: $app-bar-collapsed-max-width,
   $body-font-family: $body-font-family,
 );

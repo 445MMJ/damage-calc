@@ -3,12 +3,24 @@ import { defineAsyncComponent } from "vue";
 import myHeader from "./components/MyHeader.vue";
 import MyFooter from "./components/MyFooter.vue";
 const calc = defineAsyncComponent(() => import("./components/calc/Calc.vue"));
-const servantContainer = defineAsyncComponent(() => import("./components/servant/ServantContainer.vue"));
-const attacker = defineAsyncComponent(() => import("./components/servant/Attacker.vue"));
-const skillsContainer = defineAsyncComponent(() => import("./components/skill/SkillsContainer.vue"));
-const classSkillsContainer = defineAsyncComponent(() => import("./components/classSkill/ClassskillsContainer.vue"));
-const nobleContainer = defineAsyncComponent(() => import("./components/noble/NobleContainer.vue"));
-const userInput = defineAsyncComponent(() => import("./components/UserInput.vue"));
+const servantContainer = defineAsyncComponent(() =>
+  import("./components/servant/ServantContainer.vue")
+);
+const attacker = defineAsyncComponent(() =>
+  import("./components/servant/Attacker.vue")
+);
+const skillsContainer = defineAsyncComponent(() =>
+  import("./components/skill/SkillsContainer.vue")
+);
+const classSkillsContainer = defineAsyncComponent(() =>
+  import("./components/classSkill/ClassskillsContainer.vue")
+);
+const nobleContainer = defineAsyncComponent(() =>
+  import("./components/noble/NobleContainer.vue")
+);
+const userInput = defineAsyncComponent(() =>
+  import("./components/UserInput.vue")
+);
 import { sumObjectValue } from "./components/TotalSkillValue.js";
 import { mdiPencil, mdiMenuDown } from "@mdi/js";
 
@@ -62,15 +74,17 @@ export default {
         "保有スキル 3": "プレースホルダー",
       },
       tab: null,
-      isShowSkillDetail: [true, false, false, false, false],
+      isLoadSkillDetail: [false, false, false, false, false],
+      isShowSkillDetail: [false, false, false, false, false],
       isManiac: false,
     };
   },
   created() {
     this.selectedServant[0] = { ...this.servantInit };
-    var arr = localStorage.getItem("isShowSkillDetail");
-    var arr2 = JSON.parse(arr);
+    let arr = localStorage.getItem("isShowSkillDetail");
+    let arr2 = JSON.parse(arr);
     if (arr2 != null) {
+      this.isLoadSkillDetail = arr2;
       this.isShowSkillDetail = arr2;
     }
   },
@@ -94,7 +108,7 @@ export default {
       this.ATKValue = item;
     },
     updateUserInput(item) {
-      console.log(item)
+      console.log(item);
       this.userInputValue = item;
       this.activeSkillValue[14] = item;
       this.totalSkillValue = sumObjectValue(this.activeSkillValue);
@@ -112,7 +126,8 @@ export default {
       localStorage.setItem("isAdvanced", isAdvanced);
     },
     invertSkillDetail(item) {
-      this.isShowSkillDetail[item] = !this.isShowSkillDetail[item];
+      const Booleanitem = this.isShowSkillDetail[item];
+      this.isShowSkillDetail[item] = !Booleanitem
       localStorage.setItem(
         "isShowSkillDetail",
         JSON.stringify(this.isShowSkillDetail)
@@ -177,16 +192,14 @@ export default {
             ><v-col md="1" class="mx-1"
               ><v-icon
                 size="x-large"
-                :icon="
-                  this.isShowSkillDetail[0] ? mdiPencil : mdiMenuDown
-                "
+                :icon="this.isShowSkillDetail[0] ? mdiPencil : mdiMenuDown"
               ></v-icon
             ></v-col>
           </v-row>
         </v-container>
         <v-expand-transition>
           <attacker
-            v-show="isShowSkillDetail[0]"
+            :v-show="isShowSkillDetail[0]"
             :attacker="selectedServant[0]"
             @ATK="updatedATKValue($event)"
         /></v-expand-transition>
@@ -236,9 +249,7 @@ export default {
             ><v-col md="1" class="mx-1"
               ><v-icon
                 size="x-large"
-                :icon="
-                  this.isShowSkillDetail[1] ? mdiPencil : mdiMenuDown
-                "
+                :icon="this.isShowSkillDetail[1] ? mdiPencil : mdiMenuDown"
               ></v-icon
             ></v-col>
           </v-row>
@@ -280,9 +291,7 @@ export default {
             ><v-col md="1" class="mx-1"
               ><v-icon
                 size="x-large"
-                :icon="
-                  this.isShowSkillDetail[2] ? mdiPencil : mdiMenuDown
-                "
+                :icon="this.isShowSkillDetail[2] ? mdiPencil : mdiMenuDown"
               ></v-icon
             ></v-col>
           </v-row>
@@ -324,9 +333,7 @@ export default {
             ><v-col md="1" class="mx-1"
               ><v-icon
                 size="x-large"
-                :icon="
-                  this.isShowSkillDetail[3] ? mdiPencil : mdiMenuDown
-                "
+                :icon="this.isShowSkillDetail[3] ? mdiPencil : mdiMenuDown"
               ></v-icon
             ></v-col>
           </v-row>
@@ -363,9 +370,7 @@ export default {
             ><v-col md="1" class="mx-1"
               ><v-icon
                 size="x-large"
-                :icon="
-                  this.isShowSkillDetail[4] ? mdiPencil : mdiMenuDown
-                "
+                :icon="this.isShowSkillDetail[4] ? mdiPencil : mdiMenuDown"
               ></v-icon></v-col></v-row
         ></v-container>
         <v-expand-transition>

@@ -1,6 +1,11 @@
 <script>
 import { defineAsyncComponent } from "vue";
-import { servantList } from "../../data/servantList.js";
+async function asyncGetData() {
+  const p = await import("../../data/servantList.js");
+  const m = p.servantList.servantList;
+  return m;
+}
+let asyncData = [];
 const searchButton = defineAsyncComponent(() => import("./SearchButton.vue"));
 const servantSelect = defineAsyncComponent(() => import("./ServantSelect.vue"));
 
@@ -13,8 +18,6 @@ export default {
   },
   data() {
     return {
-      //鯖リスト
-      servantList: servantList.servantList,
       selectAttriList: ["天", "地", "人", "星", "獣"],
       selectClassList: [
         "盾",
@@ -46,6 +49,10 @@ export default {
       selectedServant: null,
     };
   },
+  async created() {
+    //非同期処理でデータを取得
+    asyncData = await asyncGetData();
+  },
   methods: {
     updateSelectedSearch(option, type) {
       if (type == "Attri") {
@@ -66,7 +73,7 @@ export default {
       let selector1 = this.selectedAttri === null ? "" : this.selectedAttri;
       let selector2 = this.selectedClass === null ? "" : this.selectedClass;
       let selector3 = this.selectedNoble === null ? "" : this.selectedNoble;
-      return this.servantList.filter((obj) => {
+      return asyncData.filter((obj) => {
         const condition1 = !selector1 || obj["Attri"] === selector1;
         const condition2 = !selector2 || obj["Class"] === selector2;
         const condition3 = !selector3 || obj["Noble"] === selector3;

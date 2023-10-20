@@ -1,5 +1,10 @@
 <script>
-import { skillList } from "../../data/skillList.js";
+async function asyncGetData() {
+  const p = await import("../../data/skillList.js");
+  const m = p.skillList.skillList;
+  return m;
+}
+let asyncData = [];
 import { sumObjectValue } from "../../components/TotalSkillValue.js";
 import skillCard from "./SkillCard.vue";
 import skillCardPreText from "./SkillCardPreText.vue";
@@ -30,6 +35,10 @@ export default {
       totalSkillValueOther: {},
       skillCardType: ["skillCard", "skillCard", "skillCard", "skillCard"],
     };
+  },
+  async created() {
+    //非同期処理でデータを取得
+    asyncData = await asyncGetData();
   },
   watch: {
     items(newValue) {
@@ -76,12 +85,12 @@ export default {
         58450, 818552, 818552, 2097350, 2172550, 65900, 2021550, 2153650,
       ];
       //四枝の浅瀬 A,被虐体質 A+,局中法度 EX
-      const skillCardUnique1 = [759550,355551,344650]
+      const skillCardUnique1 = [759550, 355551, 344650];
       //大河の巨獣 B
-      const skillCardUnique2 = [2082450]
+      const skillCardUnique2 = [2082450];
       //(死滅願望 A強化前だから使わないかも),四夜の終末 EX,是非もなし A-
-      const skillCardUnique3 = [199550,458650,619549]
-      let foundSkill = skillList.skillList.find(
+      const skillCardUnique3 = [199550, 458650, 619549];
+      let foundSkill = asyncData.find(
         (obj) => obj.SkillName === skillName
       );
       if (foundSkill === undefined) {

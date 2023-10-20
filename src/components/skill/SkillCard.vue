@@ -1,5 +1,10 @@
 <script>
-import { skillList } from "../../data/skillList.js";
+async function asyncGetData() {
+  const p = await import("../../data/skillList.js");
+  const m = p.skillList.skillList;
+  return m;
+}
+let asyncData = [];
 import { sumSkillValue } from "../script/sumSkillValue.js";
 export default {
   props: ["name"],
@@ -35,6 +40,10 @@ export default {
       isShow: false, // 表示/非表示の状態を保持
     };
   },
+  async created() {
+    //非同期処理でデータを取得
+    asyncData = await asyncGetData();
+  },
   mounted() {
     //Mountタイミングで初期化処理を行う
     this.isChecked = true;
@@ -42,6 +51,7 @@ export default {
   },
   watch: {
     name(newValue) {
+      this.filteredList;
       //値が変わった時も自動処理する
       this.isChecked = true;
       this.isShow = true;
@@ -55,7 +65,8 @@ export default {
   },
   computed: {
     filteredList() {
-      return skillList.skillList.filter((obj) => obj.SkillName === this.name);
+      let name = this.name; //nameに依存していることを明示しないとリアクティブしてくれない
+      return asyncData.filter((obj) => obj.SkillName === this.name);
     },
     skillLevel() {
       return `Value` + (this.selectedNumber - 1);
@@ -127,7 +138,6 @@ export default {
         }}{{ item[this.skillLevel] }}
       </li>
     </ul>
-    {{ skillValue }}
   </div>
 </template>
 

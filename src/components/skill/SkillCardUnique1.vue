@@ -1,5 +1,10 @@
 <script>
-import { skillList } from "../../data/skillList.js";
+async function asyncGetData() {
+  const p = await import("../../data/skillList.js");
+  const m = p.skillList.skillList;
+  return m;
+}
+let asyncData = [];
 import { sumSkillValue } from "../script/sumSkillValue.js";
 export default {
   props: ["name"],
@@ -34,9 +39,15 @@ export default {
       skillValueOther: {},
       isChecked: true, // チェックボックスの状態を保持
       isShow: false, // 表示/非表示の状態を保持
+      isLoad: false, //ロードのチェック
       HP: 1,
       MaxHP: 10000,
     };
+  },
+  async created() {
+    //非同期処理でデータを取得    
+    asyncData = await asyncGetData();    
+    this.isLoad = true;
   },
   mounted() {
     //Mountタイミングで初期化処理を行う
@@ -57,7 +68,11 @@ export default {
   },
   computed: {
     filteredList() {
-      return skillList.skillList.filter((obj) => obj.SkillName === this.name);
+      let name = this.name; //nameに依存していることを明示しないとリアクティブしてくれない
+      if (this.isLoad === false) {
+        setTimeout(() => {}, 500);
+      }
+      return asyncData.filter((obj) => obj.SkillName === this.name);
     },
     skillLevel() {
       return `Value` + (this.selectedNumber - 1);

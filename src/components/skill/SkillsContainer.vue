@@ -1,4 +1,5 @@
 <script>
+import { defineAsyncComponent } from "vue";
 async function asyncGetData() {
   const p = await import("../../data/skillList.js");
   const m = p.skillList.skillList;
@@ -6,12 +7,22 @@ async function asyncGetData() {
 }
 let asyncData = [];
 import { sumObjectValue } from "../../components/TotalSkillValue.js";
-import skillCard from "./SkillCard.vue";
-import skillCardPreText from "./SkillCardPreText.vue";
-import skillCardTarget2 from "./SkillCardTarget2.vue";
-import skillCardUnique1 from "./SkillCardUnique1.vue";
-import skillCardUnique2 from "./SkillCardUnique2.vue";
-import skillCardUnique3 from "./SkillCardUnique3.vue";
+const skillCard = defineAsyncComponent(() => import("./SkillCard.vue"));
+const skillCardPreText = defineAsyncComponent(() =>
+  import("./SkillCardPreText.vue")
+);
+const skillCardTarget2 = defineAsyncComponent(() =>
+  import("./SkillCardTarget2.vue")
+);
+const skillCardUnique1 = defineAsyncComponent(() =>
+  import("./SkillCardUnique1.vue")
+);
+const skillCardUnique2 = defineAsyncComponent(() =>
+  import("./SkillCardUnique2.vue")
+);
+const skillCardUnique3 = defineAsyncComponent(() =>
+  import("./SkillCardUnique3.vue")
+);
 
 export default {
   props: ["items"],
@@ -90,9 +101,7 @@ export default {
       const skillCardUnique2 = [2082450];
       //(死滅願望 A強化前だから使わないかも),四夜の終末 EX,是非もなし A-
       const skillCardUnique3 = [199550, 458650, 619549];
-      let foundSkill = asyncData.find(
-        (obj) => obj.SkillName === skillName
-      );
+      let foundSkill = asyncData.find((obj) => obj.SkillName === skillName);
       if (foundSkill === undefined) {
         return "skillCard";
       }

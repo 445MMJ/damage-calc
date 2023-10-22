@@ -1,5 +1,8 @@
 <script>
-import { mdiFileCodeOutline, mdiAlphaXBoxOutline } from "@mdi/js";
+import {
+  mdiFileCodeOutline,
+  mdiAlphaXBoxOutline,
+} from "@mdi/js";
 import packageJson from "../../package.json";
 export default {
   data() {
@@ -14,6 +17,8 @@ export default {
 
 <template>
   <v-footer>
+    <span class="mx-4">ダメージ計算機</span>
+    <span class="mx-4">v{{ version }}</span>
     <v-btn
       href="https://github.com/445MMJ/damage-calc"
       class="mx-4"
@@ -25,8 +30,6 @@ export default {
       class="mx-4"
       :icon="mdiAlphaXBoxOutline"
       variant="text"
-    ></v-btn>
-    <span>ダメージ計算機</span>
-    <span>v{{ version }}</span>
+    ></v-btn>    
   </v-footer>
 </template>

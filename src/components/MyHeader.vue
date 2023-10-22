@@ -1,9 +1,11 @@
 <script>
 import themeswitch from "./ThemeSwitch.vue";
-import { mdiSwordCross } from '@mdi/js';
+import myFAB from "./MyFAB.vue";
+import { mdiSwordCross } from "@mdi/js";
 export default {
   components: {
     themeswitch,
+    myFAB,
   },
   data() {
     return {
@@ -65,50 +67,9 @@ export default {
 </script>
 
 <template>
-  <!-- <v-system-bar color="deep-purple darken-3"></v-system-bar> -->
-
-  <v-app-bar
-    scroll-behavior="collapse"
-    scroll-threshold="50"
-    color="primary"
-    dense
-  >
-    <template v-slot:prepend>
-      <v-app-bar-nav-icon
-        variant="text"
-        @click.stop="drawer = !drawer"
-      ></v-app-bar-nav-icon>
-      <v-icon :icon="mdiSwordCross"></v-icon>
-    </template>
+  <myFAB />
+  <v-toolbar color="primary"  density="compact">
     <v-toolbar-title>ダメージ計算</v-toolbar-title>
     <v-spacer></v-spacer>
-  </v-app-bar>
-
-  <v-navigation-drawer
-    v-model="drawer"
-    location="left"
-    temporary
-    rounded
-    width="180"
-  >
-    <v-list>
-      <v-list-item
-        v-for="item in items"
-        :key="item.title"
-        :href="item.value"
-        @click.stop="drawer = !drawer"
-      >
-        <v-list-item-title>{{ item.title }}</v-list-item-title>
-      </v-list-item>
-      <v-list-item><themeswitch /></v-list-item>
-    </v-list>
-  </v-navigation-drawer>
+  </v-toolbar>
 </template>
-
-
-<style scoped>
-.v-toolbar--collapse {
-  width: 32px;
-  
-}
-</style>

@@ -1,7 +1,7 @@
 <script>
 import { defineAsyncComponent } from "vue";
 import myHeader from "./components/MyHeader.vue";
-import MyFooter from "./components/MyFooter.vue";
+import myFooter from "./components/MyFooter.vue";
 const calc = defineAsyncComponent(() => import("./components/calc/Calc.vue"));
 const servantContainer = defineAsyncComponent(() =>
   import("./components/servant/ServantContainer.vue")
@@ -27,7 +27,7 @@ import { mdiPencil, mdiMenuDown } from "@mdi/js";
 export default {
   components: {
     myHeader,
-    MyFooter,
+    myFooter,
     servantContainer,
     skillsContainer,
     classSkillsContainer,
@@ -127,7 +127,7 @@ export default {
     },
     invertSkillDetail(item) {
       const Booleanitem = this.isShowSkillDetail[item];
-      this.isShowSkillDetail[item] = !Booleanitem
+      this.isShowSkillDetail[item] = !Booleanitem;
       localStorage.setItem(
         "isShowSkillDetail",
         JSON.stringify(this.isShowSkillDetail)
@@ -434,7 +434,7 @@ export default {
         />
       </v-dialog>
     </v-main>
-    <MyFooter />
+    <myFooter />
   </v-app>
 </template>
 

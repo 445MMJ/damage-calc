@@ -70,8 +70,8 @@ export default {
 <template>
   <v-container>
     <v-row>
-      <v-col v-for="index in 10" :key="index">
-        <component
+      <v-col v-for="index in 10" :key="index" cols="12" sm="4">
+        <component 
           is="classSkillCard"
           :name="skillNames[index]"
           @skillValue="updateSkillValue($event, index)"

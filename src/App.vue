@@ -213,13 +213,6 @@ export default {
             @skillValue="updatedSkillValue($event, 0)"
             @skillValueSelf="updatedSkillValue($event, 6)"
         /></v-expand-transition>
-        <v-expand-transition>
-          <classSkillsContainer
-            v-show="false"
-            :items="selectedServant[0]"
-            @skillValue="updatedSkillValue($event, 12)"
-            @skillValueSelf="updatedSkillValue($event, 13)"
-        /></v-expand-transition>
       </v-sheet>
 
       <v-sheet :elevation="10" border class="ma-6" id="servant1">
@@ -382,30 +375,23 @@ export default {
       </v-sheet>
 
       <v-sheet :elevation="10" border class="ma-6">
-        <v-container fluid class="pa-2">
-          <v-row no-gutters class="justify-start">
-            <v-col
-              cols="12"
-              md="4"
-              class="d-inline-block text-truncate"
-              align-self="center"
-              >スキル欄開けたり閉めたり</v-col
-            ><v-col md="1" class="mx-1">
-              <v-btn class="bg-primary-darken-1" @click.stop="showSkillDetail()"
-                >全開</v-btn
-              ></v-col
-            ><v-col md="1" class="mx-1">
-              <v-btn class="bg-primary-darken-1" @click.stop="hideSkillDetail()"
-                >全閉</v-btn
-              ></v-col
-            ><v-col md="1" class="mx-1">
-              <v-switch
-                color="primary"
-                v-model="isManiac"
-                label="オタク向け"
-              ></v-switch></v-col
-            ><v-spacer></v-spacer></v-row
-        ></v-container>
+        スキル欄開けたり閉めたり
+        <v-btn class="bg-primary-darken-1" @click.stop="showSkillDetail()"
+          >全開</v-btn
+        >
+        <v-btn class="bg-primary-darken-1" @click.stop="hideSkillDetail()"
+          >全閉</v-btn
+        ><v-switch
+          color="primary"
+          v-model="isManiac"
+          label="詳細モード"
+        ></v-switch>
+        <classSkillsContainer
+            v-show="isManiac"
+            :items="selectedServant[0]"
+            @skillValue="updatedSkillValue($event, 12)"
+            @skillValueSelf="updatedSkillValue($event, 13)"
+        />
       </v-sheet>
 
       <!-- モーダルウィンドウ -->

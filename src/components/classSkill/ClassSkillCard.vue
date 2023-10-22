@@ -31,7 +31,7 @@ export default {
     name(newValue) {
       //値が変わった時も自動処理する
       this.isChecked = true;
-      if (newValue === "プレースホルダー") {
+      if (newValue === "--" || newValue === undefined) {
         this.isShow = false;
       } else {
         this.isShow = true;
@@ -41,7 +41,9 @@ export default {
   },
   computed: {
     filteredList() {
-      return classSkillList.classSkillList.filter((obj) => obj.SkillName === this.name);
+      return classSkillList.classSkillList.filter(
+        (obj) => obj.SkillName === this.name
+      );
     },
   },
   methods: {
@@ -49,16 +51,8 @@ export default {
       this.skillValue = { ...this.init };
       this.skillValueSelf = { ...this.init };
       this.skillValueOther = { ...this.init };
-      this.skillValue = sumSkillValue(
-        this.filteredList,
-       "Value0",
-        "defualt"
-      );
-      this.skillValueSelf = sumSkillValue(
-        this.filteredList,
-        "Value0",
-        "self"
-      );
+      this.skillValue = sumSkillValue(this.filteredList, "Value0", "defualt");
+      this.skillValueSelf = sumSkillValue(this.filteredList, "Value0", "self");
       this.skillValueOther = sumSkillValue(
         this.filteredList,
         "Value0",
@@ -82,7 +76,7 @@ export default {
 </script>
 
 <template>
-  <div v-if="isShow">
+  <div v-show="isShow">
     <v-checkbox
       input-value="true"
       v-model="isChecked"
@@ -95,12 +89,16 @@ export default {
       >
     </v-checkbox>
 
-    <ul>
-      <li v-for="item in filteredList" :key="item.id">
+    <v-list
+      ><v-list-item
+        v-for="item in filteredList"
+        :key="item.id"
+        density="compact"
+      >
         {{ item.Target }}/{{ item.MainText }}{{ item.PostText
         }}{{ item.Value0 }}
-      </li>
-    </ul>
+      </v-list-item></v-list
+    >
   </div>
 </template>
 

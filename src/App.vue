@@ -166,30 +166,25 @@ export default {
         />
       </v-sheet>
       <v-sheet :elevation="10" border="true" class="ma-6" id="servant0">
-        <v-container
-          fluid
-          class="bg-primary pa-2"
-          @click="invertSkillDetail(0)"
-        >
+        <v-container fluid class="pa-2" @click="invertSkillDetail(0)">
           <v-row no-gutters class="justify-start">
             <v-col
-              cols="12"
-              md="4"
+              cols="5"
+              md="8"
               class="d-inline-block text-truncate"
               align-self="center"
-              >アタッカー:{{ selectedServant[0]["Name"] }}</v-col
-            >
-            <v-col md="1" class="mx-1"
-              ><v-btn class="bg-primary-darken-1" @click.stop="showModal(0)"
+              >{{ selectedServant[0]["Name"] }}</v-col
+            ><v-spacer></v-spacer>
+            <v-col cols="2" md="1" class="mx-1"
+              ><v-btn variant="outlined" @click.stop="showModal(0)"
                 >変更</v-btn
               ></v-col
             >
-            <v-col md="1" class="mx-1">
-              <v-btn class="bg-primary-darken-1" @click.stop="deleteServant(0)"
+            <v-col cols="2" md="1" class="mx-1">
+              <v-btn variant="outlined" @click.stop="deleteServant(0)"
                 >削除</v-btn
               ></v-col
-            ><v-spacer></v-spacer
-            ><v-col md="1" class="mx-1"
+            ><v-col cols="2" md="1" class="mx-1"
               ><v-icon
                 size="x-large"
                 :icon="this.isShowSkillDetail[0] ? mdiPencil : mdiMenuDown"
@@ -216,30 +211,25 @@ export default {
       </v-sheet>
 
       <v-sheet :elevation="10" border class="ma-6" id="servant1">
-        <v-container
-          fluid
-          class="bg-primary pa-2"
-          @click="invertSkillDetail(1)"
-        >
+        <v-container fluid class="pa-2" @click="invertSkillDetail(1)">
           <v-row no-gutters class="justify-start">
             <v-col
-              cols="12"
-              md="4"
+              cols="5"
+              md="8"
               class="d-inline-block text-truncate"
               align-self="center"
               >サポ1:{{ selectedServant[1]["Name"] }}</v-col
-            >
-            <v-col md="1" class="mx-1"
-              ><v-btn class="bg-primary-darken-1" @click.stop="showModal(1)"
+            ><v-spacer></v-spacer>
+            <v-col cols="2" md="1" class="mx-1"
+              ><v-btn variant="outlined" @click.stop="showModal(1)"
                 >変更</v-btn
               ></v-col
             >
-            <v-col md="1" class="mx-1">
-              <v-btn class="bg-primary-darken-1" @click.stop="deleteServant(1)"
+            <v-col cols="2" md="1" class="mx-1">
+              <v-btn variant="outlined" @click.stop="deleteServant(1)"
                 >削除</v-btn
               ></v-col
-            ><v-spacer></v-spacer
-            ><v-col md="1" class="mx-1"
+            ><v-col cols="2" md="1" class="mx-1"
               ><v-icon
                 size="x-large"
                 :icon="this.isShowSkillDetail[1] ? mdiPencil : mdiMenuDown"
@@ -260,28 +250,27 @@ export default {
       <v-sheet :elevation="10" border class="ma-6" id="servant2">
         <v-container
           fluid
-          class="bg-primary pa-2"
+          class="pa-2"
           @click="invertSkillDetail(2)"
         >
           <v-row no-gutters class="justify-start">
             <v-col
-              cols="12"
-              md="4"
+              cols="5"
+              md="8"
               class="d-inline-block text-truncate"
               align-self="center"
               >サポ2:{{ selectedServant[2]["Name"] }}</v-col
-            >
-            <v-col md="1" class="mx-1"
-              ><v-btn class="bg-primary-darken-1" @click.stop="showModal(2)"
+            ><v-spacer></v-spacer>
+            <v-col cols="2" md="1" class="mx-1"
+              ><v-btn variant="outlined" @click.stop="showModal(2)"
                 >変更</v-btn
               ></v-col
             >
-            <v-col md="1" class="mx-1">
-              <v-btn class="bg-primary-darken-1" @click.stop="deleteServant(2)"
+            <v-col cols="2" md="1" class="mx-1">
+              <v-btn variant="outlined" @click.stop="deleteServant(2)"
                 >削除</v-btn
               ></v-col
-            ><v-spacer></v-spacer
-            ><v-col md="1" class="mx-1"
+            ><v-col cols="2" md="1" class="mx-1"
               ><v-icon
                 size="x-large"
                 :icon="this.isShowSkillDetail[2] ? mdiPencil : mdiMenuDown"
@@ -302,28 +291,27 @@ export default {
       <v-sheet :elevation="10" border class="ma-6" id="servant3">
         <v-container
           fluid
-          class="bg-primary pa-2"
+          class="pa-2"
           @click="invertSkillDetail(3)"
         >
           <v-row no-gutters class="justify-start">
             <v-col
-              cols="12"
-              md="4"
+              cols="5"
+              md="8"
               class="d-inline-block text-truncate"
               align-self="center"
               >サポ3:{{ selectedServant[3]["Name"] }}</v-col
-            >
-            <v-col md="1" class="mx-1"
-              ><v-btn class="bg-primary-darken-1" @click.stop="showModal(3)"
+            ><v-spacer></v-spacer>
+            <v-col cols="2" md="1" class="mx-1"
+              ><v-btn variant="outlined" @click.stop="showModal(3)"
                 >変更</v-btn
               ></v-col
             >
-            <v-col md="1" class="mx-1">
-              <v-btn class="bg-primary-darken-1" @click.stop="deleteServant(3)"
+            <v-col cols="2" md="1" class="mx-1">
+              <v-btn variant="outlined" @click.stop="deleteServant(3)"
                 >削除</v-btn
               ></v-col
-            ><v-spacer></v-spacer
-            ><v-col md="1" class="mx-1"
+            ><v-col cols="2" md="1" class="mx-1"
               ><v-icon
                 size="x-large"
                 :icon="this.isShowSkillDetail[3] ? mdiPencil : mdiMenuDown"
@@ -344,23 +332,23 @@ export default {
       <v-sheet :elevation="10" border class="ma-6" id="self">
         <v-container
           fluid
-          class="bg-primary pa-2"
+          class="pa-2"
           @click="invertSkillDetail(4)"
         >
           <v-row no-gutters class="justify-start">
             <v-col
-              cols="12"
-              md="4"
+              cols="5"
+              md="8"
               class="d-inline-block text-truncate"
               align-self="center"
               >手動バフ入力</v-col
-            ><v-col md="1" class="mx-1"></v-col
-            ><v-col md="1" class="mx-1">
-              <v-btn class="bg-primary-darken-1" @click.stop="deleteServant(3)"
+            ><v-spacer></v-spacer><v-col cols="2" md="1" class="mx-1"></v-col
+            ><v-col cols="2" md="1" class="mx-1">
+              <v-btn variant="outlined" @click.stop="deleteServant(3)"
                 >削除</v-btn
               ></v-col
             ><v-spacer></v-spacer
-            ><v-col md="1" class="mx-1"
+            ><v-col cols="2" md="1" class="mx-1"
               ><v-icon
                 size="x-large"
                 :icon="this.isShowSkillDetail[4] ? mdiPencil : mdiMenuDown"
@@ -376,10 +364,10 @@ export default {
 
       <v-sheet :elevation="10" border class="ma-6">
         スキル欄開けたり閉めたり
-        <v-btn class="bg-primary-darken-1" @click.stop="showSkillDetail()"
+        <v-btn @click.stop="showSkillDetail()"
           >全開</v-btn
         >
-        <v-btn class="bg-primary-darken-1" @click.stop="hideSkillDetail()"
+        <v-btn @click.stop="hideSkillDetail()"
           >全閉</v-btn
         ><v-switch
           color="primary"
@@ -387,10 +375,10 @@ export default {
           label="詳細モード"
         ></v-switch>
         <classSkillsContainer
-            v-show="isManiac"
-            :items="selectedServant[0]"
-            @skillValue="updatedSkillValue($event, 12)"
-            @skillValueSelf="updatedSkillValue($event, 13)"
+          v-show="isManiac"
+          :items="selectedServant[0]"
+          @skillValue="updatedSkillValue($event, 12)"
+          @skillValueSelf="updatedSkillValue($event, 13)"
         />
       </v-sheet>
 

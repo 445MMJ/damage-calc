@@ -30,8 +30,7 @@ const vuetify = createVuetify({
     themes: {
       light: {
         colors: {
-          primary: '#235b94',
-          "primary-darken-1": '#1f5185',
+          fgo:'#235b94',
           text: '#000000',
           Buster: '#ff0000',
           Arts: '#0067c0',
@@ -40,8 +39,7 @@ const vuetify = createVuetify({
       },
       dark: {
         colors: {
-          primary: '#235b94',
-          "primary-darken-1": '#1f5185',
+          fgo:'#235b94',
           text: '#ffffff',
           Buster: '#ff0000',
           Arts: '#0067c0',

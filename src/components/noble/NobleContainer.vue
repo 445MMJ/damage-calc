@@ -15,7 +15,7 @@ export default {
       nobleData: null,
       nobleLevel: "Value0",
       nobleOC: "Value0",
-      nobleName: null,
+      nobleName: "サーヴァントを選択してください",
       init: {
         宝具攻撃: 0,
         攻撃力: 0,
@@ -34,6 +34,7 @@ export default {
           '<ruby class="tdruby"><rb>いまに在りし夢想の城&nbsp;C</rb><rt>ロード・キャメロット</ruby></rt>',
         Owners: "s1",
         EntityID: "800106",
+        Detail: "ここに宝具の詳細",
       },
     ];
     this.bufftype();
@@ -62,7 +63,12 @@ export default {
       this.bufftype();
     },
     bufftype() {
-      const result1 = sumSkillValue(this.nobleData, this.nobleLevel, "Noble" , this.nobleOC);
+      const result1 = sumSkillValue(
+        this.nobleData,
+        this.nobleLevel,
+        "Noble",
+        this.nobleOC
+      );
       this.skillValue = { ...result1 };
       this.$emit("skillValue", this.skillValue);
     },
@@ -74,10 +80,25 @@ export default {
 <!-- テンプレートの定義 -->
 <template>
   <v-container>
-    <v-row>
-      <v-col cols="12" sm="6" align-self="center"
-        ><span v-html="nobleName"></span
-      ></v-col>
+      <v-row>
+      <v-col  cols="12" sm="6" align-self="center">
+        <v-list density="compact">
+          <v-list-group value="Users">
+            <template v-slot:activator="{ props }">
+              <v-list-item v-bind="props"
+                ><span v-html="nobleName"></span
+              ></v-list-item>
+            </template>
+            <v-list-item v-for="item in nobleData"
+              >{{ item.Detail }}
+              <span v-if="item.Grow == 'Lv'">{{ item[this.nobleLevel] }}</span>
+              <span v-if="item.Grow == 'OC'">{{
+                item[this.nobleOC]
+              }}</span></v-list-item
+            >
+          </v-list-group>
+        </v-list>
+      </v-col>
       <v-col cols="6" sm="3">
         <nobleSelect labelText="Lv" @selectednumber="handleNobleLevel"
       /></v-col>
@@ -86,15 +107,7 @@ export default {
       /></v-col>
     </v-row>
     <v-row>
-      <v-col>
-        <ul>
-          <li v-for="item in nobleData">
-            {{ item.Detail }}
-            <span v-if="item.Grow == 'Lv'">{{ item[this.nobleLevel] }}</span>
-            <span v-if="item.Grow == 'OC'">{{ item[this.nobleOC] }}</span>
-          </li>
-        </ul>
-      </v-col>
+
     </v-row>
   </v-container>
 </template>

@@ -212,7 +212,7 @@ export default {
       </v-sheet>
 
       <v-sheet :elevation="10" border class="ma-6" id="servant1">
-        <v-container fluid class="pa-2" @click="invertSkillDetail(1)">
+        <v-container @click="invertSkillDetail(1)">
           <v-row no-gutters class="justify-start">
             <v-col
               cols="5"
@@ -250,7 +250,7 @@ export default {
       </v-sheet>
 
       <v-sheet :elevation="10" border class="ma-6" id="servant2">
-        <v-container fluid class="pa-2" @click="invertSkillDetail(2)">
+        <v-container @click="invertSkillDetail(2)">
           <v-row no-gutters class="justify-start">
             <v-col
               cols="5"
@@ -288,7 +288,7 @@ export default {
       </v-sheet>
 
       <v-sheet :elevation="10" border class="ma-6" id="servant3">
-        <v-container fluid class="pa-2" @click="invertSkillDetail(3)">
+        <v-container @click="invertSkillDetail(3)">
           <v-row no-gutters class="justify-start">
             <v-col
               cols="5"
@@ -326,7 +326,7 @@ export default {
       </v-sheet>
 
       <v-sheet :elevation="10" border class="ma-6" id="self">
-        <v-container fluid class="pa-2" @click="invertSkillDetail(4)">
+        <v-container @click="invertSkillDetail(4)">
           <v-row no-gutters class="justify-start">
             <v-col
               cols="5"

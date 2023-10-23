@@ -1,4 +1,10 @@
 <script>
+async function asyncGetData() {
+  const p = await import("../../data/nobleList.js");
+  const m = p.nobleList.nobleList;
+  return m;
+}
+let asyncData = [];
 import { nobleList } from "../../data/nobleList.js";
 import { sumSkillValue } from "../script/sumSkillValue.js";
 import nobleSelect from "./NobleSelect.vue";
@@ -27,7 +33,7 @@ export default {
       skillValue: null,
     };
   },
-  created() {
+  async created() {
     this.nobleData = [
       {
         SkillName:
@@ -37,12 +43,14 @@ export default {
         Detail: "ここに宝具の詳細",
       },
     ];
+    //非同期処理でデータを取得
+    asyncData = await asyncGetData();
     this.bufftype();
   },
   watch: {
     items(newValue) {
       this.servantIndex = "s" + newValue;
-      const objectList = nobleList.nobleList.filter(
+      const objectList = asyncData.filter(
         (obj) => obj.Owners === this.servantIndex
       );
       // 宝具強化等で1つの鯖が複数の宝具データを持つので。EntityIDが最大のオブジェクトを取得する
@@ -80,8 +88,8 @@ export default {
 <!-- テンプレートの定義 -->
 <template>
   <v-container>
-      <v-row>
-      <v-col  cols="12" sm="6" align-self="center">
+    <v-row>
+      <v-col cols="12" sm="6" align-self="center">
         <v-list density="compact">
           <v-list-group value="Users">
             <template v-slot:activator="{ props }">
@@ -106,8 +114,6 @@ export default {
         <nobleSelect labelText="OC" @selectednumber="handleNobleOC"
       /></v-col>
     </v-row>
-    <v-row>
-
-    </v-row>
+    <v-row> </v-row>
   </v-container>
 </template>

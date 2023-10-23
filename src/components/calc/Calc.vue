@@ -506,13 +506,13 @@ export default {
 </script>
 
 <template>
-  <v-tabs v-model="tab" bg-color="primary" show-arrows>
+  <v-tabs v-model="tab"  color="primary" show-arrows>
     <v-tab value="777" disabled> </v-tab>
-    <v-tab value="100">宝具ダメージ</v-tab>
-    <v-tab value="101">宝具NP/スター</v-tab>
-    <v-tab value="200">カードダメージ</v-tab>
-    <v-tab value="201">カードNP/スター</v-tab>
-    <v-tab value="999">内部データ</v-tab>
+    <v-tab rounded="t-lg" variant="outlined" value="100">宝具ダメージ</v-tab>
+    <v-tab rounded="t-lg" variant="outlined" value="101">宝具NP/スター</v-tab>
+    <v-tab rounded="t-lg" variant="outlined" value="200">カードダメージ</v-tab>
+    <v-tab rounded="t-lg" variant="outlined" value="201">カードNP/スター</v-tab>
+    <v-tab rounded="t-lg" variant="outlined" value="999">内部データ</v-tab>
   </v-tabs>
 
   <v-window v-model="tab">

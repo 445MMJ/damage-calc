@@ -21,7 +21,7 @@ export default {
       nobleData: null,
       nobleLevel: "Value0",
       nobleOC: "Value0",
-      nobleName: "サーヴァントを選択してください",
+      nobleName: "サーヴァント未選択",
       init: {
         宝具攻撃: 0,
         攻撃力: 0,

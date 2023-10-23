@@ -7,7 +7,7 @@ async function asyncGetData() {
 let asyncData = [];
 import { sumSkillValue } from "../script/sumSkillValue.js";
 export default {
-  props: ["name"],
+  props: { name: { default: "プレースホルダー" } },
   emits: ["skillValue", "skillValueSelf", "skillValueOther"],
   data() {
     return {
@@ -37,16 +37,23 @@ export default {
       skillValueSelf: {},
       skillValueOther: {},
       isChecked: true, // チェックボックスの状態を保持
-      isShow: false, // 表示/非表示の状態を保持
+      isShow: true, // 表示/非表示の状態を保持
     };
   },
   async created() {
     //非同期処理でデータを取得
     asyncData = await asyncGetData();
+    console.log("作られてる");
   },
   mounted() {
     //Mountタイミングで初期化処理を行う
     this.isChecked = true;
+    this.isShow = true;
+    if (this.name === "プレースホルダー") {
+      this.isShow = false;
+    } else {
+      this.isShow = true;
+    }
     this.bufftype();
   },
   watch: {

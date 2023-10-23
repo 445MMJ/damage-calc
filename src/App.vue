@@ -166,8 +166,8 @@ export default {
         />
       </v-sheet>
       <v-sheet :elevation="10" border="true" class="ma-6" id="servant0">
-        <v-container fluid class="pa-2" @click="invertSkillDetail(0)">
-          <v-row no-gutters class="justify-start">
+        <v-container @click="invertSkillDetail(0)">
+          <v-row justify="start" align="center">
             <v-col
               cols="5"
               md="8"
@@ -192,6 +192,7 @@ export default {
             ></v-col>
           </v-row>
         </v-container>
+        <v-divider></v-divider>
         <v-expand-transition>
           <attacker
             :v-show="isShowSkillDetail[0]"
@@ -237,6 +238,7 @@ export default {
             ></v-col>
           </v-row>
         </v-container>
+        <v-divider></v-divider>
         <v-expand-transition>
           <skillsContainer
             v-show="isShowSkillDetail[1]"
@@ -248,11 +250,7 @@ export default {
       </v-sheet>
 
       <v-sheet :elevation="10" border class="ma-6" id="servant2">
-        <v-container
-          fluid
-          class="pa-2"
-          @click="invertSkillDetail(2)"
-        >
+        <v-container fluid class="pa-2" @click="invertSkillDetail(2)">
           <v-row no-gutters class="justify-start">
             <v-col
               cols="5"
@@ -278,6 +276,7 @@ export default {
             ></v-col>
           </v-row>
         </v-container>
+        <v-divider></v-divider>
         <v-expand-transition>
           <skillsContainer
             v-show="isShowSkillDetail[2]"
@@ -289,11 +288,7 @@ export default {
       </v-sheet>
 
       <v-sheet :elevation="10" border class="ma-6" id="servant3">
-        <v-container
-          fluid
-          class="pa-2"
-          @click="invertSkillDetail(3)"
-        >
+        <v-container fluid class="pa-2" @click="invertSkillDetail(3)">
           <v-row no-gutters class="justify-start">
             <v-col
               cols="5"
@@ -319,6 +314,7 @@ export default {
             ></v-col>
           </v-row>
         </v-container>
+        <v-divider></v-divider>
         <v-expand-transition>
           <skillsContainer
             v-show="isShowSkillDetail[3]"
@@ -330,11 +326,7 @@ export default {
       </v-sheet>
 
       <v-sheet :elevation="10" border class="ma-6" id="self">
-        <v-container
-          fluid
-          class="pa-2"
-          @click="invertSkillDetail(4)"
-        >
+        <v-container fluid class="pa-2" @click="invertSkillDetail(4)">
           <v-row no-gutters class="justify-start">
             <v-col
               cols="5"
@@ -354,6 +346,7 @@ export default {
                 :icon="this.isShowSkillDetail[4] ? mdiPencil : mdiMenuDown"
               ></v-icon></v-col></v-row
         ></v-container>
+        <v-divider></v-divider>
         <v-expand-transition>
           <userInput
             v-show="isShowSkillDetail[4]"
@@ -364,11 +357,8 @@ export default {
 
       <v-sheet :elevation="10" border class="ma-6">
         スキル欄開けたり閉めたり
-        <v-btn @click.stop="showSkillDetail()"
-          >全開</v-btn
-        >
-        <v-btn @click.stop="hideSkillDetail()"
-          >全閉</v-btn
+        <v-btn @click.stop="showSkillDetail()">全開</v-btn>
+        <v-btn @click.stop="hideSkillDetail()">全閉</v-btn
         ><v-switch
           color="primary"
           v-model="isManiac"

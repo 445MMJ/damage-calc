@@ -37,7 +37,7 @@ export default {
   },
   data() {
     return {
-      skillNames: [0, 1, 2, 3],
+      skillNames: [0, "プレースホルダー", "プレースホルダー", "プレースホルダー"],
       skillValue: [0, 1, 2, 3],
       totalSkillValue: {},
       skillValueSelf: [0, 1, 2, 3],

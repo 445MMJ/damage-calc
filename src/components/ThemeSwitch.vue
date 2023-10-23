@@ -17,12 +17,13 @@ theme.global.name.value = darkTheme.value ? "dark" : "light";
 
 <template>
   <!-- dark theme switch -->
-  <v-switch
+  <div class=" d-inline-block">
+  <v-switch 
     v-model="darkTheme"
     @update:model-value="changeTheme"
     :prepend-icon="darkTheme ? mdiWeatherNight : mdiWeatherSunny"
     hide-details
     inset
-    class="px-3"
-  />
+    class="px-3"  
+  /></div>
 </template>

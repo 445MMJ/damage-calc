@@ -1,10 +1,11 @@
 <script>
-import {
-  mdiFileCodeOutline,
-  mdiAlphaXBoxOutline,
-} from "@mdi/js";
+import themeswitch from "./ThemeSwitch.vue";
+import { mdiFileCodeOutline, mdiAlphaXBoxOutline } from "@mdi/js";
 import packageJson from "../../package.json";
 export default {
+  components: {
+    themeswitch,
+  },
   data() {
     return {
       mdiFileCodeOutline,
@@ -30,6 +31,6 @@ export default {
       class="mx-4"
       :icon="mdiAlphaXBoxOutline"
       variant="text"
-    ></v-btn>    
+    ></v-btn>
   </v-footer>
 </template>

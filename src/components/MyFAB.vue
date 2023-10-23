@@ -8,6 +8,7 @@ export default {
   data() {
     return {
       mdiSwordCross,
+      mdiMenu,
       drawer: false,
       group: null,
       olditems: [
@@ -69,7 +70,7 @@ export default {
     <div>
       <v-menu>
         <template v-slot:activator="{ props }">
-          <v-btn  icon="mdiMenu" color="primary" v-bind="props"></v-btn>
+          <v-btn  :icon="mdiMenu" color="primary" v-bind="props"></v-btn>
           
         </template>
         
@@ -81,7 +82,6 @@ export default {
           >
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
-          <v-list-item><themeswitch /></v-list-item>
         </v-list>
       </v-menu>
     </div>

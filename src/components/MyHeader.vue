@@ -58,18 +58,14 @@ export default {
       ],
     };
   },
-  methods: {
-    toggleMenu() {
-      this.drawer = !this.drawer;
-    },
-  },
 };
 </script>
 
 <template>
   <myFAB />
-  <v-toolbar color="primary"  density="compact">
-    <v-toolbar-title>ダメージ計算</v-toolbar-title>
+  <v-toolbar color="primary"  density="compact">  
+    <v-toolbar-title>多機能ダメージ計算機</v-toolbar-title>
     <v-spacer></v-spacer>
+    <themeswitch/>
   </v-toolbar>
 </template>

@@ -13,7 +13,7 @@ export default defineConfig({
   base: 'damage-calc', //追加
   plugins: [
     vue(),
-    vuetify({ styles: { configFile: 'src/settinga.scss' } }),
+    vuetify({ autoImport: true },{ styles: { configFile: 'src/settinga.scss' } }),
   ],
   resolve: {
     alias: {

@@ -1,11 +1,5 @@
 <script>
 import { defineAsyncComponent } from "vue";
-async function asyncGetData() {
-  const p = await import("../../data/skillList.js");
-  const m = p.skillList.skillList;
-  return m;
-}
-let asyncData = [];
 import { sumObjectValue } from "../../components/TotalSkillValue.js";
 const skillCard = defineAsyncComponent(() => import("./SkillCard.vue"));
 const skillCardPreText = defineAsyncComponent(() =>
@@ -37,7 +31,12 @@ export default {
   },
   data() {
     return {
-      skillNames: [0, "プレースホルダー", "プレースホルダー", "プレースホルダー"],
+      skillNames: [
+        0,
+        "プレースホルダー",
+        "プレースホルダー",
+        "プレースホルダー",
+      ],
       skillValue: [0, 1, 2, 3],
       totalSkillValue: {},
       skillValueSelf: [0, 1, 2, 3],
@@ -46,10 +45,6 @@ export default {
       totalSkillValueOther: {},
       skillCardType: ["skillCard", "skillCard", "skillCard", "skillCard"],
     };
-  },
-  async created() {
-    //非同期処理でデータを取得
-    asyncData = await asyncGetData();
   },
   watch: {
     items(newValue) {
@@ -80,44 +75,165 @@ export default {
     },
     isSkillCardType(skillName) {
       //Pretextに条件が入っているスキルのEntityIDリスト
-      const skillCardPreTextList = [
-        583450, 242650, 242450, 505551, 319551, 781551, 872550, 35367, 806352,
-        935451, 389549, 285451, 621675, 620452, 2093650, 382550, 706350, 378650,
-        2239550, 299650, 945650, 381451, 334552, 334553, 409551, 2072150,
-        453451, 592550, 307551, 666550, 2055350, 2098550, 638450, 706350,
-        623550, 623551, 2121350, 712550, 2022450, 606551, 79551, 853451, 804650,
-        2033550.208655, 450450.45055, 2033550, 605550, 701551, 119451, 881550,
-        739450, 894550, 15551, 2088450, 913551, 760466, 734650, 760550, 2173650,
+      const skillCardPreTextNameList = [
+        "富の杯 B",
+        "聖者の数字 EX",
+        "聖者の数字 B",
+        "水辺の聖女（ドルフィン） A+",
+        "ジャガー・アイ A+",
+        "ジャガー・アイ A+",
+        "夏の受肉精霊 A+",
+        "夏の受肉精霊 A+",
+        "熱砂の神王 A",
+        "熱砂の神王 A",
+        "嵐の航海者 C++",
+        "旅の導き C++",
+        "サマータイム・コンバット B+",
+        "サマータイム・コンバット B+",
+        "渚の第六天魔王 A-",
+        "水辺の聖女 B+",
+        "第六天魔王 EX",
+        "夢幻の如く B++",
+        "ファニー・ヴァンプ EX",
+        "虚ろなる酷暑への嘆き A",
+        "間際の一撃 C",
+        "暴走特権 EX",
+        "逆境のカリスマ A",
+        "サマー・ガルバニズム B+",
+        "女神の恩恵 A+",
+        "閉じるは現実の帳 E",
+        "蜘蛛糸の果て A++",
+        "蜘蛛糸の果て A+++",
+        "驕慢王の美酒 B+",
+        "星の裁き A",
+        "魔力放出（宝石） A+",
+        "ロイヤルバニー A",
+        "美しい手のガレス B",
+        "間際の一撃 C",
+        "血濡れの蛮勇 A",
+        "血濡れの蛮勇 A+",
+        "黄泉路の境界 C",
+        "妖星の火輪 A",
+        "至尊の戦士 A+",
+        "透化 A+",
+        "十歩殺一人 B+",
+        "殺戮機巧 B+",
+        "澪標の魂 EX",
+        "姉妹の絆 A",
+        "戯作三昧 A",
+        "青ざめた死の舞踏 A",
+        "雅号・異星蛸 B",
+        "雅号・異星蛸 A",
+        "姉妹の絆 A",
+        "士道の蹂躙 A",
+        "三星の弓人 A+",
+        "縮地 B+",
+        "ワイルドルール A",
+        "略奪の鉾 B",
+        "簒奪の鉾 A",
+        "加虐体質 A+",
+        "不屈の弓射 B",
+        "三百の奮闘 A+",
+        "不撓不屈 B+",
+        "死の淵 EX",
+        "不撓不屈 A",
+        "死なずのバールー EX",
       ];
       //Target2に条件が入っているスキルEntityIDリスト
-      const skillCardTarget2List = [
-        2167650, 335550, 506450, 779551, 125350, 295550, 2048350, 2048350,
-        293550, 74149, 74450, 366550, 475650, 230800, 808551, 777650, 777650,
-        58450, 818552, 818552, 2097350, 2172550, 65900, 2021550, 2153650,
+      const skillCardTarget2NameList = [
+        "キス魔 B++",
+        "賢王の萌芽 B",
+        "女王の躰 A+",
+        "鬨の声・梁山泊 EX",
+        "女王の躾 A",
+        "対英雄 A",
+        "大江の鬼あばれ A+",
+        "真夏の女神 B",
+        "レディの衣装な愛情 EX",
+        "我、魔天に殉ず B",
+        "フェロモン B",
+        "悪心祝祭 A",
+        "紅顔の美少年 C",
+        "友と征く遙かなる海路 B++",
+        "回路接続 EX",
+        "紅顔の美少年 B",
+        "魅惑の美声 B",
+        "機へ至る忍耐 B",
+        "ヴィナス・ドライバー B",
+        "紅顔の美少年（雷） A",
+        "砂漠の夜の風 A",
+        "神明裁決 C",
+        "儚き姉妹 A",
+        "ドミネイター・フォックス A",
+        "皇帝道術 EX",
+        "邪智のカリスマ A",
+        "生存の閨 A+",
+        "薔薇の眠り B",
+        "殺戮獣団 A",
+        "金眼神鶯 A",
+        "嗜虐のカリスマ A",
+        "愛しき私の蜂蜜酒 C",
+        "魔の血脈 A",
+        "紳士的な愛 C",
+        "サマー・バケーション！（子供） A+",
+        "芸術審美 B",
+        "サーヴァント・チア！ B",
+        "黒き命 A",
+        "極大宴会・梁山泊 EX",
+        "ビーチクライシス（ポセイドン） EX",
+        "死の淵 EX",
+        "サマータイムラバーズ EX",
+        "大河の巨獣 B",
+        "竜の魔女 EX",
+        "聖骸布（偽） B",
+        "対英雄（譚） EX",
+        "ハロウィン・スター EX",
+        "ファニー・ヴァンプ EX",
+        "愛の黒子 C",
+        "神明裁決（偽） C++",
+        "数学的思考 A",
+        "落日の帝国 EX",
+        "闘争のカリスマ A",
+        "花嫁の守護者 EX",
+        "真名看破 B",
+        "すべてを見たもの EX",
+        "海百合のカリスマ C",
+        "ビーチフラワー B",
+        "クィリヌスの玉座 EX",
+        "魅惑の美声 A",
+        "魅惑の美声 C",
+        "ワルキューレ式集団戦闘 B+",
+        "ビーチフラワー EX",
+        "王道踏破 C",
+        "洗礼詠唱 B+",
+        "軍師の本懐 A",
+        "終末の巫女 C",
+        "道満の呪 A++",
+        "神明裁決 A",
+        "徐福伝説 C",
+        "ビーチフラワー A+",
+        "芸術審美 E-",
+        "魔眼 B+",
       ];
       //四枝の浅瀬 A,被虐体質 A+,局中法度 EX
-      const skillCardUnique1 = [759550, 355551, 344650];
+      const skillCardUnique1 = ["四枝の浅瀬 A","被虐体質 A+","局中法度 EX"]
       //大河の巨獣 B
-      const skillCardUnique2 = [2082450];
+      const skillCardUnique2 = ["大河の巨獣 B"];
       //(死滅願望 A強化前だから使わないかも),四夜の終末 EX,是非もなし A-
-      const skillCardUnique3 = [199550, 458650, 619549];
-      let foundSkill = asyncData.find((obj) => obj.SkillName === skillName);
-      if (foundSkill === undefined) {
-        return "skillCard";
-      }
-      if (skillCardPreTextList.includes(Number(foundSkill.EntityID))) {
+      const skillCardUnique3 = ["死滅願望 A","四夜の終末 EX","是非もなし A-"];
+      if (skillCardPreTextNameList.includes(skillName)) {
         return "skillCardPreText";
       }
-      if (skillCardTarget2List.includes(Number(foundSkill.EntityID))) {
+      if (skillCardTarget2NameList.includes(skillName)) {
         return "skillCardTarget2";
       }
-      if (skillCardUnique1.includes(Number(foundSkill.EntityID))) {
+      if (skillCardUnique1.includes(skillName)) {
         return "skillCardUnique1";
       }
-      if (skillCardUnique2.includes(Number(foundSkill.EntityID))) {
+      if (skillCardUnique2.includes(skillName)) {
         return "skillCardUnique2";
       }
-      if (skillCardUnique3.includes(Number(foundSkill.EntityID))) {
+      if (skillCardUnique3.includes(skillName)) {
         return "skillCardUnique3";
       }
       return "skillCard";

@@ -81,6 +81,7 @@ export default {
   },
   created() {
     this.selectedServant[0] = { ...this.servantInit };
+    this.nobleValue = sumObjectValue([{ 宝具攻撃: 0 }]);
     let arr = localStorage.getItem("isShowSkillDetail");
     let arr2 = JSON.parse(arr);
     if (arr2 != null) {
@@ -101,7 +102,8 @@ export default {
     },
     updatedNobleValue(item) {
       let list = [];
-      list.push(item);
+      list.push(item, "これでチェック");
+      console.log(list);
       this.nobleValue = sumObjectValue(list);
     },
     updatedATKValue(item) {
@@ -156,7 +158,7 @@ export default {
     <myHeader />
 
     <v-main class="bg">
-      <v-sheet :elevation="10" border="true" class="ma-6" id="calc">
+      <v-sheet :elevation="10" border="true" class="ma-3" id="calc">
         <calc
           :attacker="selectedServant[0]"
           :skillvalue="totalSkillValue"
@@ -165,7 +167,7 @@ export default {
           :isManiac="isManiac"
         />
       </v-sheet>
-      <v-sheet :elevation="10" border="true" class="ma-6" id="servant0">
+      <v-sheet :elevation="10" border="true" class="ma-3" id="servant0">
         <v-container @click="invertSkillDetail(0)">
           <v-row justify="start" align="center">
             <v-col
@@ -195,14 +197,15 @@ export default {
         <v-divider></v-divider>
         <v-expand-transition>
           <attacker
-            :v-show="isShowSkillDetail[0]"
+            v-show="isShowSkillDetail[0]"
             :attacker="selectedServant[0]"
-            @ATK="updatedATKValue($event)"
-        /></v-expand-transition>
-        <nobleContainer
-          :items="selectedServant[0]['No.']"
-          @skillValue="updatedNobleValue($event)"
-        /><v-expand-transition>
+            @ATK="updatedATKValue($event)" /></v-expand-transition
+        ><v-expand-transition>
+          <nobleContainer
+            v-show="isShowSkillDetail[0]"
+            :items="selectedServant[0]['No.']"
+            @skillValue="updatedNobleValue($event)" /></v-expand-transition
+        ><v-expand-transition>
           <skillsContainer
             v-show="isShowSkillDetail[0]"
             :items="selectedServant[0]"
@@ -211,9 +214,9 @@ export default {
         /></v-expand-transition>
       </v-sheet>
 
-      <v-sheet :elevation="10" border class="ma-6" id="servant1">
+      <v-sheet :elevation="10" border class="ma-3" id="servant1">
         <v-container @click="invertSkillDetail(1)">
-          <v-row no-gutters class="justify-start">
+          <v-row justify="start" align="center">
             <v-col
               cols="5"
               md="8"
@@ -249,9 +252,9 @@ export default {
         </v-expand-transition>
       </v-sheet>
 
-      <v-sheet :elevation="10" border class="ma-6" id="servant2">
+      <v-sheet :elevation="10" border class="ma-3" id="servant2">
         <v-container @click="invertSkillDetail(2)">
-          <v-row no-gutters class="justify-start">
+          <v-row justify="start" align="center">
             <v-col
               cols="5"
               md="8"
@@ -287,9 +290,9 @@ export default {
         </v-expand-transition>
       </v-sheet>
 
-      <v-sheet :elevation="10" border class="ma-6" id="servant3">
+      <v-sheet :elevation="10" border class="ma-3" id="servant3">
         <v-container @click="invertSkillDetail(3)">
-          <v-row no-gutters class="justify-start">
+          <v-row justify="start" align="center">
             <v-col
               cols="5"
               md="8"
@@ -325,9 +328,9 @@ export default {
         </v-expand-transition>
       </v-sheet>
 
-      <v-sheet :elevation="10" border class="ma-6" id="self">
+      <v-sheet :elevation="10" border class="ma-3" id="self">
         <v-container @click="invertSkillDetail(4)">
-          <v-row no-gutters class="justify-start">
+          <v-row justify="start" align="center">
             <v-col
               cols="5"
               md="8"
@@ -355,7 +358,7 @@ export default {
         </v-expand-transition>
       </v-sheet>
 
-      <v-sheet :elevation="10" border class="ma-6">
+      <v-sheet :elevation="10" border class="ma-3">
         スキル欄開けたり閉めたり
         <v-btn @click.stop="showSkillDetail()">全開</v-btn>
         <v-btn @click.stop="hideSkillDetail()">全閉</v-btn

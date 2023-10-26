@@ -75,10 +75,8 @@ export default {
     filteredList() {
       let name = this.name; //nameに依存していることを明示しないとリアクティブしてくれない
       if (asyncData.size === undefined) {
-        console.log("未同期");
         return []
       }else{
-        console.log("同期",asyncData.get(name));
         return asyncData.get(name);
       }
     },

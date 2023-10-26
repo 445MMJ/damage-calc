@@ -131,7 +131,7 @@ export default {
       slider: 1, //仮置き、乱数扱い
       additionalData: 0,
       overHitCount: [0, 0, 0, 0],
-      tab: 100,
+      tab: 777,
     };
   },
   mounted: function () {
@@ -506,7 +506,7 @@ export default {
 </script>
 
 <template>
-  <v-tabs v-model="tab"  color="primary" show-arrows>
+  <v-tabs v-model="tab" color="primary" show-arrows>
     <v-tab value="777" disabled> </v-tab>
     <v-tab rounded="t-lg" variant="outlined" value="100">宝具ダメージ</v-tab>
     <v-tab rounded="t-lg" variant="outlined" value="101">宝具NP/スター</v-tab>
@@ -516,6 +516,18 @@ export default {
   </v-tabs>
 
   <v-window v-model="tab">
+    <v-window-item value="777">
+      <v-sheet
+        class="d-flex align-center justify-center flex-wrap text-center mx-auto px-4"
+        elevation="4"
+      >
+        <div>
+          <h2>
+          </h2>
+        </div>
+      </v-sheet>
+    </v-window-item>
+
     <v-window-item value="100">
       <v-container>
         <v-row>

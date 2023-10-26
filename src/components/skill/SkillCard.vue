@@ -1,7 +1,8 @@
 <script>
 async function asyncGetData() {
-  const p = await import("../../data/skillList.js");
-  const m = p.skillList.skillList;
+  const p = await import("../../data/skillListList.js");
+  //リストで受け取ってMapに変換して返す
+  const m = new Map(p.skillListList);
   return m;
 }
 let asyncData = [];
@@ -53,7 +54,7 @@ export default {
     } else {
       this.isShow = true;
     }
-    console.log("マウンテッド")
+    console.log("マウンテッド");
     this.bufftype();
   },
   watch: {
@@ -66,14 +67,20 @@ export default {
         this.isShow = false;
       } else {
         this.isShow = true;
-      }      
+      }
       this.bufftype();
     },
   },
   computed: {
     filteredList() {
       let name = this.name; //nameに依存していることを明示しないとリアクティブしてくれない
-      return asyncData.filter((obj) => obj.SkillName === this.name);
+      if (asyncData.size === undefined) {
+        console.log("未同期");
+        return []
+      }else{
+        console.log("同期",asyncData.get(name));
+        return asyncData.get(name);
+      }
     },
     skillLevel() {
       return `Value` + (this.selectedNumber - 1);

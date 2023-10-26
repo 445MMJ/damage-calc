@@ -371,6 +371,7 @@ export default {
                     density="compact"
                     color="primary"
                     v-model="isManiac"
+                    hide-details="true"
                     inset
                     label="詳細モード"
                   ></v-switch>

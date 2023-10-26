@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@mdi/font": "^7.2.96",
-    "vite-plugin-vuetify": "^1.0.2",
     "vue": "^3.3.4",
     "vuetify": "^3.3.17"
   },
@@ -18,6 +17,8 @@
     "@vitejs/plugin-vue": "^4.2.3",
     "sass": "^1.69.3",
     "sass-loader": "^13.3.2",
-    "vite": "^4.3.9"
+    "unplugin-fonts": "^1.0.3",
+    "vite": "^4.3.9",
+    "vite-plugin-vuetify": "^1.0.2"
   }
 }

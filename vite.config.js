@@ -1,8 +1,11 @@
-import { fileURLToPath, URL } from 'node:url'
-
-import { defineConfig } from 'vite'
+// Plugins
 import vue from '@vitejs/plugin-vue'
-import vuetify from 'vite-plugin-vuetify'
+import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+import ViteFonts from 'unplugin-fonts/vite'
+
+// Utilities
+import { defineConfig } from 'vite'
+import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,8 +15,23 @@ export default defineConfig({
   },
   base: 'damage-calc', //追加
   plugins: [
-    vue(),
-    vuetify({ autoImport: true },{ styles: { configFile: 'src/settinga.scss' } }),
+    vue({
+      template: { transformAssetUrls }
+    }),
+    vuetify({
+      autoImport: true,
+      styles: {
+        configFile: 'src/settinga.scss'
+      }
+    }),
+    ViteFonts({
+      google: {
+        families: [{
+          name: 'Playfair Display',
+          styles: 'wght@100;300;400;500;700;900',
+        }],
+      },
+    }),
   ],
   resolve: {
     alias: {

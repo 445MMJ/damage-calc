@@ -64,8 +64,7 @@ export default {
 <template>
   <myFAB />
   <v-toolbar color="primary"  density="compact">  
-    <v-toolbar-title>多機能ダメージ計算機</v-toolbar-title>
-    <v-spacer></v-spacer>
+    <v-toolbar-title><p class="text-no-wrap">多機能ダメージ計算機</p></v-toolbar-title>
     <themeswitch/>
   </v-toolbar>
 </template>

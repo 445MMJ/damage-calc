@@ -2,24 +2,6 @@
 export default {
   data() {
     return {
-      parametersBuff: {
-        攻撃力: 0,
-        Busterカード性能: 0,
-        Quickカード性能: 0,
-        Artsカード性能: 0,
-        クリティカル威力: 0,
-        宝具威力: 0,
-        特攻威力: 0,
-        "〔状態〕威力": 0,
-      },
-      parametersDebuff: {
-        防御力: 0,
-        Busterカード耐性: 0,
-        Quickカード耐性: 0,
-        Artsカード耐性: 0,
-        敵特防: 0,
-        特殊耐性: 0,
-      },
       parametersAll: {
         攻撃力: 0,
         Busterカード性能: 0,
@@ -36,6 +18,26 @@ export default {
         敵特防: 0,
         特殊耐性: 0,
       },
+    };
+  },
+  created() {
+    this.parametersBuff = {
+      攻撃力: 0,
+      Busterカード性能: 0,
+      Quickカード性能: 0,
+      Artsカード性能: 0,
+      クリティカル威力: 0,
+      宝具威力: 0,
+      特攻威力: 0,
+      "〔状態〕威力": 0,
+    };
+    this.parametersDebuff = {
+      防御力: 0,
+      Busterカード耐性: 0,
+      Quickカード耐性: 0,
+      Artsカード耐性: 0,
+      敵特防: 0,
+      特殊耐性: 0,
     };
   },
   methods: {

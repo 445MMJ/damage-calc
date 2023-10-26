@@ -2,7 +2,7 @@
 //レベルはprop OR リストの内容
 //レベルとpropsでcalcStat.jsでATKを返してもらい、ATKのテキストボックスにコピー
 //最終的にATKのテキストボックスの更新で値をemit
-import { additionalServantATKMap } from "../../data/additionalServantATKMap.js";
+import { additionalServantATKMap } from "../../../data/additionalServantATKMap.js";
 export default {
   props: {
     attacker: {

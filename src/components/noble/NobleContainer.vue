@@ -5,7 +5,6 @@ async function asyncGetData() {
   return m;
 }
 let asyncData = [];
-import { nobleList } from "../../data/nobleList.js";
 import { sumSkillValue } from "../script/sumSkillValue.js";
 import nobleSelect from "./NobleSelect.vue";
 
@@ -18,7 +17,7 @@ export default {
   data() {
     return {
       servantIndex: null,
-      nobleData: null,
+      nobleData: [{ Detail: "ここに宝具の詳細" }],
       nobleLevel: "Value0",
       nobleOC: "Value0",
       nobleName: "サーヴァント未選択",
@@ -34,18 +33,8 @@ export default {
     };
   },
   async created() {
-    this.nobleData = [
-      {
-        SkillName:
-          '<ruby class="tdruby"><rb>いまに在りし夢想の城&nbsp;C</rb><rt>ロード・キャメロット</ruby></rt>',
-        Owners: "s1",
-        EntityID: "800106",
-        Detail: "ここに宝具の詳細",
-      },
-    ];
     //非同期処理でデータを取得
     asyncData = await asyncGetData();
-    this.bufftype();
   },
   watch: {
     items(newValue) {

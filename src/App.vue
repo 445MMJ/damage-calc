@@ -342,7 +342,6 @@ export default {
               <v-btn variant="outlined" @click.stop="deleteServant(3)"
                 >削除</v-btn
               ></v-col
-            ><v-spacer></v-spacer
             ><v-col cols="2" md="1" class="mx-1"
               ><v-icon
                 size="x-large"
@@ -359,14 +358,25 @@ export default {
       </v-sheet>
 
       <v-sheet :elevation="10" border class="ma-3">
-        スキル欄開けたり閉めたり
-        <v-btn @click.stop="showSkillDetail()">全開</v-btn>
-        <v-btn @click.stop="hideSkillDetail()">全閉</v-btn
-        ><v-switch
-          color="primary"
-          v-model="isManiac"
-          label="詳細モード"
-        ></v-switch>
+        <v-container>
+          <v-row justify="start" align="center"
+            ><v-col>スキル欄開けたり閉めたり</v-col>
+            <v-col><v-btn @click.stop="showSkillDetail()">全開</v-btn></v-col>
+            <v-col><v-btn @click.stop="hideSkillDetail()">全閉</v-btn></v-col>
+            <v-col
+              ><v-tooltip text="未実装" location="top">
+                <template v-slot:activator="{ props }" >
+                  <v-switch
+                    v-bind="props"
+                    density="compact"
+                    color="primary"
+                    v-model="isManiac"
+                    inset
+                    label="詳細モード"
+                  ></v-switch>
+                </template> </v-tooltip></v-col></v-row
+        ></v-container>
+
         <classSkillsContainer
           v-show="isManiac"
           :items="selectedServant[0]"

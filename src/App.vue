@@ -7,7 +7,7 @@ const servantContainer = defineAsyncComponent(() =>
   import("./components/servant/ServantContainer.vue")
 );
 const attacker = defineAsyncComponent(() =>
-  import("./components/servant/Attacker.vue")
+  import("./components/servant/attacker/Attacker.vue")
 );
 const skillsContainer = defineAsyncComponent(() =>
   import("./components/skill/SkillsContainer.vue")

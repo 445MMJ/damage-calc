@@ -1,7 +1,7 @@
 // Plugins
 import vue from '@vitejs/plugin-vue'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
-import ViteFonts from 'unplugin-fonts/vite'
+import Unfonts  from 'unplugin-fonts/vite'
 
 // Utilities
 import { defineConfig } from 'vite'
@@ -21,15 +21,12 @@ export default defineConfig({
     vuetify({
       autoImport: true,
       styles: {
-        configFile: 'src/settinga.scss'
+        configFile: 'src/setting.scss'
       }
     }),
-    ViteFonts({
+    Unfonts({
       google: {
-        families: [{
-          name: 'Playfair Display',
-          styles: 'wght@100;300;400;500;700;900',
-        }],
+        families: ['Noto Sans JP'],
       },
     }),
   ],

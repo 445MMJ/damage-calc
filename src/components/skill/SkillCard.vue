@@ -54,7 +54,6 @@ export default {
     } else {
       this.isShow = true;
     }
-    console.log("マウンテッド");
     this.bufftype();
   },
   watch: {

@@ -102,8 +102,7 @@ export default {
     },
     updatedNobleValue(item) {
       let list = [];
-      list.push(item, "これでチェック");
-      console.log(list);
+      list.push(item);
       this.nobleValue = sumObjectValue(list);
     },
     updatedATKValue(item) {

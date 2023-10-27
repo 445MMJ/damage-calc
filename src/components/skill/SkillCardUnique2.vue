@@ -183,14 +183,18 @@ export default {
       variant="outlined"
       density="compact"
     ></v-select>
-    <ul>
-      <li>自身/攻撃力アップ(3T){{ this.filteredList[0][this.skillLevel] }}</li>
-      <li>
+    <v-list density="compact">
+      <v-list-item
+        >自身/攻撃力アップ(3T){{
+          this.filteredList[0][this.skillLevel]
+        }}</v-list-item
+      >
+      <v-list-item>
         自身/宝具威力アップ(3T){{
           this.base[this.selectedNumber] * this.uniqueCount
         }}
-      </li>
-    </ul>
+      </v-list-item>
+    </v-list>
   </div>
 </template>
 

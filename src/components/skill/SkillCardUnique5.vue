@@ -470,12 +470,12 @@ export default {
       variant="outlined"
       density="compact"
     ></v-select>
-    <ul>
-      <li v-for="item in filteredList" :key="item.id">
+    <v-list density="compact">
+      <v-list-item v-for="item in filteredList" :key="item.id">
         {{ item.Target }}/{{ item.MainText }}{{ item.PostText
         }}{{ item[this.skillLevel] }}
-      </li>
-    </ul>
+      </v-list-item >
+    </v-list>
   </div>
 </template>
 

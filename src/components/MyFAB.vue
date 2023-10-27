@@ -66,11 +66,11 @@ export default {
 </script>
 
 <template>
-  <v-layout-item class="text-end" model-value position="bottom" size="88">
+  <v-layout-item class="text-end pointer-events-none" model-value position="bottom" size="88">
     <div>
       <v-menu>
         <template v-slot:activator="{ props }">
-          <v-btn  :icon="mdiMenu" color="primary" v-bind="props"></v-btn>
+          <v-btn  :icon="mdiMenu" class="pointer-events-initial" color="primary" v-bind="props"></v-btn>
           
         </template>
         
@@ -87,3 +87,14 @@ export default {
     </div>
   </v-layout-item>
 </template>
+
+
+<style scoped>
+  .pointer-events-none {
+    pointer-events: none;
+  }
+
+  .pointer-events-initial {
+    pointer-events: initial;
+  }
+</style>

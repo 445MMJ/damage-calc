@@ -17,6 +17,12 @@ const skillCardUnique2 = defineAsyncComponent(() =>
 const skillCardUnique3 = defineAsyncComponent(() =>
   import("./SkillCardUnique3.vue")
 );
+const skillCardUnique4 = defineAsyncComponent(() =>
+  import("./SkillCardUnique4.vue")
+);
+const skillCardUnique5 = defineAsyncComponent(() =>
+  import("./SkillCardUnique5.vue")
+);
 
 export default {
   props: ["items"],
@@ -28,6 +34,8 @@ export default {
     skillCardUnique1,
     skillCardUnique2,
     skillCardUnique3,
+    skillCardUnique4,
+    skillCardUnique5,
   },
   data() {
     return {
@@ -216,11 +224,94 @@ export default {
         "魔眼 B+",
       ];
       //四枝の浅瀬 A,被虐体質 A+,局中法度 EX
-      const skillCardUnique1 = ["四枝の浅瀬 A","被虐体質 A+","局中法度 EX"]
+      const skillCardUnique1 = ["四枝の浅瀬 A", "被虐体質 A+", "局中法度 EX"];
       //大河の巨獣 B
       const skillCardUnique2 = ["大河の巨獣 B"];
       //(死滅願望 A強化前だから使わないかも),四夜の終末 EX,是非もなし A-
-      const skillCardUnique3 = ["死滅願望 A","四夜の終末 EX","是非もなし A-"];
+      const skillCardUnique3 = ["死滅願望 A", "四夜の終末 EX", "是非もなし A-"];
+
+      const skillCardUnique4 = ["影郷の武練 B+"];
+      const skillCardUnique5 = ["蛤御殿 A"];
+      const skillCardUnique6 = [
+        "人に愛を EX",
+        "竜殺し A",
+        "竜殺し A++",
+        "巨獣狩り A",
+        "ケガレの指先 A",
+        "聖騎士帝 EX",
+        "猛犬殺し A",
+        "移り気への楔 A+",
+        "天下布武 A",
+        "獣性の豪腕 B+",
+        "獣殺し B+",
+        "獣殺し B++",
+        "神殺し B",
+        "神殺し B",
+        "ワイルドハント A",
+        "ワイルドハント A",
+        "光の奔流 A+",
+        "光の奔流 A+",
+        "神将・中壇元帥 A",
+        "麗しきは美姫の指輪 C",
+        "死神 B",
+        "宿命の神敵 A",
+        "女神への誓い B",
+        "勝利の女王 A",
+        "矛盾精神 A+",
+        "矛盾精神 A+",
+        "封神執行 B",
+        "封神執行 B",
+        "ベルザ・ダマスク A",
+        "ベルザ・ブルーク EX",
+        "レッドフード・スライサー A",
+        "竜告令呪 EX",
+        "鬼種の魔（護） A",
+        "歌仙の詩歌 A",
+        "選定の剣 EX",
+        "武姓の忌姫 A",
+        "十歩殺一人 B+",
+        "処刑人 A++",
+        "人体研究 B",
+        "銀河流星剣 C",
+        "銀河流星剣XEX A",
+        "ビーチクライマックス EX",
+        "燕青拳 EX",
+        "燕青拳 EX",
+        "呪術（巫） C++",
+        "人斬り A",
+        "対霊戦闘 B",
+        "殺戮技巧（人） A",
+        "殺戮技巧（人） A",
+        "山の心臓 A",
+        "山の心臓 A",
+        "堅忍の老境 A",
+        "堅忍の老境 A",
+        "人体理解 A",
+        "神秘殺し A",
+        "神秘殺し A",
+        "軍神咆哮 A+",
+        "対邪悪（特殊） EX",
+        "血塗られた銀盆 B+",
+        "殺戮応酬 A",
+        "ヤコブの手足 B",
+        "鬼道 A",
+        "鬼道（滅） B",
+        "極地 A+",
+        "封印指定執行者 A",
+        "道術（外） A",
+        "郷愁の白狼 EX",
+        "夢幻の如く B++",
+        "源氏、死に候え A++",
+        "真夏の海のマーラ EX",
+        "死神 A",
+        "ヴィナーヤカ EX",
+        "最果ての正義 A",
+        "無限遡行リリック C",
+        "七つの獣冠 C",
+        "七つの獣冠 C",
+      ];
+      const skillCardUnique7 = [];
+      const skillCardUnique8 = [];
       if (skillCardPreTextNameList.includes(skillName)) {
         return "skillCardPreText";
       }
@@ -235,6 +326,15 @@ export default {
       }
       if (skillCardUnique3.includes(skillName)) {
         return "skillCardUnique3";
+      }
+      if (skillCardUnique4.includes(skillName)) {
+        return "skillCardUnique4";
+      }
+      if (skillCardUnique5.includes(skillName)) {
+        return "skillCardUnique5";
+      }
+      if (skillCardUnique6.includes(skillName)) {
+        return "skillCardUnique6";
       }
       return "skillCard";
     },

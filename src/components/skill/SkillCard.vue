@@ -150,6 +150,7 @@ export default {
       ></v-list
     >
   </div>
+  {{ filteredList }}
 </template>
 
 <style scoped>

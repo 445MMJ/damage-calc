@@ -23,6 +23,9 @@ const skillCardUnique4 = defineAsyncComponent(() =>
 const skillCardUnique5 = defineAsyncComponent(() =>
   import("./SkillCardUnique5.vue")
 );
+const skillCardUnique6 = defineAsyncComponent(() =>
+  import("./SkillCardUnique6.vue")
+);
 
 export default {
   props: ["items"],
@@ -36,6 +39,7 @@ export default {
     skillCardUnique3,
     skillCardUnique4,
     skillCardUnique5,
+    skillCardUnique6,
   },
   data() {
     return {

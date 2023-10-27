@@ -1,4 +1,11 @@
 <script>
+async function asyncGetData() {
+  const p = await import("../../data/skillList.js");
+  const m = p.skillList.skillList;
+  return m;
+}
+let asyncData = [];
+import { sumSkillValue } from "../script/sumSkillValue.js";
 export default {
   props: ["name"],
   emits: ["skillValue", "skillValueSelf", "skillValueOther"],
@@ -24,7 +31,6 @@ export default {
         Artsカード性能: 0,
         宝具威力: 0,
         NP獲得量: 0,
-        クリティカル威力: 0,
       },
       //スキル効果は味方単体/全体効果と自身を対象にとるもので分けて管理
       skillValue: {},
@@ -32,42 +38,61 @@ export default {
       skillValueOther: {},
       isChecked: true, // チェックボックスの状態を保持
       isShow: false, // 表示/非表示の状態を保持
+      isActive: false, // 特殊条件の有効/無効を保持
+      isLoad: false, //ロードのチェック
     };
+  },
+  async created() {
+    //非同期処理でデータを取得
+    asyncData = await asyncGetData();
+    this.isLoad = true;
   },
   mounted() {
     //Mountタイミングで初期化処理を行う
     this.isChecked = true;
-    this.unique();
+    this.isActive = false;
+    this.bufftype();
   },
   watch: {
     name(newValue) {
       //値が変わった時も自動処理する
       this.isChecked = true;
-      if (newValue === "プレースホルダー") {
-        this.isShow = false;
-      } else {
-        this.isShow = true;
-      }
-      this.unique();
+      this.isActive = false;
+      this.bufftype();
     },
   },
   computed: {
     filteredList() {
       let name = this.name; //nameに依存していることを明示しないとリアクティブしてくれない
-      return []
+      if (this.isLoad === false) {
+        setTimeout(() => {}, 500);
+      }
+      return asyncData.filter((obj) => obj.SkillName === this.name);
     },
     skillLevel() {
       return `Value` + (this.selectedNumber - 1);
     },
   },
   methods: {
-    unique() {
+    bufftype() {
       this.skillValue = { ...this.init };
       this.skillValueSelf = { ...this.init };
       this.skillValueOther = { ...this.init };
-      //ここから下に特殊なスキルの処理を書く
-      const de = [];
-
+      this.skillValue = sumSkillValue(
+        this.filteredList,
+        this.skillLevel,
+        "defualt"
+      );
+      this.skillValueSelf = sumSkillValue(
+        this.filteredList,
+        this.skillLevel,
+        "self"
+      );
+      this.skillValueOther = sumSkillValue(
+        this.filteredList,
+        this.skillLevel,
+        "other"
+      );
       //チェック状態であれば、そのまま送信。非チェック状態であれば初期値に戻して送信
       if (this.isChecked) {
         this.$emit("skillValue", this.skillValue);
@@ -91,7 +116,7 @@ export default {
     <v-checkbox
       input-value="true"
       v-model="isChecked"
-      @update:modelValue="unique"
+      @update:modelValue="bufftype"
       color="primary"
       hide-details="auto"
     >
@@ -102,18 +127,19 @@ export default {
 
     <v-select
       v-model="selectedNumber"
-      @update:modelValue="unique"
+      @update:modelValue="bufftype"
       :items="levelNumber"
       label="Lv"
       variant="outlined"
       density="compact"
     ></v-select>
-    <ul>
-      <li v-for="item in filteredList" :key="item.id">
+    <v-checkbox/>
+    <v-list density="compact">
+      <v-list-item v-for="item in filteredList" :key="item.id">
         {{ item.Target }}/{{ item.MainText }}{{ item.PostText
-        }}{{ item[this.skillLevel] }}
-      </li>
-    </ul>
+        }}{{ item[this.skillLevel] }}</v-list-item
+      ></v-list
+    >
   </div>
 </template>
 

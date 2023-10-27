@@ -6,11 +6,15 @@ const Ishidden = true
 // Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 
 //mdi
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 
 const vuetify = createVuetify({
+  components,
+  directives,
   //mdi
   icons: {
     defaultSet: 'mdi',

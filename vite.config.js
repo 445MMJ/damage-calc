@@ -7,11 +7,17 @@ import Unfonts  from 'unplugin-fonts/vite'
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
 
+// Bundle Analyzer
+import { visualizer } from 'rollup-plugin-visualizer';
+
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
-    // Disables the preload.
-    modulePreload: false,
+    rollupOptions: {
+      plugins: [
+        visualizer(),
+      ],
+    },
   },
   base: 'damage-calc', //追加
   plugins: [

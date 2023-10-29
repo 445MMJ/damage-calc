@@ -1,11 +1,11 @@
 <script>
 async function asyncGetData() {
-  const p = await import("../../data/skillList.js");
-  const m = p.skillList.skillList;
+  const p = await import("../../data/skillListList.js");
+  //リストで受け取ってMapに変換して返す
+  const m = new Map(p.skillListList);
   return m;
 }
 let asyncData = [];
-import { skillList } from "../../data/skillList.js";
 import { sumSkillValue } from "../script/sumSkillValue.js";
 export default {
   props: ["name"],
@@ -67,7 +67,11 @@ export default {
       if (this.isLoad === false) {
         setTimeout(() => {}, 500);
       }
-      return asyncData.filter((obj) => obj.SkillName === this.name);
+      if (asyncData.size === undefined) {
+        return []
+      }else{
+        return asyncData.get(name);
+      }
     },
     skillLevel() {
       return `Value` + (this.selectedNumber - 1);

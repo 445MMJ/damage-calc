@@ -18,7 +18,8 @@ export default defineConfig({
         visualizer({
           filename: 'dist/stats.html',
           exclude: {
-            file: "**/noble*,**/servant*,**/List*,",
+            file: "**/nobleList*",
+            file: "**/servantList*",
           },
         }),
       ],

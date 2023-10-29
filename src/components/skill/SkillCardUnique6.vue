@@ -1,7 +1,8 @@
 <script>
 async function asyncGetData() {
-  const p = await import("../../data/skillList.js");
-  const m = p.skillList.skillList;
+  const p = await import("../../data/skillListList.js");
+  //リストで受け取ってMapに変換して返す
+  const m = new Map(p.skillListList);
   return m;
 }
 let asyncData = [];
@@ -67,7 +68,11 @@ export default {
       if (this.isLoad === false) {
         setTimeout(() => {}, 500);
       }
-      return asyncData.filter((obj) => obj.SkillName === this.name);
+      if (asyncData.size === undefined) {
+        return [];
+      } else {
+        return asyncData.get(name);
+      }
     },
     skillLevel() {
       return `Value` + (this.selectedNumber - 1);
@@ -133,7 +138,7 @@ export default {
       variant="outlined"
       density="compact"
     ></v-select>
-    <v-checkbox/>
+    <v-checkbox />
     <v-list density="compact">
       <v-list-item v-for="item in filteredList" :key="item.id">
         {{ item.Target }}/{{ item.MainText }}{{ item.PostText

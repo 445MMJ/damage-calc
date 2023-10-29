@@ -1,11 +1,4 @@
 <script>
-async function asyncGetData() {
-  const p = await import("../../data/skillList.js");
-  const m = p.skillList.skillList;
-  return m;
-}
-let asyncData = [];
-import { sumSkillValue } from "../script/sumSkillValue.js";
 export default {
   props: ["name"],
   emits: ["skillValue", "skillValueSelf", "skillValueOther"],
@@ -40,6 +33,7 @@ export default {
       isShow: false, // 表示/非表示の状態を保持
       isLoad: false, //ロードのチェック
       base: [0, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 10],
+      base2: [0, 20, 22, 24, 26, 28, 30, 32, 34, 36, 40],
       uniqueCount: 0,
       uniqueCountList: [
         { title: "0", value: 0 },
@@ -55,11 +49,6 @@ export default {
         { title: "10", value: 10 },
       ],
     };
-  },
-  async created() {
-    //非同期処理でデータを取得
-    asyncData = await asyncGetData();
-    this.isLoad = true;
   },
   mounted() {
     //Mountタイミングで初期化処理を行う
@@ -79,59 +68,18 @@ export default {
     },
   },
   computed: {
-    filteredList() {
-      let name = this.name; //nameに依存していることを明示しないとリアクティブしてくれない
-      if (this.isLoad === false) {
-        setTimeout(() => {}, 500);
-      }
-      return asyncData.filter((obj) => obj.SkillName === this.name);
-    },
     skillLevel() {
       return `Value` + (this.selectedNumber - 1);
     },
   },
   methods: {
-    bufftype() {
-      this.skillValue = { ...this.init };
-      this.skillValueSelf = { ...this.init };
-      this.skillValueOther = { ...this.init };
-      this.skillValue = sumSkillValue(
-        this.filteredList,
-        this.skillLevel,
-        "defualt"
-      );
-      this.skillValueSelf = sumSkillValue(
-        this.filteredList,
-        this.skillLevel,
-        "self"
-      );
-      this.skillValueOther = sumSkillValue(
-        this.filteredList,
-        this.skillLevel,
-        "other"
-      );
-      //チェック状態であれば、そのまま送信。非チェック状態であれば初期値に戻して送信
-      if (this.isChecked) {
-        this.$emit("skillValue", this.skillValue);
-        this.$emit("skillValueSelf", this.skillValueSelf);
-        this.$emit("skillValueOther", this.skillValueOther);
-      } else {
-        this.skillValue = { ...this.init };
-        this.skillValueSelf = { ...this.init };
-        this.skillValueOther = { ...this.init };
-        this.$emit("skillValue", this.skillValue);
-        this.$emit("skillValueSelf", this.skillValueSelf);
-        this.$emit("skillValueOther", this.skillValueOther);
-      }
-    },
     unique() {
       this.skillValue = { ...this.init };
       this.skillValueSelf = { ...this.init };
       this.skillValueOther = { ...this.init };
 
-      this.skillValueSelf["攻撃力"] = parseFloat(
-        this.filteredList[0][this.skillLevel]
-      );
+      this.skillValueSelf["攻撃力"] = this.base2[this.selectedNumber];
+
       this.skillValueSelf["宝具威力"] =
         this.base[this.selectedNumber] * this.uniqueCount;
 
@@ -186,13 +134,13 @@ export default {
     <v-list density="compact">
       <v-list-item
         >自身/攻撃力アップ(3T){{
-          this.filteredList[0][this.skillLevel]
-        }}</v-list-item
+          this.base2[this.selectedNumber]
+        }}%</v-list-item
       >
       <v-list-item>
         自身/宝具威力アップ(3T){{
           this.base[this.selectedNumber] * this.uniqueCount
-        }}
+        }}%
       </v-list-item>
     </v-list>
   </div>

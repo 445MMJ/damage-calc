@@ -1,7 +1,8 @@
 <script>
 async function asyncGetData() {
-  const p = await import("../../data/skillList.js");
-  const m = p.skillList.skillList;
+  const p = await import("../../data/skillListList.js");
+  //リストで受け取ってMapに変換して返す
+  const m = new Map(p.skillListList);
   return m;
 }
 let asyncData = [];
@@ -72,46 +73,17 @@ export default {
       if (this.isLoad === false) {
         setTimeout(() => {}, 500);
       }
-      return asyncData.filter((obj) => obj.SkillName === this.name);
+      if (asyncData.size === undefined) {
+        return []
+      }else{
+        return asyncData.get(name);
+      }
     },
     skillLevel() {
       return `Value` + (this.selectedNumber - 1);
     },
   },
   methods: {
-    bufftype() {
-      this.skillValue = { ...this.init };
-      this.skillValueSelf = { ...this.init };
-      this.skillValueOther = { ...this.init };
-      this.skillValue = sumSkillValue(
-        this.filteredList,
-        this.skillLevel,
-        "defualt"
-      );
-      this.skillValueSelf = sumSkillValue(
-        this.filteredList,
-        this.skillLevel,
-        "self"
-      );
-      this.skillValueOther = sumSkillValue(
-        this.filteredList,
-        this.skillLevel,
-        "other"
-      );
-      //チェック状態であれば、そのまま送信。非チェック状態であれば初期値に戻して送信
-      if (this.isChecked) {
-        this.$emit("skillValue", this.skillValue);
-        this.$emit("skillValueSelf", this.skillValueSelf);
-        this.$emit("skillValueOther", this.skillValueOther);
-      } else {
-        this.skillValue = { ...this.init };
-        this.skillValueSelf = { ...this.init };
-        this.skillValueOther = { ...this.init };
-        this.$emit("skillValue", this.skillValue);
-        this.$emit("skillValueSelf", this.skillValueSelf);
-        this.$emit("skillValueOther", this.skillValueOther);
-      }
-    },
     unique() {
       if (this.HP < 1) {
         this.HP = 1;

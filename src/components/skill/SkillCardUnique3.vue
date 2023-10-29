@@ -1,11 +1,4 @@
 <script>
-async function asyncGetData() {
-  const p = await import("../../data/skillList.js");
-  const m = p.skillList.skillList;
-  return m;
-}
-let asyncData = [];
-import { sumSkillValue } from "../script/sumSkillValue.js";
 export default {
   props: ["name"],
   emits: ["skillValue", "skillValueSelf", "skillValueOther"],
@@ -57,11 +50,6 @@ export default {
       ], //是非もなし A-
     };
   },
-  async created() {
-    //非同期処理でデータを取得
-    asyncData = await asyncGetData();
-    this.isLoad = true;
-  },
   mounted() {
     //Mountタイミングで初期化処理を行う
     this.isChecked = true;
@@ -80,51 +68,11 @@ export default {
     },
   },
   computed: {
-    filteredList() {
-      let name = this.name; //nameに依存していることを明示しないとリアクティブしてくれない
-      if (this.isLoad === false) {
-        setTimeout(() => {}, 500);
-      }
-      return asyncData.filter((obj) => obj.SkillName === this.name);
-    },
     skillLevel() {
       return `Value` + (this.selectedNumber - 1);
     },
   },
   methods: {
-    bufftype() {
-      this.skillValue = { ...this.init };
-      this.skillValueSelf = { ...this.init };
-      this.skillValueOther = { ...this.init };
-      this.skillValue = sumSkillValue(
-        this.filteredList,
-        this.skillLevel,
-        "defualt"
-      );
-      this.skillValueSelf = sumSkillValue(
-        this.filteredList,
-        this.skillLevel,
-        "self"
-      );
-      this.skillValueOther = sumSkillValue(
-        this.filteredList,
-        this.skillLevel,
-        "other"
-      );
-      //チェック状態であれば、そのまま送信。非チェック状態であれば初期値に戻して送信
-      if (this.isChecked) {
-        this.$emit("skillValue", this.skillValue);
-        this.$emit("skillValueSelf", this.skillValueSelf);
-        this.$emit("skillValueOther", this.skillValueOther);
-      } else {
-        this.skillValue = { ...this.init };
-        this.skillValueSelf = { ...this.init };
-        this.skillValueOther = { ...this.init };
-        this.$emit("skillValue", this.skillValue);
-        this.$emit("skillValueSelf", this.skillValueSelf);
-        this.$emit("skillValueOther", this.skillValueOther);
-      }
-    },
     unique() {
       this.skillValue = { ...this.init };
       this.skillValueSelf = { ...this.init };

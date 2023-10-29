@@ -1,11 +1,12 @@
 <script>
-async function asyncGetData() {
-  const p = await import("../../data/skillListList.js");
-  //リストで受け取ってMapに変換して返す
-  const m = new Map(p.skillListList);
-  return m;
-}
 let asyncData = [];
+const jsonUrl = 'https://gist.githubusercontent.com/445MMJ/b4887f5b82b28f98b36608a131962fdb/raw/5f7f69693c0990739154ebdd2bd086905af27816/skillList.json'; // JSONファイルのURL
+async function asyncGetData() {
+  const data = await fetch(jsonUrl);
+  const dataJson = await data.json()
+  const dataMap = new Map(Object.entries(dataJson));
+  return dataMap
+}
 import { sumSkillValue } from "../script/sumSkillValue.js";
 export default {
   props: { name: { default: "プレースホルダー" } },
@@ -150,7 +151,6 @@ export default {
       ></v-list
     >
   </div>
-  {{ filteredList }}
 </template>
 
 <style scoped>

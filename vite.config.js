@@ -1,7 +1,7 @@
 // Plugins
 import vue from '@vitejs/plugin-vue'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
-import Unfonts  from 'unplugin-fonts/vite'
+import Unfonts from 'unplugin-fonts/vite'
 
 // Utilities
 import { defineConfig } from 'vite'
@@ -15,7 +15,12 @@ export default defineConfig({
   build: {
     rollupOptions: {
       plugins: [
-        visualizer(),
+        visualizer({
+          filename: 'dist/stats.html',
+          exclude: {
+            file: "**/noble*,**/servant*,**/List*,",
+          },
+        }),
       ],
     },
   },

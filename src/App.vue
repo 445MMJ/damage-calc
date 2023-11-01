@@ -51,7 +51,6 @@ export default {
       activeSkillValue: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16],
       nobleValue: {},
       totalSkillValue: {},
-      userInputValue: {},
       ATKValue: 0,
       fouValue: 1000,
       CEAtk: 0,
@@ -109,8 +108,6 @@ export default {
       this.ATKValue = item;
     },
     updateUserInput(item) {
-      console.log(item);
-      this.userInputValue = item;
       this.activeSkillValue[14] = item;
       this.totalSkillValue = sumObjectValue(this.activeSkillValue);
     },
@@ -155,6 +152,7 @@ export default {
 <template>
   <v-app>
     <myHeader />
+    {{ this.activeSkillValue[14] }}
 
     <v-main class="bg">
       <v-sheet :elevation="10" border="true" class="ma-3" id="calc">

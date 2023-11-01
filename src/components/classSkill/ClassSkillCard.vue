@@ -1,5 +1,12 @@
 <script>
-import { classSkillList } from "../../data/classSkillList.js";
+let asyncData = [];
+const jsonUrl =
+  "https://raw.githubusercontent.com/445MMJ/calc-data/main/classSkillList.json"; // JSONファイルのURL
+async function asyncGetData() {
+  const data = await fetch(jsonUrl);
+  const dataJson = await data.json();
+  return dataJson;
+}
 import { sumSkillValue } from "../script/sumSkillValue.js";
 export default {
   props: ["name"],
@@ -22,6 +29,10 @@ export default {
       isShow: false, // 表示/非表示の状態を保持
     };
   },
+  async created() {
+    //非同期処理でデータを取得
+    asyncData = await asyncGetData();
+  },
   mounted() {
     //Mountタイミングで初期化処理を行う
     this.isChecked = true;
@@ -41,9 +52,12 @@ export default {
   },
   computed: {
     filteredList() {
-      return classSkillList.classSkillList.filter(
-        (obj) => obj.SkillName === this.name
-      );
+      let name = this.name; //nameに依存していることを明示しないとリアクティブしてくれない
+      if (asyncData.length === undefined) {
+        return [];
+      } else {
+        return asyncData.filter((obj) => obj.SkillName == name);
+      }
     },
   },
   methods: {
@@ -98,7 +112,7 @@ export default {
         {{ item.Target }}/{{ item.MainText }}{{ item.PostText
         }}{{ item.Value0 }}
       </v-list-item></v-list
-    >
+    >{{ filteredList }}
   </div>
 </template>
 

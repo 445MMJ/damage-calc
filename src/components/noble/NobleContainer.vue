@@ -1,10 +1,12 @@
 <script>
-async function asyncGetData() {
-  const p = await import("../../data/nobleList.js");
-  const m = p.nobleList.nobleList;
-  return m;
-}
 let asyncData = [];
+const jsonUrl =
+  "https://raw.githubusercontent.com/445MMJ/calc-data/main/nobleList.json"; // JSONファイルのURL
+async function asyncGetData() {
+  const data = await fetch(jsonUrl);
+  const dataJson = await data.json();
+  return dataJson;
+}
 import { sumSkillValue } from "../script/sumSkillValue.js";
 import nobleSelect from "./NobleSelect.vue";
 

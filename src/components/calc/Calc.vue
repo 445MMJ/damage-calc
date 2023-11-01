@@ -1,9 +1,13 @@
 <script>
+import { defineAsyncComponent } from "vue";
 import { totalSpecialValue } from "../TotalSpecialValue.js";
 import { additionalServantMap } from "../../data/additionalServantMap.js";
 import { mdiFastForward, mdiBatteryCharging, mdiStarFourPoints } from "@mdi/js";
+const viewer = defineAsyncComponent(() => import("./Viewer.vue"));
 export default {
-  components: {},
+  components: {
+    viewer,
+  },
   props: {
     attacker: {
       type: Object,
@@ -526,7 +530,7 @@ export default {
           <h2>[変更]ボタンからサーヴァントを選択する</h2>
           <h2>用途に応じてサポーターを選択できる</h2>
           <h2>下三角ボタンでサーヴァントの状態を編集できる</h2>
-          <h2>上のタブから結果を選択する</h2> 
+          <h2>上のタブから結果を選択する</h2>
         </div>
       </v-sheet>
     </v-window-item>
@@ -958,25 +962,16 @@ export default {
     </v-window-item>
 
     <v-window-item value="999">
-      <v-container>
-        <v-row>
-          サーヴァント
-          {{ attacker }}
-          <v-divider></v-divider>
-          追加鯖データ
-          {{ additionalData }}
-          <v-divider></v-divider>
-          ATK
-          {{ ATKValue }}
-          <v-divider></v-divider>
-          バフ情報
-          {{ skillvalue }}
-          <v-divider></v-divider>
-          宝具性能
-          {{ noblevalue }}
-          <v-divider></v-divider>
-        </v-row>
-      </v-container>
+      <div class="d-flex flex-column">
+        <viewer title="サーヴァント" :data="attacker" />
+        <v-divider></v-divider>
+        <viewer title="追加鯖データ" :data="additionalData" />
+        <v-divider></v-divider>
+        <viewer title="バフ情報" :data="skillvalue" />
+        <v-divider></v-divider>
+        <viewer title="宝具性能" :data="noblevalue" />
+        <v-divider></v-divider>
+      </div>
     </v-window-item>
   </v-window>
 </template>

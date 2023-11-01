@@ -152,8 +152,6 @@ export default {
 <template>
   <v-app>
     <myHeader />
-    {{ this.activeSkillValue[14] }}
-
     <v-main class="bg">
       <v-sheet :elevation="10" border="true" class="ma-3" id="calc">
         <calc

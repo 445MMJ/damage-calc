@@ -44,10 +44,10 @@ export default {
     handleInput() {
       for (const key of Object.keys(this.parametersAll)) {
         //nullや空白やundifinedの場合は0にする
-        if (
-          this.parametersAll[key] === null ||
-          this.parametersAll[key] === ""
-        ) {
+        if (this.parametersAll[key] === null) {
+          this.parametersAll[key] = 0;
+        }
+        if (this.parametersAll[key] === "") {
           this.parametersAll[key] = 0;
         }
         this.parametersAll[key] = parseFloat(this.parametersAll[key]);
@@ -60,18 +60,27 @@ export default {
 
 <template>
   <div>
-    バフ情報
+    <p>バフ情報</p>
     <div v-for="key in parametersBuffList" :key="key" class="input-group">
       <v-text-field
         v-model="this.parametersAll[key]"
         :label="key"
         @input="handleInput"
-        clearable
         type="number"
         hide-details="auto"
         hint="単位%で記入"
       ></v-text-field>
     </div>
-    デバフ情報
+    <p>バフ情報</p>
+    <div v-for="key in parametersDebuffList" :key="key" class="input-group">
+      <v-text-field
+        v-model="this.parametersAll[key]"
+        :label="key"
+        @input="handleInput"
+        type="number"
+        hide-details="auto"
+        hint="単位%で記入"
+      ></v-text-field>
+    </div>
   </div>
 </template>

@@ -18,9 +18,6 @@ const classSkillsContainer = defineAsyncComponent(() =>
 const nobleContainer = defineAsyncComponent(() =>
   import("./components/noble/NobleContainer.vue")
 );
-const OnobleContainer = defineAsyncComponent(() =>
-  import("./components/noble/ONobleContainer.vue")
-);
 const userInput = defineAsyncComponent(() =>
   import("./components/UserInput.vue")
 );
@@ -35,7 +32,6 @@ export default {
     skillsContainer,
     classSkillsContainer,
     nobleContainer,
-    OnobleContainer,
     calc,
     attacker,
     userInput,
@@ -156,11 +152,6 @@ export default {
 <template>
   <v-app>
     <myHeader />
-    <OnobleContainer
-      v-show="isShowSkillDetail[0]"
-      :items="selectedServant[0]['No.']"
-      @skillValue="updatedNobleValue($event)"
-    />
     <v-main class="bg">
       <v-sheet :elevation="10" border="true" class="ma-3" id="calc">
         <calc

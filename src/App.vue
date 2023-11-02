@@ -18,6 +18,9 @@ const classSkillsContainer = defineAsyncComponent(() =>
 const nobleContainer = defineAsyncComponent(() =>
   import("./components/noble/NobleContainer.vue")
 );
+const OnobleContainer = defineAsyncComponent(() =>
+  import("./components/noble/ONobleContainer.vue")
+);
 const userInput = defineAsyncComponent(() =>
   import("./components/UserInput.vue")
 );
@@ -32,6 +35,7 @@ export default {
     skillsContainer,
     classSkillsContainer,
     nobleContainer,
+    OnobleContainer,
     calc,
     attacker,
     userInput,
@@ -152,6 +156,11 @@ export default {
 <template>
   <v-app>
     <myHeader />
+    <OnobleContainer
+      v-show="isShowSkillDetail[0]"
+      :items="selectedServant[0]['No.']"
+      @skillValue="updatedNobleValue($event)"
+    />
     <v-main class="bg">
       <v-sheet :elevation="10" border="true" class="ma-3" id="calc">
         <calc
@@ -162,6 +171,7 @@ export default {
           :isManiac="isManiac"
         />
       </v-sheet>
+
       <v-sheet :elevation="10" border="true" class="ma-3" id="servant0">
         <v-container @click="invertSkillDetail(0)">
           <v-row justify="start" align="center">
@@ -360,7 +370,7 @@ export default {
             <v-col><v-btn @click.stop="hideSkillDetail()">全閉</v-btn></v-col>
             <v-col
               ><v-tooltip text="未実装" location="top">
-                <template v-slot:activator="{ props }" >
+                <template v-slot:activator="{ props }">
                   <v-switch
                     v-bind="props"
                     density="compact"

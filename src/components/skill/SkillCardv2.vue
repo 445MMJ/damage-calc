@@ -221,18 +221,15 @@ function handleSkillName(item) {
         :value="index"
         class="pa-0"
       >
-        <template v-slot:prepend="{ isActive }">
-          <v-list-item-action start>
-            <v-checkbox
-              input-value="true"
-              v-model="isActiveList.value[index]"
-              @change="bufftype"
-              hide-details
-            ></v-checkbox
-          ></v-list-item-action>
-        </template>
-        {{ item.Target }}/{{ item.MainText }}{{ item.PostText
-        }}{{ item[skillLevel] }}
+        <v-checkbox
+          v-model="isActiveList[index]"
+          @change="bufftype"
+          hide-details
+          ><template v-slot:label>
+            {{ item.Target }}/{{ item.MainText }}{{ item.PostText
+            }}{{ item[skillLevel] }}  </template
+          ></v-checkbox
+        >
       </v-list-item></v-list
     >
   </div>

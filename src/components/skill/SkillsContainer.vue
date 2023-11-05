@@ -1,7 +1,7 @@
 <script>
 import { defineAsyncComponent } from "vue";
 import { sumObjectValue } from "../../components/TotalSkillValue.js";
-const skillCard = defineAsyncComponent(() => import("./SkillCard.vue"));
+const skillCard = defineAsyncComponent(() => import("./SkillCardv2.vue"));
 const skillCardPreText = defineAsyncComponent(() =>
   import("./SkillCardPreText.vue")
 );

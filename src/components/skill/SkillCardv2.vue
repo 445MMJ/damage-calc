@@ -190,6 +190,11 @@ function handleSkillName(item) {
     isShow.value = false;
   }
 }
+
+function toggleItem(index) {
+  isActiveList.value[index] = !isActiveList.value[index];
+  bufftype();
+}
 </script>
 
 <template>
@@ -218,18 +223,13 @@ function handleSkillName(item) {
       <v-list-item
         v-for="(item, index) in skillData[0]"
         :key="index"
-        :value="index"
+        :value="isActiveList[index]"
+        @click="toggleItem(index)"
         class="pa-0"
-      >
-        <v-checkbox
-          v-model="isActiveList[index]"
-          @change="bufftype"
-          hide-details
-          ><template v-slot:label>
-            {{ item.Target }}/{{ item.MainText }}{{ item.PostText
-            }}{{ item[skillLevel] }}  </template
-          ></v-checkbox
-        >
+      ><div class="d-flex">
+        <v-checkbox class="d-flex" v-model="isActiveList[index]" />
+        {{ item.Target }}/{{ item.MainText }}{{ item.PostText
+        }}{{ item[skillLevel] }}</div>
       </v-list-item></v-list
     >
   </div>

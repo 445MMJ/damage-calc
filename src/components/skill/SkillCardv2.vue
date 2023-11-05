@@ -1,5 +1,6 @@
+template
 <script setup>
-import { ref, watch, onMounted, computed, reactive } from "vue";
+import { ref, watch, onMounted, computed, shallowRef, unref } from "vue";
 
 // 非同期データフェッチ
 let asyncData = [];
@@ -13,7 +14,6 @@ async function asyncGetData() {
 }
 onMounted(async () => {
   asyncData = await asyncGetData();
-  console.log("マウンテッド", props.name);
   handleSkillName(props.name);
   bufftype();
 });
@@ -23,7 +23,7 @@ const props = defineProps({ name: { default: "プレースホルダー" } });
 const emits = defineEmits(["skillValue", "skillValueSelf", "skillValueOther"]);
 
 // propsの変更を監視
-const skillData = ref([]);
+const skillData = ref(["空だよ"]);
 const isActiveList = ref(Array(20).fill(true));
 const isChecked = ref(true);
 const isShow = ref(true);
@@ -40,26 +40,85 @@ const skillLevel = computed(() => {
 
 // 宝具の効果値を合計する関数
 //スキル効果は範囲が"味方単体or全体効果"/"自身"/"自身以外"で分けて管理
-const skillValue = ref({});
-const skillValueSelf = ref({});
-const skillValueOther = ref({});
 function bufftype() {
-  console.log("フィルタ前", skillData.value);
+  console.log("bufftype", isChecked.value);
+  const skillObjList = [];
+  const skillObjListSelf = [];
+  const skillObjListOther = [];
+  let skillValue = {};
+  let skillValueSelf = {};
+  let skillValueOther = {};
+
   //まずisActiveListを見て、チェックされているものだけを抽出
-  const activeList = skillData.value.filter((item, index) => {
+  const activeList = skillData.value[0].filter((item, index) => {
     return isActiveList.value[index];
   });
-  console.log("フィルタ後", activeList);
 
-  //チェック状態であれば、そのまま送信。非チェック状態であれば初期値に戻して送信
-  if (isChecked) {
+  //次に、チェックされているものの中から、効果範囲ごとに分ける
+  activeList.forEach((item) => {
+    const obj = {}; // 各ケースごとに新しいオブジェクトを作成
+    switch (item.Target) {
+      case "味方単体":
+        obj[item.MainText] = parseFloatValue(item[skillLevel.value]);
+        skillObjList.push(obj);
+        break;
+      case "味方全体":
+        obj[item.MainText] = parseFloatValue(item[skillLevel.value]);
+        skillObjList.push(obj);
+        break;
+      case "自身":
+        obj[item.MainText] = parseFloatValue(item[skillLevel.value]);
+        skillObjListSelf.push(obj);
+        break;
+      case "自身を除く味方全体":
+        obj[item.MainText] = parseFloatValue(item[skillLevel]);
+        skillObjListOther.push(obj);
+        break;
+      default:
+        break;
+    }
+  });
+
+  for (var i = 0; i < skillObjList.length; i++) {
+    for (let key of Object.keys(skillObjList[i])) {
+      if (skillValue[key] == undefined) {
+        skillValue[key] = skillObjList[i][key];
+      } else {
+        skillValue[key] += skillObjList[i][key];
+      }
+    }
+  }
+
+  for (var i = 0; i < skillObjListSelf.length; i++) {
+    for (let key of Object.keys(skillObjListSelf[i])) {
+      if (skillValueSelf[key] == undefined) {
+        skillValueSelf[key] = skillObjListSelf[i][key];
+      } else {
+        skillValueSelf[key] += skillObjListSelf[i][key];
+      }
+    }
+  }
+
+  for (var i = 0; i < skillObjListOther.length; i++) {
+    for (let key of Object.keys(skillObjListOther[i])) {
+      if (skillValueOther[key] == undefined) {
+        skillValueOther[key] = skillObjListOther[i][key];
+      } else {
+        skillValueOther[key] += skillObjListOther[i][key];
+      }
+    }
+  }
+
+  //根幹がチェック状態であれば、そのまま送信。非チェック状態であれば初期値に戻して送信
+  if (isChecked.value) {
     emits("skillValue", skillValue);
     emits("skillValueSelf", skillValueSelf);
     emits("skillValueOther", skillValueOther);
   } else {
-    skillValue = { ...init };
-    skillValueSelf = { ...init };
-    skillValueOther = { ...init };
+    const zero = { "-": "-" };
+    skillValue = { ...zero };
+    skillValueSelf = { ...zero };
+    skillValueOther = { ...zero };
     emits("skillValue", skillValue);
     emits("skillValueSelf", skillValueSelf);
     emits("skillValueOther", skillValueOther);
@@ -79,36 +138,38 @@ const levelNumber = [
   { title: "10", value: 10 },
 ]; // リストボックスの選択肢
 
-const placeFolder = [{
-  SkillName: "プレースホルダー EX",
-  CT: "7",
-  Target: "自身",
-  Target2: "-",
-  PreText: "-",
-  MainText: "-",
-  PostText: "-",
-  Grow: "Lv",
-  Value0: "20%",
-  Value1: "21%",
-  Value2: "22%",
-  Value3: "23%",
-  Value4: "24%",
-  Value5: "25%",
-  Value6: "26%",
-  Value7: "27%",
-  Value8: "28%",
-  Value9: "30%",
-  Detail: "-",
-  EntityID: "-",
-}]; // プレースホルダー
+const placeFolder = [
+  {
+    SkillName: "プレースホルダー EX",
+    CT: "7",
+    Target: "自身",
+    Target2: "-",
+    PreText: "-",
+    MainText: "-",
+    PostText: "-",
+    Grow: "Lv",
+    Value0: "20%",
+    Value1: "21%",
+    Value2: "22%",
+    Value3: "23%",
+    Value4: "24%",
+    Value5: "25%",
+    Value6: "26%",
+    Value7: "27%",
+    Value8: "28%",
+    Value9: "30%",
+    Detail: "-",
+    EntityID: "-",
+  },
+]; // プレースホルダー
 
 // 文字列を数値に変換したりしなかったり関数
 function parseFloatValue(item) {
   const value = parseFloat(item);
-  if (isNaN(value)) {
-    return item;
-  } else {
+  if (!isNaN(value)) {
     return value;
+  } else {
+    return item;
   }
 }
 
@@ -116,7 +177,6 @@ function handleSkillName(item) {
   if (asyncData.size === undefined) {
     skillData.value.splice(0);
   } else {
-    console.log("データが読み込まれました", item);
     skillData.value.splice(0);
     skillData.value.push(asyncData.get(item));
     if (item === "プレースホルダー") {
@@ -153,9 +213,24 @@ function handleSkillName(item) {
       label="Lv"
       variant="outlined"
       density="compact"
-    ></v-select>{{ skillData }}
-    <v-list density="compact">
-      <v-list-item v-for="(item, index) in skillData[0]" :key="index">
+    ></v-select>
+    <v-list density="compact" class="pa-0">
+      <v-list-item
+        v-for="(item, index) in skillData[0]"
+        :key="index"
+        :value="index"
+        class="pa-0"
+      >
+        <template v-slot:prepend="{ isActive }">
+          <v-list-item-action start>
+            <v-checkbox
+              input-value="true"
+              v-model="isActiveList.value[index]"
+              @change="bufftype"
+              hide-details
+            ></v-checkbox
+          ></v-list-item-action>
+        </template>
         {{ item.Target }}/{{ item.MainText }}{{ item.PostText
         }}{{ item[skillLevel] }}
       </v-list-item></v-list

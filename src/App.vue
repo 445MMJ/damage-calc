@@ -200,7 +200,7 @@ export default {
           <nobleContainer
             v-show="isShowSkillDetail[0]"
             :items="selectedServant[0]['No.']"
-            @skillValue="updatedNobleValue($event)" /></v-expand-transition
+            @nobleValue="updatedNobleValue($event)" /></v-expand-transition
         ><v-expand-transition>
           <skillsContainer
             v-show="isShowSkillDetail[0]"

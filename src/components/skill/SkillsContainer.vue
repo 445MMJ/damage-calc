@@ -71,16 +71,19 @@ export default {
   },
   methods: {
     updateSkillValue(option, index) {
+      console.log("updateSkillValue", option, index)
       this.skillValue[index] = option;
       this.totalSkillValue = sumObjectValue(this.skillValue);
       this.$emit("skillValue", this.totalSkillValue);
     },
     updateSkillValueSelf(option, index) {
+      console.log("updateSkillValueSelf", option, index)
       this.skillValueSelf[index] = option;
       this.totalSkillValueSelf = sumObjectValue(this.skillValueSelf);
       this.$emit("skillValueSelf", this.totalSkillValueSelf);
     },
     updateSkillValueOther(option, index) {
+      console.log("updateSkillValueOther", option, index)
       this.skillValueOther[index] = option;
       this.totalSkillValueOther = sumObjectValue(this.skillValueOther);
       this.$emit("skillValueOther", this.totalSkillValueOther);
@@ -226,13 +229,9 @@ export default {
         "芸術審美 E-",
         "魔眼 B+",
       ];
-      //四枝の浅瀬 A,被虐体質 A+,局中法度 EX
       const skillCardUnique1 = ["四枝の浅瀬 A", "被虐体質 A+", "局中法度 EX"];
-      //大河の巨獣 B
       const skillCardUnique2 = ["大河の巨獣 B"];
-      //(死滅願望 A強化前だから使わないかも),四夜の終末 EX,是非もなし A-
       const skillCardUnique3 = ["死滅願望 A", "四夜の終末 EX", "是非もなし A-"];
-
       const skillCardUnique4 = ["影郷の武練 B+"];
       const skillCardUnique5 = ["蛤御殿 A"];
       const skillCardUnique6 = [
@@ -316,10 +315,10 @@ export default {
       const skillCardUnique7 = [];
       const skillCardUnique8 = [];
       if (skillCardPreTextNameList.includes(skillName)) {
-        return "skillCardPreText";
+        return "skillCard";
       }
       if (skillCardTarget2NameList.includes(skillName)) {
-        return "skillCardTarget2";
+        return "skillCard";
       }
       if (skillCardUnique1.includes(skillName)) {
         return "skillCardUnique1";
@@ -337,7 +336,7 @@ export default {
         return "skillCardUnique5";
       }
       if (skillCardUnique6.includes(skillName)) {
-        return "skillCardUnique6";
+        return "skillCard";
       }
       return "skillCard";
     },

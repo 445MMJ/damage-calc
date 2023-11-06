@@ -43,6 +43,7 @@ export function sumObjectValue(objectArray) {
         "〔源氏〕威力": 0,
         "〔愛炎状態〕威力": 0,
         "〔機械〕威力": 0,
+        "〔竜〕威力":0,
         "Busterカード耐性": 0,
         "Quickカード耐性": 0,
         "Artsカード耐性": 0,
@@ -50,9 +51,6 @@ export function sumObjectValue(objectArray) {
         "敵特防": 0,
         "敵特殊耐性": 0,
     }
-
-        ;
-
     for (const obj of objectArray) {
         if (typeof obj !== 'object') {
             continue;

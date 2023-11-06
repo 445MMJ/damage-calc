@@ -66,12 +66,20 @@ function bufftype() {
         obj[item.MainText] = parseFloatValue(item[skillLevel.value]);
         skillObjList.push(obj);
         break;
+      case "敵単体":
+        obj[item.MainText] = -1 * parseFloatValue(item[skillLevel.value]);
+        skillObjList.push(obj);
+        break;
+      case "敵全体":
+        obj[item.MainText] = -1 * parseFloatValue(item[skillLevel.value]);
+        skillObjList.push(obj);
+        break;
       case "自身":
         obj[item.MainText] = parseFloatValue(item[skillLevel.value]);
         skillObjListSelf.push(obj);
         break;
       case "自身を除く味方全体":
-        obj[item.MainText] = parseFloatValue(item[skillLevel]);
+        obj[item.MainText] = parseFloatValue(item[skillLevel.value]);
         skillObjListOther.push(obj);
         break;
       default:
@@ -192,6 +200,7 @@ function handleSkillName(item) {
 }
 
 function toggleItem(index) {
+  console.log(index);
   isActiveList.value[index] = !isActiveList.value[index];
   bufftype();
 }
@@ -223,13 +232,15 @@ function toggleItem(index) {
       <v-list-item
         v-for="(item, index) in skillData[0]"
         :key="index"
-        :value="isActiveList[index]"
         @click="toggleItem(index)"
         class="pa-0"
-      ><div class="d-flex">
-        <v-checkbox class="d-flex" v-model="isActiveList[index]" />
-        {{ item.Target }}/{{ item.MainText }}{{ item.PostText
-        }}{{ item[skillLevel] }}</div>
+        ><div class="d-flex justify-start">
+          <div><v-checkbox v-model="isActiveList[index]" /></div>
+          <p>
+            {{ item.Target }}/{{ item.MainText }}{{ item.PostText
+            }}{{ item[skillLevel] }}
+          </p>
+        </div>
       </v-list-item></v-list
     >
   </div>

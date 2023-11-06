@@ -70,7 +70,7 @@ export default {
     <div>
       <v-menu>
         <template v-slot:activator="{ props }">
-          <v-btn  :icon="mdiMenu" class="pointer-events-initial" color="primary" v-bind="props"></v-btn>
+          <v-btn  :icon="mdiMenu" class="pointer-events-initial" color="primary" v-bind="props" aria-label="Menu  "></v-btn>
           
         </template>
         

@@ -25,12 +25,14 @@ export default {
       class="mx-4"
       :icon="mdiFileCodeOutline"
       variant="text"
+      alt="GitHub"
     ></v-btn>
     <v-btn
       href="https://twitter.com/intent/tweet?button_hashtag=test&ref_src=twsrc%5Etfw"
       class="mx-4"
       :icon="mdiAlphaXBoxOutline"
       variant="text"
+      alt="Twitter"
     ></v-btn>
   </v-footer>
 </template>

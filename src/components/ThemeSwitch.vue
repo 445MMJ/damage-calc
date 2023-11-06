@@ -24,6 +24,7 @@ theme.global.name.value = darkTheme.value ? "dark" : "light";
     :prepend-icon="darkTheme ? mdiWeatherNight : mdiWeatherSunny"
     hide-details
     inset
-    class="px-3"  
+    class="px-3"
+    aria-disabled="true"
   /></div>
 </template>

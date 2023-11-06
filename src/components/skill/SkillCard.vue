@@ -1,129 +1,213 @@
-<script>
+template
+<script setup>
+import { ref, watch, onMounted, computed, shallowRef, unref } from "vue";
+
+// 非同期データフェッチ
 let asyncData = [];
-const jsonUrl = 'https://gist.githubusercontent.com/445MMJ/b4887f5b82b28f98b36608a131962fdb/raw/5f7f69693c0990739154ebdd2bd086905af27816/skillList.json'; // JSONファイルのURL
+const jsonUrl =
+  "https://gist.githubusercontent.com/445MMJ/b4887f5b82b28f98b36608a131962fdb/raw/5f7f69693c0990739154ebdd2bd086905af27816/skillList.json"; // JSONファイルのURL
 async function asyncGetData() {
   const data = await fetch(jsonUrl);
-  const dataJson = await data.json()
+  const dataJson = await data.json();
   const dataMap = new Map(Object.entries(dataJson));
-  return dataMap
+  return dataMap;
 }
-import { sumSkillValue } from "../script/sumSkillValue.js";
-export default {
-  props: { name: { default: "プレースホルダー" } },
-  emits: ["skillValue", "skillValueSelf", "skillValueOther"],
-  data() {
-    return {
-      selectedNumber: 10, // 選択したリストボックスの値を保持
-      levelNumber: [
-        { title: "1", value: 1 },
-        { title: "2", value: 2 },
-        { title: "3", value: 3 },
-        { title: "4", value: 4 },
-        { title: "5", value: 5 },
-        { title: "6", value: 6 },
-        { title: "7", value: 7 },
-        { title: "8", value: 8 },
-        { title: "9", value: 9 },
-        { title: "10", value: 10 },
-      ], // リストボックスの選択肢
-      init: {
-        攻撃力: 0,
-        Busterカード性能: 0,
-        Quickカード性能: 0,
-        Artsカード性能: 0,
-        宝具威力: 0,
-        NP獲得量: 0,
-      },
-      //スキル効果は味方単体/全体効果と自身を対象にとるもので分けて管理
-      skillValue: {},
-      skillValueSelf: {},
-      skillValueOther: {},
-      isChecked: true, // チェックボックスの状態を保持
-      isShow: false, // 表示/非表示の状態を保持
-    };
-  },
-  async created() {
-    //非同期処理でデータを取得
-    asyncData = await asyncGetData();
-  },
-  mounted() {
-    //Mountタイミングで初期化処理を行う
-    this.isChecked = true;
-    this.isShow = true;
-    if (this.name === "プレースホルダー") {
-      this.isShow = false;
-    } else {
-      this.isShow = true;
+onMounted(async () => {
+  asyncData = await asyncGetData();
+  handleSkillName(props.name);
+  bufftype();
+});
+
+// propsとemitsの定義
+const props = defineProps({ name: { default: "プレースホルダー" } });
+const emits = defineEmits(["skillValue", "skillValueSelf", "skillValueOther"]);
+
+// propsの変更を監視
+const skillData = ref(["空だよ"]);
+const isActiveList = ref(Array(20).fill(true));
+const isChecked = ref(true);
+const isShow = ref(true);
+watch(props, (newValue) => {
+  handleSkillName(newValue.name);
+  bufftype();
+});
+
+// スキルレベルの変更を監視
+const selectedNumber = ref(10);
+const skillLevel = computed(() => {
+  return `Value` + (selectedNumber.value - 1);
+});
+
+// 宝具の効果値を合計する関数
+//スキル効果は範囲が"味方単体or全体効果"/"自身"/"自身以外"で分けて管理
+function bufftype() {
+  console.log("bufftype", isChecked.value);
+  const skillObjList = [];
+  const skillObjListSelf = [];
+  const skillObjListOther = [];
+  let skillValue = {};
+  let skillValueSelf = {};
+  let skillValueOther = {};
+
+  //まずisActiveListを見て、チェックされているものだけを抽出
+  const activeList = skillData.value[0].filter((item, index) => {
+    return isActiveList.value[index];
+  });
+
+  //次に、チェックされているものの中から、効果範囲ごとに分ける
+  activeList.forEach((item) => {
+    const obj = {}; // 各ケースごとに新しいオブジェクトを作成
+    switch (item.Target) {
+      case "味方単体":
+        obj[item.MainText] = parseFloatValue(item[skillLevel.value]);
+        skillObjList.push(obj);
+        break;
+      case "味方全体":
+        obj[item.MainText] = parseFloatValue(item[skillLevel.value]);
+        skillObjList.push(obj);
+        break;
+      case "敵単体":
+        obj[item.MainText] = -1 * parseFloatValue(item[skillLevel.value]);
+        skillObjList.push(obj);
+        break;
+      case "敵全体":
+        obj[item.MainText] = -1 * parseFloatValue(item[skillLevel.value]);
+        skillObjList.push(obj);
+        break;
+      case "自身":
+        obj[item.MainText] = parseFloatValue(item[skillLevel.value]);
+        skillObjListSelf.push(obj);
+        break;
+      case "自身を除く味方全体":
+        obj[item.MainText] = parseFloatValue(item[skillLevel.value]);
+        skillObjListOther.push(obj);
+        break;
+      default:
+        break;
     }
-    this.bufftype();
-  },
-  watch: {
-    name(newValue) {
-      this.filteredList;
-      //値が変わった時も自動処理する
-      this.isChecked = true;
-      this.isShow = true;
-      if (newValue === "プレースホルダー") {
-        this.isShow = false;
+  });
+
+  for (var i = 0; i < skillObjList.length; i++) {
+    for (let key of Object.keys(skillObjList[i])) {
+      if (skillValue[key] == undefined) {
+        skillValue[key] = skillObjList[i][key];
       } else {
-        this.isShow = true;
+        skillValue[key] += skillObjList[i][key];
       }
-      this.bufftype();
-    },
-  },
-  computed: {
-    filteredList() {
-      let name = this.name; //nameに依存していることを明示しないとリアクティブしてくれない
-      if (asyncData.size === undefined) {
-        return []
-      }else{
-        return asyncData.get(name);
-      }
-    },
-    skillLevel() {
-      return `Value` + (this.selectedNumber - 1);
-    },
-  },
-  methods: {
-    bufftype() {
-      this.skillValue = { ...this.init };
-      this.skillValueSelf = { ...this.init };
-      this.skillValueOther = { ...this.init };
-      this.skillValue = sumSkillValue(
-        this.filteredList,
-        this.skillLevel,
-        "defualt"
-      );
-      this.skillValueSelf = sumSkillValue(
-        this.filteredList,
-        this.skillLevel,
-        "self"
-      );
-      this.skillValueOther = sumSkillValue(
-        this.filteredList,
-        this.skillLevel,
-        "other"
-      );
-      //チェック状態であれば、そのまま送信。非チェック状態であれば初期値に戻して送信
-      if (this.isChecked) {
-        this.$emit("skillValue", this.skillValue);
-        this.$emit("skillValueSelf", this.skillValueSelf);
-        this.$emit("skillValueOther", this.skillValueOther);
+    }
+  }
+
+  for (var i = 0; i < skillObjListSelf.length; i++) {
+    for (let key of Object.keys(skillObjListSelf[i])) {
+      if (skillValueSelf[key] == undefined) {
+        skillValueSelf[key] = skillObjListSelf[i][key];
       } else {
-        this.skillValue = { ...this.init };
-        this.skillValueSelf = { ...this.init };
-        this.skillValueOther = { ...this.init };
-        this.$emit("skillValue", this.skillValue);
-        this.$emit("skillValueSelf", this.skillValueSelf);
-        this.$emit("skillValueOther", this.skillValueOther);
+        skillValueSelf[key] += skillObjListSelf[i][key];
       }
-    },
+    }
+  }
+
+  for (var i = 0; i < skillObjListOther.length; i++) {
+    for (let key of Object.keys(skillObjListOther[i])) {
+      if (skillValueOther[key] == undefined) {
+        skillValueOther[key] = skillObjListOther[i][key];
+      } else {
+        skillValueOther[key] += skillObjListOther[i][key];
+      }
+    }
+  }
+
+  //根幹がチェック状態であれば、そのまま送信。非チェック状態であれば初期値に戻して送信
+  if (isChecked.value) {
+    emits("skillValue", skillValue);
+    emits("skillValueSelf", skillValueSelf);
+    emits("skillValueOther", skillValueOther);
+  } else {
+    const zero = { "-": "-" };
+    skillValue = { ...zero };
+    skillValueSelf = { ...zero };
+    skillValueOther = { ...zero };
+    emits("skillValue", skillValue);
+    emits("skillValueSelf", skillValueSelf);
+    emits("skillValueOther", skillValueOther);
+  }
+}
+
+const levelNumber = [
+  { title: "1", value: 1 },
+  { title: "2", value: 2 },
+  { title: "3", value: 3 },
+  { title: "4", value: 4 },
+  { title: "5", value: 5 },
+  { title: "6", value: 6 },
+  { title: "7", value: 7 },
+  { title: "8", value: 8 },
+  { title: "9", value: 9 },
+  { title: "10", value: 10 },
+]; // リストボックスの選択肢
+
+const placeFolder = [
+  {
+    SkillName: "プレースホルダー EX",
+    CT: "7",
+    Target: "自身",
+    Target2: "-",
+    PreText: "-",
+    MainText: "-",
+    PostText: "-",
+    Grow: "Lv",
+    Value0: "20%",
+    Value1: "21%",
+    Value2: "22%",
+    Value3: "23%",
+    Value4: "24%",
+    Value5: "25%",
+    Value6: "26%",
+    Value7: "27%",
+    Value8: "28%",
+    Value9: "30%",
+    Detail: "-",
+    EntityID: "-",
   },
-};
+]; // プレースホルダー
+
+// 文字列を数値に変換したりしなかったり関数
+function parseFloatValue(item) {
+  const value = parseFloat(item);
+  if (!isNaN(value)) {
+    return value;
+  } else {
+    return item;
+  }
+}
+
+function handleSkillName(item) {
+  if (asyncData.size === undefined) {
+    skillData.value.splice(0);
+  } else {
+    skillData.value.splice(0);
+    skillData.value.push(asyncData.get(item));
+    if (item === "プレースホルダー") {
+      skillData.value.splice(0);
+      skillData.value.push(placeFolder);
+    }
+  }
+  isChecked.value = true;
+  isShow.value = true;
+  if (item === "プレースホルダー") {
+    isShow.value = false;
+  }
+}
+
+function toggleItem(index) {
+  console.log(index);
+  isActiveList.value[index] = !isActiveList.value[index];
+  bufftype();
+}
 </script>
 
 <template>
-  <div v-show="isShow">
+  <div>
     <v-checkbox
       input-value="true"
       v-model="isChecked"
@@ -144,11 +228,20 @@ export default {
       variant="outlined"
       density="compact"
     ></v-select>
-    <v-list density="compact">
-      <v-list-item v-for="item in filteredList" :key="item.id">
-        {{ item.Target }}/{{ item.MainText }}{{ item.PostText
-        }}{{ item[this.skillLevel] }}</v-list-item
-      ></v-list
+    <v-list density="compact" class="pa-0">
+      <v-list-item
+        v-for="(item, index) in skillData[0]"
+        :key="index"
+        @click="toggleItem(index)"
+        class="pa-0"
+        ><div class="d-flex justify-start">
+          <div><v-checkbox v-model="isActiveList[index]" /></div>
+          <p>
+            {{ item.Target }}/{{ item.MainText }}{{ item.PostText
+            }}{{ item[skillLevel] }}
+          </p>
+        </div>
+      </v-list-item></v-list
     >
   </div>
 </template>

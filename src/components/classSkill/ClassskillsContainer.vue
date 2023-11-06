@@ -1,6 +1,6 @@
 <script>
 import { sumObjectValue } from "../../components/TotalSkillValue.js";
-import classSkillCard from "./ClassSkillCard.vue";
+import classSkillCard from "./ClassSkillCardv2.vue";
 
 export default {
   props: ["items"],
@@ -10,7 +10,7 @@ export default {
   },
   data() {
     return {
-      skillNames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      skillNames: [],
       skillValue: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       totalSkillValue: {},
       skillValueSelf: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],

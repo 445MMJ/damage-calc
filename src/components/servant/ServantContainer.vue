@@ -1,11 +1,13 @@
 <script>
 import { defineAsyncComponent } from "vue";
-async function asyncGetData() {
-  const p = await import("../../data/servantList.js");
-  const m = p.servantList.servantList;
-  return m;
-}
 let asyncData = [];
+const jsonUrl =
+  "https://raw.githubusercontent.com/445MMJ/calc-data/main/servantList.json"; // JSONファイルのURL
+async function asyncGetData() {
+  const data = await fetch(jsonUrl);
+  const dataJson = await data.json();
+  return dataJson;
+}
 const searchButton = defineAsyncComponent(() => import("./SearchButton.vue"));
 const servantSelect = defineAsyncComponent(() => import("./ServantSelect.vue"));
 

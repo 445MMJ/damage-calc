@@ -26,8 +26,6 @@ export default {
   emits: ["skillValue", "skillValueSelf", "skillValueOther"],
   components: {
     skillCard,
-    skillCardPreText,
-    skillCardTarget2,
     skillCardUnique1,
     skillCardUnique2,
     skillCardUnique3,

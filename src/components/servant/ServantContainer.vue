@@ -45,9 +45,11 @@ export default {
         "補助Ａ",
         "補助Ｑ",
       ],
+      selectRareList: ["1", "2", "3", "4", "5"],
       selectedAttri: "", //天地人
       selectedClass: "", //クラス
       selectedNoble: "", //NP種別
+      selectedRare: "", //レアリティ
       selectedServant: null,
     };
   },
@@ -63,6 +65,8 @@ export default {
         this.selectedClass = option;
       } else if (type == "Noble") {
         this.selectedNoble = option;
+      } else if (type == "Rare") {
+        this.selectedRare = option;
       }
     },
     updateSelectedServant(option) {
@@ -75,11 +79,13 @@ export default {
       let selector1 = this.selectedAttri === null ? "" : this.selectedAttri;
       let selector2 = this.selectedClass === null ? "" : this.selectedClass;
       let selector3 = this.selectedNoble === null ? "" : this.selectedNoble;
+      let selector4 = this.selectedRare === null ? "" : this.selectedRare;
       return asyncData.filter((obj) => {
         const condition1 = !selector1 || obj["Attri"] === selector1;
         const condition2 = !selector2 || obj["Class"] === selector2;
         const condition3 = !selector3 || obj["Noble"] === selector3;
-        return condition1 && condition2 && condition3;
+        const condition4 = !selector4 || obj["Rare"] === selector4;
+        return condition1 && condition2 && condition3 && condition4;
       });
     },
   },
@@ -88,6 +94,11 @@ export default {
 
 <template>
   <v-sheet :elevation="10" border="true" class="pa-2 ma-6">
+    <span>レアリティ</span>
+    <searchButton
+      :items="selectRareList"
+      @selected-items="updateSelectedSearch($event, 'Rare')"
+    />
     <span>天地人</span>
     <searchButton
       :items="selectAttriList"

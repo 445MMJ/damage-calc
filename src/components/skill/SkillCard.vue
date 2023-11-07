@@ -41,7 +41,6 @@ const skillLevel = computed(() => {
 // 宝具の効果値を合計する関数
 //スキル効果は範囲が"味方単体or全体効果"/"自身"/"自身以外"で分けて管理
 function bufftype() {
-  console.log("bufftype", isChecked.value);
   const skillObjList = [];
   const skillObjListSelf = [];
   const skillObjListOther = [];
@@ -229,18 +228,22 @@ function toggleItem(index) {
       density="compact"
     ></v-select>
     <v-list density="compact" class="pa-0">
-      <v-list-item
+      <v-list-item density="compact"
         v-for="(item, index) in skillData[0]"
         :key="index"
         @click="toggleItem(index)"
         class="pa-0"
-        ><div class="d-flex justify-start">
-          <div><v-checkbox v-model="isActiveList[index]" /></div>
-          <p>
+
+      >
+        <v-layout justify-center align-center>
+          <div>
+            <v-checkbox v-model="isActiveList[index]" hide-details />
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
             {{ item.Target }}/{{ item.MainText }}{{ item.PostText
             }}{{ item[skillLevel] }}
-          </p>
-        </div>
+          </div>
+        </v-layout>
       </v-list-item></v-list
     >
   </div>

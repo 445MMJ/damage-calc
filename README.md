@@ -1,8 +1,17 @@
-# ダメージ計算機
-https://445mmj.github.io/damage-calc/  
+
+# ダメージ計算機  
+
+<https://445mmj.github.io/damage-calc/>  
 電卓みたいにボタン押すだけで計算できます  
-計算式、データはFate/Grand Order@wiki(https://w.atwiki.jp/f_go/) より  
+計算式、データはFate/Grand Order@wiki(<https://w.atwiki.jp/f_go/>) より  
 
 ## β公開中  
-・宝具前バフと宝具後バフの区別がついていない
-・スキルの詳細が上手く表示されない時がある
+
+## 不具合が起こるもの  
+
+- 同名で効果が違うスキル
+- 複数の状態がある宝具、スキル
+- HPが関係する宝具、スキル
+- カウンター宝具攻撃
+- 即死がある宝具
+- 敵へのデバフが自分へのデバフになる

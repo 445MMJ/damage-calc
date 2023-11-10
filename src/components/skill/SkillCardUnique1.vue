@@ -1,13 +1,4 @@
 <script>
-let asyncData = [];
-const jsonUrl = 'https://gist.githubusercontent.com/445MMJ/b4887f5b82b28f98b36608a131962fdb/raw/5f7f69693c0990739154ebdd2bd086905af27816/skillList.json'; // JSONファイルのURL
-async function asyncGetData() {
-  const data = await fetch(jsonUrl);
-  const dataJson = await data.json()
-  const dataMap = new Map(Object.entries(dataJson));
-  return dataMap
-}
-import { sumSkillValue } from "../script/sumSkillValue.js";
 export default {
   props: ["name"],
   emits: ["skillValue", "skillValueSelf", "skillValueOther"],
@@ -44,12 +35,8 @@ export default {
       isLoad: false, //ロードのチェック
       HP: 1,
       MaxHP: 10000,
+      filteredList: [],
     };
-  },
-  async created() {
-    //非同期処理でデータを取得    
-    asyncData = await asyncGetData();    
-    this.isLoad = true;
   },
   mounted() {
     //Mountタイミングで初期化処理を行う
@@ -69,17 +56,6 @@ export default {
     },
   },
   computed: {
-    filteredList() {
-      let name = this.name; //nameに依存していることを明示しないとリアクティブしてくれない
-      if (this.isLoad === false) {
-        setTimeout(() => {}, 500);
-      }
-      if (asyncData.size === undefined) {
-        return []
-      }else{
-        return asyncData.get(name);
-      }
-    },
     skillLevel() {
       return `Value` + (this.selectedNumber - 1);
     },
@@ -96,12 +72,14 @@ export default {
       this.skillValueOther = { ...this.init };
 
       if (this.name === "四枝の浅瀬 A") {
+        this.filteredList = [ { "SkillName": "四枝の浅瀬 A", "CT": "8", "Target": "自身", "Target2": "-", "PreText": "-", "MainText": "ガッツ", "PostText": "(5T/1回)", "Grow": "Lv", "Value0": "HP1000", "Value1": "HP1150", "Value2": "HP1300", "Value3": "HP1450", "Value4": "HP1600", "Value5": "HP1750", "Value6": "HP1900", "Value7": "HP2050", "Value8": "HP2200", "Value9": "HP2500", "Detail": "自身にガッツ状態(1回・5T)を付与[Lv]", "EntityID": "759550" }, { "SkillName": "四枝の浅瀬 A", "CT": "8", "Target": "自身", "Target2": "-", "PreText": "-", "MainText": "HPが少ないほど攻撃力", "PostText": "アップ(3T)", "Grow": "-", "Value0": "20%～50%", "Value1": "20%～50%", "Value2": "20%～50%", "Value3": "20%～50%", "Value4": "20%～50%", "Value5": "20%～50%", "Value6": "20%～50%", "Value7": "20%～50%", "Value8": "20%～50%", "Value9": "20%～50%", "Detail": "＆HPが少ないほど攻撃力がアップする状態を付与(3T)", "EntityID": "759550" } ]
         let result = 20 + (1 - this.HP / this.MaxHP) * 30;
         result = Number(result);
         result = Math.round(result);
         this.skillValueSelf["攻撃力"] = result;
       }
       if (this.name === "被虐体質 A+") {
+        this.filteredList = [ { "SkillName": "被虐体質 A+", "CT": "6", "Target": "自身", "Target2": "-", "PreText": "-", "MainText": "ターゲット集中", "PostText": "(1T)", "Grow": "-", "Value0": "3000", "Value1": "3000", "Value2": "3000", "Value3": "3000", "Value4": "3000", "Value5": "3000", "Value6": "3000", "Value7": "3000", "Value8": "3000", "Value9": "3000", "Detail": "自身にターゲット集中状態を付与(1T)", "EntityID": "355551" }, { "SkillName": "被虐体質 A+", "CT": "6", "Target": "自身", "Target2": "-", "PreText": "-", "MainText": "防御力", "PostText": "アップ(1T)", "Grow": "Lv", "Value0": "10%", "Value1": "12%", "Value2": "14%", "Value3": "16%", "Value4": "18%", "Value5": "20%", "Value6": "22%", "Value7": "24%", "Value8": "26%", "Value9": "30%", "Detail": "＆防御力をアップ[Lv](1T)", "EntityID": "355551" }, { "SkillName": "被虐体質 A+", "CT": "6", "Target": "自身", "Target2": "-", "PreText": "HPが1200%以下の間<HP5000%以下の間>", "MainText": "HPが少ないほど攻撃力", "PostText": "アップ(3T)", "Grow": "-", "Value0": "10%～30%", "Value1": "12%～32%", "Value2": "14%～34％", "Value3": "16%～36%", "Value4": "18%～38%", "Value5": "20%～40%", "Value6": "22%～42%", "Value7": "24%～44%", "Value8": "26%～46%", "Value9": "30%～50%", "Detail": "＆HPが50%以下の時、HPが少ないほど攻撃力がアップする状態を付与[Lv](3T)", "EntityID": "355551" } ]
         const base = [0, 10, 12, 14, 16, 18, 20, 22, 24, 26, 30];
         let result =
           base[this.selectedNumber] + (1 - this.HP / (this.MaxHP / 2)) * 20;
@@ -114,6 +92,7 @@ export default {
         }
       }
       if (this.name === "局中法度 EX") {
+        this.filteredList = [ { "SkillName": "局中法度 EX", "CT": "7", "Target": "自身", "Target2": "-", "PreText": "-", "MainText": "スター集中度", "PostText": "アップ(3T)", "Grow": "Lv", "Value0": "2000%", "Value1": "2200%", "Value2": "2400%", "Value3": "2600%", "Value4": "2800%", "Value5": "3000%", "Value6": "3200%", "Value7": "3400%", "Value8": "3600%", "Value9": "4000%", "Detail": "自身のスター集中度をアップ[Lv](3T)", "EntityID": "344650" }, { "SkillName": "局中法度 EX", "CT": "7", "Target": "自身", "Target2": "-", "PreText": "-", "MainText": "HPが少ないほどクリティカル威力", "PostText": "アップ(3T)", "Grow": "-", "Value0": "20%～100%", "Value1": "20%～100%", "Value2": "20%～100%", "Value3": "20%～100%", "Value4": "20%～100%", "Value5": "20%～100%", "Value6": "20%～100%", "Value7": "20%～100%", "Value8": "20%～100%", "Value9": "20%～100%", "Detail": "＆HPが少ないほどクリティカル威力がアップする状態を付与(3T)", "EntityID": "344650" }, { "SkillName": "局中法度 EX", "CT": "7", "Target": "自身", "Target2": "-", "PreText": "-", "MainText": "HP", "PostText": "減少", "Grow": "-", "Value0": "-1000", "Value1": "-1000", "Value2": "-1000", "Value3": "-1000", "Value4": "-1000", "Value5": "-1000", "Value6": "-1000", "Value7": "-1000", "Value8": "-1000", "Value9": "-1000", "Detail": "＆HPを減少【デメリット】", "EntityID": "344650" } ]
         let result = 20 + (1 - this.HP / this.MaxHP) * 80;
         result = Number(result);
         result = Math.round(result);

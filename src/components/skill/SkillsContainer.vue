@@ -48,11 +48,13 @@ export default {
       skillValueOther: [0, 1, 2, 3],
       totalSkillValueOther: {},
       skillCardType: ["skillCard", "skillCard", "skillCard", "skillCard"],
+      servantNumber: 0,
     };
   },
   watch: {
     items(newValue) {
       //新しい値が来たら保存して
+      this.servantNumber = newValue["No."];
       this.skillNames[1] = newValue["保有スキル 1"];
       this.skillNames[2] = newValue["保有スキル 2"];
       this.skillNames[3] = newValue["保有スキル 3"];
@@ -83,8 +85,7 @@ export default {
       const skillCardUnique3 = ["死滅願望 A", "四夜の終末 EX", "是非もなし A-"];
       const skillCardUnique4 = ["影郷の武練 B+"];
       const skillCardUnique5 = ["蛤御殿 A"];
-      const skillCardUnique6 = [];
-      const skillCardUnique7 = [];
+      const skillCardUnique6 = ["原初のルーン","アクセルターン B","天賦の叡智 EX","怪力 B","女神のきまぐれ A","魅惑の美声 B","アルカディア越え A","棍棒術 A","無辜の怪物 EX","無辜の怪物 A","黄金の杯 C"];
       if (skillCardUnique1.includes(skillName)) {
         return "skillCardUnique1";
       }
@@ -100,6 +101,9 @@ export default {
       if (skillCardUnique5.includes(skillName)) {
         return "skillCardUnique5";
       }
+      if (skillCardUnique6.includes(skillName)) {
+        return "skillCardUnique6";
+      }
       return "skillCard";
     },
   },
@@ -114,6 +118,7 @@ export default {
         ><component
           :is="skillCardType[1]"
           :name="skillNames[1]"
+          :sNumber="servantNumber"
           @skillValue="updateSkillValue($event, 0)"
           @skillValueSelf="updateSkillValueSelf($event, 0)"
           @skillValueOther="updateSkillValueOther($event, 0)"
@@ -122,6 +127,7 @@ export default {
         <component
           :is="skillCardType[2]"
           :name="skillNames[2]"
+          :sNumber="servantNumber"
           @skillValue="updateSkillValue($event, 1)"
           @skillValueSelf="updateSkillValueSelf($event, 1)"
           @skillValueOther="updateSkillValueOther($event, 1)"
@@ -130,6 +136,7 @@ export default {
         ><component
           :is="skillCardType[3]"
           :name="skillNames[3]"
+          :sNumber="servantNumber"
           @skillValue="updateSkillValue($event, 2)"
           @skillValueSelf="updateSkillValueSelf($event, 2)"
           @skillValueOther="updateSkillValueOther($event, 2)"

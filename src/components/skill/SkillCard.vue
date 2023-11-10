@@ -1,6 +1,5 @@
-template
 <script setup>
-import { ref, watch, onMounted, computed, shallowRef, unref } from "vue";
+import { ref, watch, onMounted, computed } from "vue";
 
 // 非同期データフェッチ
 let asyncData = [];
@@ -199,7 +198,6 @@ function handleSkillName(item) {
 }
 
 function toggleItem(index) {
-  console.log(index);
   isActiveList.value[index] = !isActiveList.value[index];
   bufftype();
 }
@@ -241,7 +239,7 @@ function toggleItem(index) {
           </div>
           <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
             {{ item.Target }}/{{ item.MainText }}{{ item.PostText
-            }}{{ item[skillLevel] }}
+            }}/{{ item[skillLevel] }}
           </div>
         </v-layout>
       </v-list-item></v-list

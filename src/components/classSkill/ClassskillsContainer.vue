@@ -1,6 +1,6 @@
 <script>
 import { sumObjectValue } from "../../components/TotalSkillValue.js";
-import classSkillCard from "./ClassSkillCardv2.vue";
+import classSkillCard from "./ClassSkillCard.vue";
 
 export default {
   props: ["items"],
